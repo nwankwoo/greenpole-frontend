@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html ng-app = "QueryShareholderAccountApp">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Africa Prudential Registrars Plc :: Query Shareholder Account Details</title>
+<link rel="icon" th:href="@{/images/lg.png}"/>
+<link rel="stylesheet" th:href="@{/styles/vendor/pace-dataurl.css}"/> 
+<link rel="stylesheet" th:href="@{/styles/mainstyle.css}"/> 
+<link rel="stylesheet" th:href="@{/styles/vendor/foundation-datepicker.css}"/> 
+
+<script th:src="@{/scripts/vendor/modernizr.js}"></script>
+
+</head>
+
+<body ng-controller="queryShareholderAccountCtrl">
+<div class="row full-width">
+    	<div class="large-12 small-12 columns text-center title">
+        	<span id="title">Query Shareholder Account Details</span>
+        </div>
+        
+        
+        <div class="row error-alert"  style="padding-bottom:5px;padding-left:15px;width:70%;display:none;margin:5px;margin-top:5%">
+                        	<div data-alert class="large-12 columns large-centered alert-box alert" style="padding-bottom:7px;padding-top:7px">Please fill out all entries or remove unwanted ones to continue</div>
+                        </div>
+        
+          <div class="content active" id="exactquerySearch">
+          
+                  <input th:value="${formAction} + '&' + ${_csrf.parameterName}  + '='+ ${_csrf.token}" class="action" type="hidden"/>
+  
+                <div class="large-7 columns " style="font-size:13px;padding-top:10px;margin-left:20px">
+                <div class="row componentHolder">
+                <form class="queryShareholderAccountForm" method="post" ng-submit="queryShareholderAccount()">
+                <input class="descriptor" name="descriptor" type="hidden"/>
+                <div class="fieldSetHolder">
+                <fieldset class="searchForm" style="margin-top:10px;margin-left:5px">
+                    <legend style="width:100%;background:#d52e36;color:#fff;padding-top:10px;padding-bottom:10px;padding-left:5px;padding-right:5px">
+                    <span class="filterLabel">Search Filter One</span>   
+                    <span class="remove" style="float:right;cursor:pointer;display:none">Remove</span>
+                    <span class="add" style="float:right;cursor:pointer">Add&nbsp;&nbsp;</span>
+                    
+                    </legend>
+                    <div class="large-3 columns" style="padding-top:10px">Search Criteria</div>
+                    <div class="large-9 columns" style="padding-bottom:10px">
+                        <select class="searchCriteria">
+                            <option value="0">Select Criteria</option>
+                            <option value="shareholder_name">Shareholder Name</option>
+                            <option value="shareholder_type">Shareholder Type</option>
+                            <option value="gender">Gender</option>
+                            <option value="dob">Date of Birth</option>
+                            <option value="address">Address</option>
+                            <option value="phone_number">Phone number</option>
+                            <option value="email_address">Email address</option>
+                            <option value="tax_exempted">Tax Exempted</option>
+                            <option value="company_name">Company Name</option>
+                            <option value="clearing_house">CHN Number</option>
+                            <option value="esop_status">ESOP Status</option>
+                            <option value="stockbrocker">Stockbrocker</option>
+                            <option value="certificate_number">Certificate Number</option>
+                            <option value="share_unit">Share Unit</option>
+                            <option value="total_holdings">Total Holdings</option>
+                        </select>
+                    </div>
+                    <div class="large-3 columns" style="padding-top:10px">Search Parameter</div>
+                    <div class="large-9 columns searchParameterHolder">
+                        <input type="text" class="searchParameter" required/>
+                        
+                    </div>
+                    <div class="large-9 columns dateofbirthParameterHolder" style="display:none">
+                        <input type="text" class="dateofbirth" name = "holder.dob"/>
+                        
+                    </div>
+                  </fieldset>
+                  </div>
+                  <div class="row" style="padding-top:10px">
+                     
+                    <div class="large-12 text-right columns " ><!--queryShareholderAccountButton-->
+                        <input type="submit" class="button" value="Query Shareholder Account"/>
+                    </div>
+                </div>
+                 
+                </form>
+            </div>
+            
+      </div>
+
+<div class="row full-width">
+	<div class="large-12 colums">
+    	<div class="large-12 small-12 columns text-left title" style="height:30px;font-size:15px;font-weight:bold;padding-top:7px">
+        	<span id="title" style="padding-left:10px">:: Shareholder Account Query Result</span>
+        </div>
+    </div>
+</div>
+
+<div >
+ <div class="row full-width" style="padding-bottom:10px"  >
+        	
+        	<div class="large-1 columns large-offset-8" style="padding:0;margin:0;padding-top:10px;width:100px" >
+            	<a href="#" class="printShareholderList" style="font-size:11px;font-weight:bold;color:#000"> <img th:src="@{/images/print.png}"/> &nbsp;Print Report</a>
+            </div>
+            <div class="large-1 columns" style="margin:0;padding:0;float:left;margin-left:15px;width:250px;padding-top:10px">
+            	<a data-dropdown="drop1" aria-controls="drop1" aria-expanded="false" style="font-size:11px;font-weight:bold;color:#000"> 
+                	<img th:src="@{/images/export.png}"/> &nbsp;Export Report
+                </a>
+                    <ul id="drop1" class="f-dropdown" data-dropdown-content aria-hidden="true" tabindex="-1">
+                      <li><a href="#" style="font-weight:bolder;font-size:11px" class="exportToPdf">Export to pdf</a></li>
+                      <li><a href="#" style="font-weight:bolder;font-size:11px" class="exportToExcel">Export to MS Excel</a></li>
+                      <li><a href="#" style="font-weight:bolder;font-size:11px" class="exportToCSV">Export to CSV (Comma Separated List)</a></li>
+                    </ul>
+            </div>
+        </div>
+        <div class="row full-width" style="background:#fff;">
+        <div class="large-1 columns" style="font-size:11px;padding:0;margin:0;padding-left:25px;font-weight:bold;padding-top:23px;width:130px">
+        Number of records:  
+        </div>
+        <div class="large-1 columns" style="padding-top:10px">
+        	<input type="text" style="width:53%" class="pageSize" ng-init="pageSize" ng-model="pageSize" ng-keyup="key($event)" ng-keypress="filter($event)"/>
+        </div>
+        <div class="large-1 columns text-right" style="font-size:11px;padding:0;margin:0;padding-left:25px;font-weight:bold;padding-top:23px;width:130px;">
+        Filter Results: 
+        </div>
+        <div class="large-3 columns" style="margin:0;padding-top:10px;">
+            	<input type="text" placeholder="Search" ng-model="searchText"/>
+        </div>
+         
+        	<div class="large-5 columns" style="float:left;background:#fff;padding-top:12px;padding-bottom:10px;" align="center">
+            <div class="row full-width">
+            	<div class="large-1" style="font-size:11px;font-weight:bold;float:left;width:80px;padding-top:10px">
+                	Result Pages:
+                </div>
+                
+                <div class="large-7" style="float:left;width:200px">
+                     <ul class="pagination">
+                        <li style="padding-top:3px" ng-class="previousPage <= 0 ? 'arrow unavailable' : 'arrow'">
+                        	
+                            <span ng-if="previousPage > 0">
+                            	<a ng-click="getPage(previousPage)" >&laquo;</a>
+                            </span>
+                            <span ng-if="previousPage <= 0">
+                            	
+                            </span>
+                        </li>
+                        
+                        <li ng-repeat="page in numberOfPages | limitTo:5" ng-class="page == currentPage ? 'current' : ''">
+                            <a style="padding:5px" ng-click="getPage(page)">{{ page }}</a>
+                        </li>
+                        
+                        <li  style="padding-top:3px"  ng-class="currentPage < totalPages ? 'arrow' : 'arrow unavailable'">
+                        	<span ng-if="nextPage > totalPages">
+                            </span>
+                            <span ng-if="nextPage <= totalPages">
+                            	<a ng-click="getPage(nextPage)">&raquo;</a>
+                            </span>
+                            
+                        </li>
+                    </ul>
+                </div>
+                <div class="large-4 text-left" style="font-size:11px;font-weight:bold;float:left;width:180px;padding-top:10px">
+                	Total Records Found : {{ totalRecord }}
+                </div>
+            </div>
+          
+                
+               
+            </div>
+        </div>
+        <div class="row full-width">
+            <div class="large-12 columns" style="padding-top:10px;padding-left:25px;padding-right:25px">
+                <table cellpadding="0" cellspacing="0" border="1" class="full-width" width="100%" style="border-spacing:0px" >
+                    <tr style="line-height:1em">
+                    	<td width="2%" class="shareholdercheckbox" ><input type="checkbox"/></td>
+                        <td width="2%" align="center" style="font-weight:bold;font-size:11px">SN</td>
+                        <td width="20%" align="center" style="font-weight:bold;font-size:11px">Shareholder Name</td>
+                        <td width="15%" align="center" style="font-weight:bold;font-size:11px">CHN Number</td>                        
+                        <td align="center" style="font-weight:bold;font-size:11px">Address</td>
+                        <td align="center" style="font-weight:bold;font-size:11px">Phone Number(s)</td>
+                        <td align="center" style="font-weight:bold;font-size:11px">Total Holdings</td>
+                        <td align="center" style="font-weight:bold;font-size:11px">Shareholder Type</td>                        
+                    </tr>
+                   <tr ng-repeat="shareholder in shareholders | filter:searchText | orderBy : ''"><!--"-->
+                       <td width="2%" class="_shareholdercheckbox"><input type="checkbox" class="shareholderCheckBox" ng-click="getShareholder(shareholder,$index,this)"/></td>
+                   		<td  width="3%" align="center" style="font-weight:bold;font-size:11px">{{$index+1}}</td>
+                        <td width="20%" align="center" style="font-weight:bold;font-size:11px">
+                        <a href="getHolderDetails/shareholder/{{shareholder.holderId}}" style="color:#000;font-size:1em">{{shareholder.firstName}} {{shareholder.middleName}} {{shareholder.lastName}}</a>
+                        </td>
+                        <td width="15%" align="center" style="font-weight:bold;font-size:11px" class="chn">{{shareholder.chn}}</td>
+                        <td>
+                        	{{shareholder.addressPrimary.addressLine1}}
+                            {{shareholder.addressPrimary.addressLine2}}
+                            {{shareholder.addressPrimary.addressLine3}}
+                            {{shareholder.addressPrimary.addressLine4}}.
+                            {{shareholder.addressPrimary.postCode}}, &nbsp; .
+                            {{shareholder.addressPrimary.city}}, &nbsp; .
+                            {{shareholder.addressPrimary.state}}, &nbsp; .
+                            {{shareholder.addressPrimary.country}}&nbsp; .
+                        </td>
+                        <td align="center" style="font-weight:bold;font-size:11px">{{shareholder.phoneNumbers[0].phoneNumber}} {{shareholder.phoneNumbers[1].phoneNumber}}</td>
+                        <td align="center" style="font-weight:bold;font-size:11px">{{holder.holdings(shareholder) | number}}</td>
+                        <td align="center" style="font-weight:bold;font-size:11px">{{shareholder.type}}</td>
+                          </tr>
+                </table>
+            </div>
+            <div class="large-12 columns">
+            	
+            </div>
+        </div>
+</div>
+<input type="hidden" class="shareholderList"/>
+<script th:src="@{/scripts/vendor/jquery.js}"></script>
+<script th:src="@{/scripts/vendor/foundation.min.js}"></script>
+<script th:src="@{/scripts/vendor/foundation.dropdown.js}"></script>
+<script  th:src="@{/scripts/vendor/foundation-datepicker.js}"></script>
+<script th:src="@{/scripts/vendor/angular.min.js}"></script>
+<script th:src="@{/scripts/vendor/numberToWords.js}"></script>
+<script th:src="@{/scripts/vendor/jquery.form.min.js}"></script>
+<script th:src="@{/scripts/utility.js}"></script>
+<script th:src="@{/scripts/Holder/queryShareholderAccount.js}"></script>
+<script>
+$(document).foundation();
+</script>
+</body>
+</html>

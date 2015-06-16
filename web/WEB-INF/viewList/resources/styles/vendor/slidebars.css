@@ -1,0 +1,73 @@
+.sb-menu {
+	padding: 0;
+	margin: 0;
+	list-style-type: none;
+}
+
+.sb-menu li {
+	width: 100%;
+	padding: 0;
+	margin: 0;
+	border-top: 1px solid rgba(255, 255, 255, 0.1);
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+	font-weight:bold;
+}
+
+.sb-menu > li:first-child {
+	border-top: none;
+}
+
+.sb-menu > li:last-child {
+	border-bottom: none;
+}
+
+.sb-menu li a {
+	width: 100%;
+	display: inline-block;
+	
+	padding: 0.5em;
+	color: #d52e36;
+	font-size:0.8em
+}
+
+.sb-submenu {
+	display: none;
+	padding: 0;
+	margin: 0;
+	list-style-type: none;
+	background-color: rgba(255, 255, 255, 0.05);
+	color:#000;
+}
+
+.sb-submenu li{
+	font-size:0.8em;
+	font-weight:bold;
+	padding-left:0.8em;
+	
+}
+.sb-submenu li a{
+	color:#fff;
+}
+
+span.sb-caret {
+	width: 0;
+	height: 0;
+	display: inline-block;
+	margin: 0 5px;
+	border: 5px solid transparent;
+	color:#d52e36;
+	float:right;
+}
+
+span.sb-caret {
+	border-top: 5px solid;
+	border-bottom: 0px solid transparent;
+}
+
+.sb-submenu-active{background:#d52e36;border-top:1px solid #fff}
+.sb-submenu-active > span.name {color:#fff}
+.sb-submenu-active > span.sb-caret { 
+	border-top: 0px solid transparent;
+	border-bottom: 5px solid;
+	color:#fff;
+}

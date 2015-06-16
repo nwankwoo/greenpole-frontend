@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    	<link rel="icon" type="image/png" href="resources/images/lg.png" th:href="@{/dmz/images/lg.png}"/>
+        <link rel="stylesheet" href="resources/styles/calvary.css" th:href="@{/dmz/styles/calvary.css}" />        
+        <script src="resources/scripts/vendor/vendor/modernizr.js" th:src="@{/dmz/scripts/vendor/vendor/modernizr.js}"></script>
+        <title>Africa Prudential Registrars Plc.</title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <div class="row full-width" style="margin-top:13%">
+        	<div class="small-12 large-12 columns">
+            <form data-abide="" id="login_form" method="post" action="#"  th:action="@{/j_spring_security_check}">
+            	<div class="row">                	
+                	<div class="large-5 large-centered columns login-form" style="padding:0">
+                    	<div class="row full-width">
+                        	<div class="small-12 large-12 columns title" style="background-color:#fff;;color:#d52e36">
+                            <img src="resources/images/lg.png" th:src="@{/dmz/images/lg.png}"/> <span>Green Pole</span>
+                            </div>
+                            <div class="small-12 large-12 columns full-width" style="background-color:#d52e36;">
+                            	<div class="row">
+                                	<div class="small-12 large-12 columns" id="indicator">
+                                    	&nbsp;<img src="resources/images/red_indicator.gif" th:src="@{/dmz/images/red_indicator.gif}"/> Loging in please wait
+                                    </div>
+                                    <div class="small-12 large-12 columns status text-center" th:switch="${login_status}" >
+                                    	
+                                        <div data-alert="" th:case="'false'" class="alert-box alert radius" style="margin-top:5px">
+                                            Invalid Login Credential.
+                                            <a href="#" class="close">&times;</a>
+                                        </div>
+                                       <div data-alert="" th:case="'true'" class="alert-box success radius" style="margin-top:5px">
+                                            Login successfull.
+                                            <a href="#" class="close">&times;</a>
+                                        </div>
+                                        <div data-alert="" th:case="'logout'" class="alert-box success radius" style="margin-top:5px">
+                                            Logout successfull.
+                                            <a href="#" class="close">&times;</a>
+                                        </div>
+                                        <div data-alert="" th:case="'session_expire'" class="alert-box info radius" style="margin-top:5px;color:white;text-shadow: 1px 1px 1px #000">
+                                            Your session has expired due to inactivity or your account is currently logged in somewhere else. Please log in again to continue.
+                                            <a href="#" class="close">&times;</a>
+                                        </div>
+                                    </div>
+                                    <div class="small-12 large-12 columns" style="margin-top:10px">
+                                    	<div class="small-12 medium-12 large-4 columns" style="margin-right:0;padding-right:0">
+                                    	<span class="prefix"><small class="required">*</small>&nbsp;E-mail Address </span>
+                                        </div>
+                                        <div class="small-12 medium-12 large-8 columns email-field" style="margin-left:0;padding-left:0">
+                                        	<label for="email">                                            
+                                                   <input type="email" id="email" name="username" placeholder="E-mail Address" required=""/>
+                                            </label>
+                                            <small class="error">Valid email required</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="small-12 large-12 columns">
+                                    	<div class="small-12 medium-12 large-4 columns" style="margin-right:0;padding-right:0">
+                                    	<span class="prefix"><small class="required">*</small>&nbsp;Password </span>
+                                        </div>
+                                        <div class="small-12 medium-12 large-8 columns" style="margin-left:0;padding-left:0">
+                                            <label for="password">
+                                            <input type="password" id="password" name="password" placeholder="Password" required=""/>
+                                            </label>
+                                            <small class="error">Password required</small>
+                                        </div>
+                                        
+                                    </div>
+                                	
+                                     <div class="small-12 large-12 columns">
+                                    	<div class="small-12 medium-12 large-4 columns" style="margin-right:0;padding-right:0">
+                                    		<a href="#" style="color:#fff;font-weight:bold">Forgot Password ?</a>
+                                        </div>
+                                        <div class="small-12 medium-12 large-8 columns" style="margin-left:0;padding-left:0">
+                                            <button type="submit" class="small button" id="button">Login</button>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </form>
+            </div>
+            
+                  
+      
+            <div class="small-12 large-12 columns footer" style="height:59px;padding-top:20px">
+            	<span >&copy; 2015, Africa Prudential Registrars Plc. All Rights Reserved.</span>
+            </div>
+        </div>
+        <script src="resources/scripts/vendor/vendor/jquery.js" th:src="@{/dmz/scripts/vendor/jquery.js}"></script>
+        <script src="resources/scripts/vendor/foundation/foundation.min.js" th:src="@{/dmz/scripts/vendor/foundation.min.js}"></script>
+        <script src="resources/scripts/vendor/foundation/foundation.abide.js" th:src="@{/dmz/scripts/vendor/foundation.abide.js}"></script>
+        <script>
+				$(document).foundation();
+		</script>
+        <script src="resources/scripts/calvary.js" th:src="@{/dmz/scripts/calvary.js}"></script>
+		
+        
+    </body>
+</html>

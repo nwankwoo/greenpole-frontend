@@ -1,0 +1,248 @@
+<!doctype html >
+<html ng-app="setupInitialPublicOffer">
+<head><!---->
+<meta charset="utf-8">
+<title>Afica Prudential Registrars Plc :: Setup Initial Public Offer</title>
+<link rel="icon" href="../resources/images/lg.png" th:href="@{/images/lg.png}"/>
+<link rel="stylesheet" href="../resources/styles/vendor/pace-dataurl.css" th:href="@{/styles/vendor/pace-dataurl.css}"/> 
+<link rel="stylesheet" href="../resources/styles/mainstyle.css" th:href="@{/styles/mainstyle.css}"/> 
+<link rel="stylesheet" href="../resources/styles/vendor/foundation-datepicker.css" th:href="@{/styles/vendor/foundation-datepicker.css}"/> 
+
+<script th:src="@{/dmz/scripts/vendor/modernizr.js}"></script>
+</head>
+<!---->
+<body ng-controller="setupInitialPublicOfferController">
+<div class="row full-width">
+	<div class="large-12 small-12 columns text-center title">
+       <span id="title">Setup Initial Public Offer</span>
+    </div>
+    
+    <div class="row setupInitialPublicOffer">
+    	<div class="row error-alert"  style="padding-bottom:5px;padding-left:15px;width:60%;display:none;margin:5px;margin-top:5%">
+                        	<div data-alert class="large-12 columns large-centered alert-box alert" style="padding-bottom:7px;padding-top:7px">Please fill out all entries marked * to continue and make sure they contain the right entries</div>
+        </div>
+    	<form th:action = "'../'+${formAction}" th:object="${setupInitialPublicOffer}" method="post" data-abide class="setupInitialPublicOfferForm">
+    	<div class="large-7 large-push-1 columns" style="margin-top:1%;font-size:13px">
+        	<div class="row">
+            
+            	<div class="large-12 columns text-center" style="font-size:20px;font-weight:bold;padding-bottom:20px">                	
+                    Company Name:
+                
+                	<span th:text="${clientCompany.name}">
+                </div>
+                
+            	<div class="large-4 columns" style="padding:0;padding-top:10px;margin:0;">
+                	<small id="required" style="color:red">*</small>
+                    Total Shares on Offer
+                </div>
+                <div class="large-8 columns">
+                	<input type="text" required th:field="*{totalSharesOnOffer}" ng-model="totalSharesOnOffer" ng-change="calculateOfferSize(offerPrice,totalSharesOnOffer)" class="totalSharesOnOffer" format/>
+                    <small class="error">Please enter total shares on offer</small>
+                </div>
+                
+                <div class="large-4 columns" style="padding:0;padding-top:20px;margin:0;">
+                	<small id="required" style="color:red">*</small>
+                    Method of Offer
+                </div>
+                <div class="large-8 columns" style="padding-top:10px;margin:0;">
+                	<input type="text" th:field="*{methodOfOffer}" required ng-model="methodOfOffer"/>
+                    <small class="error">Please enter method of offer</small>
+                </div>
+                
+                <div class="large-4 columns" style="padding:0;padding-top:10px;margin:0;">
+                	<small id="required" style="color:red">*</small>
+                    Starting Minimum Subscription
+                </div>
+                <div class="large-8 columns">
+                	<input type="text" th:field="*{startingMinimumSubscription}" required ng-model="startingMinimumSubscription" format class="startingMinimumSubscription"/>
+                    <small class="error">Please enter starting minimum subscription</small>
+                </div>
+                
+                <div class="large-4 columns" style="padding:0;padding-top:10px;margin:0;">
+                	<small id="required" style="color:red">*</small>
+                   Continuing Minimum Subscription <small style="float:right;padding-right:10px"><strong>(Multiples)</strong></small>
+                </div>
+                <div class="large-8 columns">
+                	<input type="text" th:field="*{continuingMinimumSubscription}" required ng-model="continuingMinimumSubscription" class="continuingMinimumSubscription" format/>
+                    <small class="error">Please enter continuing minimum subscription</small>
+                </div>
+                
+                <div class="large-4 columns" style="padding:0;padding-top:10px;margin:0;">
+                	<small id="required" style="color:red">*</small>
+                    Offer Price
+                </div>
+                <div class="large-8 columns">
+                	<input type="number" th:field="*{offerPrice}" required ng-model="offerPrice" ng-change="calculateOfferSize(offerPrice,totalSharesOnOffer)" class="offerPrice"/>
+                    <small class="error">Please enter offer price</small>
+                </div>
+                
+                     <div class="large-4 columns" style="padding:0;padding-top:10px;margin:0;">
+                        <small id="required" style="color:red">*</small>
+                        Offer Size
+                    </div>
+                    <div class="large-8 columns" >
+                    <input type="text" th:field="*{offerSize}" style="padding-left:10px" required ng-model="offerSize | number:2" class="offerSize" readonly />
+                        <!--{{offerSize | number}}-->
+                    </div>
+               
+                
+                 <div class="large-4 columns" style="padding:0;padding-top:15px;margin:0;">
+                	<small id="required" style="color:red">*</small>
+                    Opening Date
+                </div>
+                <div class="large-8 columns">
+                	<input type="text" class="openingDate"  data-date-format="dd/mm/yyyy" readonly required th:field="*{openingDate}" ng-model="openingDate" ng-change="calculateDateDiff(openingDate,closingDate)"/>
+                    <small class="error">Please enter opening date</small>
+                </div>
+                
+                <div class="large-4 columns" style="padding:0;padding-top:15px;margin:0;">
+                	<small id="required" style="color:red">*</small>
+                    Closing Date
+                </div>
+                
+                <div class="large-8 columns">
+                	<input type="text" class="closingDate"  data-date-format="d/mm/yyyy" readonly required th:field="*{closingDate}" ng-model="closingDate" ng-change="calculateDateDiff(openingDate,closingDate)"/>
+                    <small class="error">Please enter closing date</small>
+                </div>
+                
+                <div class="row" style="padding-bottom:10px;padding-top:10px">
+                     <div class="large-4 columns" style="padding:0;padding-top:5px;margin:0;padding-left:10px">
+                        <small id="required" style="color:red">*</small>
+                        Offer Duration
+                    </div>
+                    <div class="large-8 columns offerDuration" style="padding-left:20px;font-weight:bold">
+                        {{offerDuration}}
+                    </div>
+                </div>
+                
+                	<input type="hidden" th:field="*{clientCompanyId}"/>
+                    
+                
+                <div class="large-12 columns text-right">
+                	<input type="button" class="button setupInitialPublicOfferResetButton" value="Reset Form" ng-click="reset()"/>
+                    <input type="button" class="button setupInitialPublicOfferButton" value="Setup Initial Public Offer"/>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+    
+    <!--confirm field-->
+    <div class="row confirm-field" style="display:none">
+    	<div class="large-7 large-push-1 columns" style="margin-top:1%;font-size:13px">
+        	<div class="row" >
+            
+            	<div class="large-12 columns text-center" style="font-size:20px;font-weight:bold;padding-bottom:20px">                	
+                    Company Name:
+                
+                	<span th:text="${clientCompany.name}">
+                </div>
+                <div class="row" >
+                    <div class="large-4 columns" id="confirm-details">
+                        Total Shares on Offer
+                    </div>
+                    <div class="large-8 columns" id="confirm-entries" style="margin-top:0px">
+                         {{totalSharesOnOffer | number}}
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="large-4 columns" style="margin:0;font-weight:bold;padding-left:10px;padding-right:0;background:#fff;margin-top:10px" id="confirm-details">
+                        Method of Offer
+                    </div>
+                    <div class="large-8 columns" id="confirm-entries">
+                       {{ methodOfOffer }}
+                    </div>
+                </div>
+                
+                <div class="row">
+                <div class="large-4 columns" style="margin:0;font-weight:bold;padding-left:10px;padding-right:0;background:#fff;margin-top:10px" id="confirm-details">
+                    Starting Minimum Subscription
+                </div>
+                <div class="large-8 columns" id="confirm-entries">
+                	{{ startingMinimumSubscription | number}}
+                </div>
+                </div>
+                
+                <div class="row">
+                <div class="large-4 columns" style="margin:0;font-weight:bold;padding-left:10px;padding-right:0;background:#fff;margin-top:10px" id="confirm-details">
+                   Continuing Minimum Subscription <small style="float:right;padding-right:10px"><strong>(Multiples)</strong></small>
+                </div>
+                <div class="large-8 columns" id="confirm-entries" style="height:52px">
+                	{{ continuingMinimumSubscription | number}}
+                </div>
+                </div>
+                
+                <div class="row">
+                <div class="large-4 columns" style="margin:0;font-weight:bold;padding-left:10px;padding-right:0;background:#fff;margin-top:10px" id="confirm-details">
+                    Offer Price
+                </div>
+                <div class="large-8 columns" id="confirm-entries">
+                	N {{ offerPrice | number:2}} K
+                </div>
+                </div>
+                
+                <div class="row">
+                     <div class="large-4 columns" style="margin:0;font-weight:bold;padding-left:10px;padding-right:0;background:#fff;margin-top:10px" id="confirm-details">
+                        Offer Size
+                    </div>
+                    <div class="large-8 columns" id="confirm-entries">
+                        {{offerPrice * totalSharesOnOffer | number}}
+                    </div>
+                </div>
+                
+                <div class="row">
+                     <div class="large-4 columns" style="margin:0;font-weight:bold;padding-left:10px;padding-right:0;background:#fff;margin-top:10px" id="confirm-details">
+                        Opening Date
+                    </div>
+                    <div class="large-8 columns" id="confirm-entries">
+                        {{ openingDate }}
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="large-4 columns" style="margin:0;font-weight:bold;padding-left:10px;padding-right:0;background:#fff;margin-top:10px" id="confirm-details">
+                        Closing Date
+                    </div>
+                    <div class="large-8 columns" id="confirm-entries">
+                        {{ closingDate }}
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="large-4 columns" style="margin:0;font-weight:bold;padding-left:10px;padding-right:0;background:#fff;margin-top:10px;height:43px" id="confirm-details">
+                        Offer Duration
+                    </div>
+                    <div class="large-8 columns" id="confirm-entries">
+                        {{ offerDuration }}
+                    </div>
+                </div>	
+                    
+                
+                <div class="large-12 columns text-right" style="margin-top:10px">
+                	<input type="button" class="button setupInitialPublicOfferBackButton" value="&laquo; Back"/>
+                    <input type="button" class="button setupInitialPublicOfferConfirmButton" value="Confirm & Setup Initial Public Offer"/>
+                </div>
+            </div>
+        </div>
+        
+        
+    </div>
+</div>
+
+<script  th:src="@{/scripts/vendor/jquery.js}"></script>
+<script  th:src="@{/scripts/vendor/foundation.min.js}"></script>
+<script  th:src="@{/scripts/vendor/angular.min.js}"></script>
+<script  th:src="@{/scripts/vendor/foundation.abide.js}"></script>
+<script  th:src="@{/scripts/vendor/jquery.form.min.js}"></script>
+<script  th:src="@{/scripts/vendor/foundation-datepicker.js}"></script>
+<script  th:src="@{/scripts/utility.js}"></script>
+<script th:src="@{/scripts/client_company/setupInitialPublicOffer.js}"></script>
+
+<script>
+		$(document).foundation();
+		
+       
+	</script>
+</body>
+</html>

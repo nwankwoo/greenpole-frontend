@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html ng-app = "uploadPowerofAttorneyApp">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Africa Prudential Registrars Plc :: Upload Power of Attorney</title>
+<link rel="icon" href="../resources/images/lg.png" th:href="@{/images/lg.png}"/>
+<link rel="stylesheet" href="../resources/styles/vendor/pace-dataurl.css" th:href="@{/styles/vendor/pace-dataurl.css}"/> 
+<link rel="stylesheet" href="../resources/styles/mainstyle.css" th:href="@{/styles/mainstyle.css}"/> 
+<link rel="stylesheet" th:href="@{/styles/vendor/foundation-datepicker.css}"/> 
+
+<script src="../resources/scripts/vendor/modernizr.js" th:src="@{/scripts/vendor/modernizr.js}"></script>
+
+
+</head>
+
+<body ng-controller="uploadPowerofAttorneyController">
+<div class="row full-width">
+    	<div class="large-12 small-12 columns text-center title">
+        	<span id="title">Upload Power of Attorney</span>
+        </div>
+</div>
+
+<div class="row error-alert"  style="padding-bottom:5px;padding-left:15px;width:70%;display:none;margin:5px;margin-top:10px">
+                        	<div data-alert class="large-12 columns large-centered alert-box alert msg" style="padding-bottom:7px;padding-top:7px">Please fill out all entries marked * to continue and make sure they contain the right entries</div>
+        </div>
+        
+<div class="row upload-PowerofAttorney" style="font-size:13px;padding-top:10px">
+	<form th:action= "'../'+${formAction} + '&' + ${_csrf.parameterName}  + '='+ ${_csrf.token}" data-abide method="post" class="uploadHolderPowerofAttorney" enctype="multipart/form-data" th:object="${uploadPowerofAttorney}">
+	<div class="large-8 columns">
+    	<div class="row">
+        	<div class="large-4 columns" id="confirm-details">Holder's Name</div>
+        	<div class="large-8 columns" id="confirm-entries">
+            	<span th:text="${holder.firstName}+' '+${holder.middleName}+' '+${holder.lastName}"></span>
+            </div>
+        </div>
+        
+        <div class="row">
+        	<div class="large-4 columns" id="confirm-details">Holder's Address</div>
+            <div class="large-8 columns" id="confirm-entries" style="height:auto">
+            	<div class="row">
+                	<div class="large-12 columns">
+                    	<span th:text="${holder.residentialAddresses[0].addressLine1}"></span>
+                    </div>
+                    <div class="large-12 columns">
+                    	<span th:text="${holder.residentialAddresses[0].addressLine2}"></span>
+                    </div>
+                    <div class="large-12 columns">
+                    	<span th:text="${holder.residentialAddresses[0].addressLine3}"></span>
+                    </div>
+                    <div class="large-12 columns">
+                    	<span th:text="${holder.residentialAddresses[0].addressLine4}"></span>
+                    </div>
+                    <div class="large-12 columns">
+                    	<span th:text="${holder.residentialAddresses[0].postCode}"></span>
+                    </div>
+                    <div class="large-12 columns">
+                    	<span th:text="${holder.residentialAddresses[0].city}"></span>
+                    </div>
+                    <div class="large-12 columns">
+                    	<span th:text="${holder.residentialAddresses[0].state}"></span>
+                    </div>
+                    <div class="large-12 columns">
+                    	<span th:text="${holder.residentialAddresses[0].country}"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+            	<div class="large-12 columns" style="margin-top:20px">
+                	<fieldset>
+                		<legend style="width:100%;background:#d52e36;color:#fff;padding-top:10px;padding-bottom:10px;padding-left:5px;padding-right:5px">Holder's Power of Attorney</legend>
+                        <div class="row">
+                        	<div class="large-12 columns">
+                            
+                            <div class="row">
+                                	<div class="large-4 columns" style="padding-top:10px">
+                                    	<small class="required" style="color:red">*</small>&nbsp;Title
+                                    </div>
+                                    
+                                    <div class="large-8 columns" style="padding-top:10px">
+                                    	<input type="text" ng-model="title" required th:field="*{title}"/>
+                                        <small class="error">Please enter title</small>
+                                    </div>
+                                </div>   
+                                
+                            	<div class="row">
+                                	<div class="large-4 columns" style="padding-top:10px">
+                                    	<small class="required" style="color:red">*</small>&nbsp;Power of Attorney Type
+                                    </div>
+                                    
+                                    <div class="large-8 columns" style="padding-top:10px">
+                                    	<select class="powerofattorneytype" required>
+                                        	<option value="0">Select Power of Attorney Type</option>
+                                            <option value="Revocable">Revocable</option>
+                                            <option value="Irrevocable">Irrevocable</option>
+                                        </select>
+                                        <input type="hidden" name="*{type}" class="poahidden"/>
+                                    </div>
+                                </div> 
+                                <div class="row">
+                                	<div class="large-4 columns" style="padding-top:10px">
+                                    	<small class="required" style="color:red">*</small>&nbsp;Start Date
+                                    </div>
+                                    
+                                    <div class="large-8 columns" style="padding-top:10px">
+                                    	<input type="text" class="startdate" ng-model="startDate" data-date-format="dd/mm/yyyy" required readonly th:field="*{startDate}"/>
+                                        <small class="error">Please enter start date</small>
+                                    </div>
+                                </div>   
+                                <div class="row powerofattorneyexpiry" style="display:none">
+                                	<div class="large-4 columns" style="padding-top:10px">
+                                    	<small class="required" style="color:red">*</small>&nbsp;Expiry Date
+                                    </div>
+                                    
+                                    <div class="large-8 columns" style="padding-top:10px">
+                                    	<input type="text" class="expirydate" ng-model="endDate" data-date-format="dd-mm-yyyy" readonly th:field="*{endDate}"/>
+                                        <small class="error">Please enter expiry date</small>
+                                    </div>
+                                </div>                               
+                                <div class="row">
+                                	<div class="large-4 columns" style="padding-top:10px">
+                                    	<small class="required" style="color:red">*</small>&nbsp;Select Power of Attorney
+                                    </div>
+                                    
+                                    <div class="large-8 columns" style="padding-top:10px">
+                                    	<input type="file" class="selectPowerofAttorneyFile" name="powerofAttorneyFile"/>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                </fieldset>
+                </div>
+                
+                <div class="row">
+                	<div class="large-12 columns text-right" style="padding-top:10px">
+                    	<input type="button" class="button uploadPowerofAttorneyResetButton" value="Reset Form"/>
+                        <input type="button" class="button uploadPowerofAttorneyButton" value="Upload Power of Attorney"/>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    </form>
+</div>
+
+
+
+<!-- Confirm Details-->
+<div class="row confirm-PowerofAttorney" style="font-size:13px;padding-top:2%;display:none">
+	<div class="large-8 columns">
+    	<div class="row">
+        	<div class="large-4 columns" id="confirm-details">Holder's Name</div>
+            <div class="large-8 columns" id="confirm-entries">Babagana Adewale Gideon</div>
+        </div>
+        
+        <div class="row">
+        	<div class="large-4 columns" id="confirm-details">Holder's Address</div>
+            <div class="large-8 columns" id="confirm-entries" style="height:auto">
+            	<div class="row">
+                	<div class="large-12 columns">
+                    	220B Ikorodu Road
+                    </div>
+                    <div class="large-12 columns">
+                    	Palmgrove
+                    </div>
+                    <div class="large-12 columns">
+                    	Shomolu
+                    </div>
+                    <div class="large-12 columns">
+                    	
+                    </div>
+                    <div class="large-12 columns">
+                    	PMB Lagos
+                    </div>
+                    <div class="large-12 columns">
+                    	Lagos
+                    </div>
+                    <div class="large-12 columns">
+                    	Lagos
+                    </div>
+                    <div class="large-12 columns">
+                    	Nigeria
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+            	<div class="large-12 columns" style="margin-top:20px">
+                	<fieldset style="margin:10px">
+                		<legend style="width:100%;background:#d52e36;color:#fff;padding-top:10px;padding-bottom:10px;padding-left:5px;padding-right:5px">Holder's Power of Attorney</legend>
+                        <div class="row">
+                        	<div class="large-12 columns">
+                            
+                            	 <div class="row" style="margin:5px">
+                                	<div class="large-4 columns" id="confirm-details" style="padding-top:10px;height:43px">
+                                    	Title
+                                    </div>
+                                    
+                                    <div class="large-8 columns" id="confirm-entries" style="padding-top:10px;">
+                                    	{{title}}
+                                    </div>
+                                </div> 
+                                
+                               <div class="row" style="margin:5px">
+                                	<div class="large-4 columns" id="confirm-details" style="padding-top:10px;height:43px">
+                                    	Power of Attorney Type
+                                    </div>
+                                    
+                                    <div class="large-8 columns poatype" id="confirm-entries" style="padding-top:10px;">
+                                    	
+                                    </div>
+                                </div> 
+                                
+                            	 <div class="row" style="margin:5px;">
+                                	<div class="large-4 columns" id="confirm-details" style="padding-top:10px;height:43px">
+                                    	Start Date
+                                    </div>
+                                    
+                                    <div class="large-8 columns" id="confirm-entries" style="padding-top:10px;">
+                                    	{{startDate}}
+                                    </div>
+                                </div> 
+                                
+                               
+                            	 <div class="row powerofattorneyexpiry" style="display:none;margin:5px;">
+                                	<div class="large-4 columns" id="confirm-details" style="padding-top:10px;height:43px">
+                                    	End Date
+                                    </div>
+                                    
+                                    <div class="large-8 columns" id="confirm-entries" style="padding-top:10px;">
+                                    	{{endDate}}
+                                    </div>
+                                </div> 
+                                                              
+                                <div class="row" style="margin:5px;">
+                                	<div class="large-4 columns" id="confirm-details" style="padding-top:10px;height:43px">
+                                    	Power of Attorney
+                                    </div>
+                                    
+                                    <div class="large-8 columns" id="confirm-entries" style="padding-top:10px;height:auto">
+                                    	<img src="#" class="PowerofAttorneyFile" width="500px" height="400px" />
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                </fieldset>
+                </div>
+                
+                <div class="row">
+                	<div class="large-12 columns text-right" style="padding-top:10px">
+                    	<input type="button" class="button uploadPowerofAttorneyBackButton" value="&laquo; Back"/>
+                        <input type="button" class="button confirmAndUploadPowerofAttorneyButton" value="Confirm &amp; Upload Power of Attorney"/>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Confirm Details-->
+<script  th:src="@{/scripts/vendor/jquery.js}"></script>
+<script  th:src="@{/scripts/vendor/foundation.min.js}"></script>
+<script  th:src="@{/scripts/vendor/angular.min.js}"></script>
+<script  th:src="@{/scripts/vendor/foundation.abide.js}"></script>
+<script  th:src="@{/scripts/vendor/jquery.form.min.js}"></script>
+<script  th:src="@{/scripts/vendor/foundation-datepicker.js}"></script>
+<script  th:src="@{/scripts/utility.js}"></script>
+<script  th:src="@{/scripts/Holder/uploadPowerOfAttorney.js}"></script>
+
+<script>
+		$(document).foundation();
+	</script>
+</body>
+</html>

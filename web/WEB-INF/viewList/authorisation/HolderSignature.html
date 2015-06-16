@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html ng-app = "uploadHolderSignatureApp">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Africa Prudential Registrars Plc :: Upload Holder Signature</title>
+<link rel="icon" href="../resources/images/lg.png" th:href="@{/images/lg.png}"/>
+<link rel="stylesheet" href="../resources/styles/vendor/pace-dataurl.css" th:href="@{/styles/vendor/pace-dataurl.css}"/> 
+<link rel="stylesheet" href="../resources/styles/mainstyle.css" th:href="@{/styles/mainstyle.css}"/> 
+<link rel="stylesheet" th:href="@{/styles/vendor/foundation-datepicker.css}"/> 
+
+<script src="../resources/scripts/vendor/modernizr.js" th:src="@{/scripts/vendor/modernizr.js}"></script>
+
+
+</head>
+
+<body ng-controller="uploadHolderSignatureController">
+<div class="row full-width">
+    	<div class="large-12 small-12 columns text-center title">
+        	<span id="title">Upload Holder Signature</span>
+        </div>
+</div>
+
+<div class="row error-alert"  style="padding-bottom:5px;padding-left:15px;width:30%;display:none;margin:5px;margin-top:10px">
+                        	<div data-alert class="large-12 columns large-centered alert-box alert msg" style="padding-bottom:7px;padding-top:7px">Please select signature file</div>
+        </div>
+        
+
+
+
+
+<!-- Confirm Details-->
+<div class="row confirm-signature" style="font-size:13px;padding-top:2%;display:block">
+	<div class="large-8 columns">
+    	<div class="row">
+        	<div class="large-4 columns" id="confirm-details">Holder's Name</div>
+            <div class="large-8 columns" id="confirm-entries">Babagana Adewale Gideon</div>
+        </div>
+        
+        <div class="row">
+        	<div class="large-4 columns" id="confirm-details">Holder's Address</div>
+            <div class="large-8 columns" id="confirm-entries" style="height:auto">
+            	<div class="row">
+                	<div class="large-12 columns">
+                    	220B Ikorodu Road
+                    </div>
+                    <div class="large-12 columns">
+                    	Palmgrove
+                    </div>
+                    <div class="large-12 columns">
+                    	Shomolu
+                    </div>
+                    <div class="large-12 columns">
+                    	
+                    </div>
+                    <div class="large-12 columns">
+                    	PMB Lagos
+                    </div>
+                    <div class="large-12 columns">
+                    	Lagos
+                    </div>
+                    <div class="large-12 columns">
+                    	Lagos
+                    </div>
+                    <div class="large-12 columns">
+                    	Nigeria
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+            	<div class="large-12 columns" style="margin-top:20px">
+                	<fieldset style="margin:10px">
+                		<legend style="width:100%;background:#d52e36;color:#fff;padding-top:10px;padding-bottom:10px;padding-left:5px;padding-right:5px">Holder's Signature</legend>
+                        <div class="row">
+                        	<div class="large-12 columns">
+                            	                                
+                                <div class="row" style="margin:5px">
+                                	<div class="large-4 columns" id="confirm-details" style="padding-top:10px">
+                                    	Signature
+                                    </div>
+                                    
+                                    <div class="large-8 columns" id="confirm-entries" style="padding-top:10px;height:auto">
+                                    	<img th:src="'data:image/png;base64,'+${model.signatureContent}" class="signatureImage" width="500px" height="400px" />
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                </fieldset>
+                </div>
+                
+                <div class="row">
+                	<div class="large-12 columns text-right" style="padding-top:10px;margin-bottom:30px">
+                    	 <input type="button" class="button decline" value="Decline"/>
+                        <input type="button" class="button authorise" value="Authorise Signature Upload"/>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" class="code" th:value="${code}">
+<input type="hidden" th:value="@{/}" id="destination"/>
+
+<script  th:src="@{/scripts/vendor/jquery.js}"></script>
+<script  th:src="@{/scripts/vendor/foundation.min.js}"></script>
+<script>
+		$(document).foundation();
+		$(".decline").click(function(e) {
+            
+        });
+		
+		$(".authorise").click(function(e) {
+			$url = $("#destination").val()+"authorisation/holder/holderSignature/authorise?code="+$(".code").val();
+			console.log($(".code").val());
+			console.log($url);
+            window.location.assign($url);
+        });
+	</script>
+
+</body>
+</html>

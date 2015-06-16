@@ -1,0 +1,16 @@
+@charset "utf-8";
+@import url("vendor/foundation.min.css");
+@import url("vendor/normalize.css");
+@font-face {font-family: 'gothic';src: url('fonts/gothic.eot');src:local('gothic'),url('fonts/gothic.woff') format('woff'),url('fonts/gothic.ttf') format('truetype');}
+body{font-family:gothic;font-size:1em;background:#efeeee;margin:0;padding:0;overflow:hidden}
+a{font-size:0.7em}
+.full-width{width:100%;margin-left:auto;margin-right:auto;max-width:initial;}
+.footer{min-width:100%;background:#fff;width:100%;position:fixed;bottom:0;left:0;color:#d52e36;font-weight:bold;font-size:1.5em}
+.login-form{background:#fff}
+.title{background-color:#d52e36;text-shadow: 0px 0px #000;font-size:1.5em;color:#fff}
+.prefix{text-align:left;padding-left:5px}
+#button{float:right;background-color:#fff;font-family: 'gothic' !important;color:#d52e36;font-weight:bold;border:1px solid #efeeee;padding-top:7px;padding-bottom:7px;box-shadow: 1px 1px 0px #000;}
+#button:hover{background-color:#efeeee;color:#b6050d}
+.required{color:red;font-size:0.8em}
+#indicator{padding-top:10px;padding-bottom:5px;color:#fff;font-size:0.7em;font-weight:bold;display:none}
+.status{padding-top:15px}

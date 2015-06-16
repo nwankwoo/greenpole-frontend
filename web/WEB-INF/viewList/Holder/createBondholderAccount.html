@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html ng-app = "createBondholderApp">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Africa Prudential Registrars Plc :: Create Bondholder Account</title>
+<link rel="icon" href="../resources/images/lg.png" th:href="@{/images/lg.png}"/>
+<link rel="stylesheet" href="../resources/styles/vendor/pace-dataurl.css" th:href="@{/styles/vendor/pace-dataurl.css}"/> 
+<link rel="stylesheet" href="../resources/styles/mainstyle.css" th:href="@{/styles/mainstyle.css}"/> 
+<link rel="stylesheet" th:href="@{/styles/vendor/foundation-datepicker.css}"/> 
+
+<script src="../resources/scripts/vendor/modernizr.js" th:src="@{/scripts/vendor/modernizr.js}"></script>
+
+
+</head>
+
+<body ng-controller="createBondholderController">
+<div class="row full-width">
+    	<div class="large-12 small-12 columns text-center title">
+        	<span id="title">Create Bondholder Account</span>
+        </div>
+        
+        <div class="row error-alert"  style="padding-bottom:5px;padding-left:15px;width:60%;display:none;margin:5px;margin-top:5%">
+                        	<div data-alert class="large-12 columns large-centered alert-box alert" style="padding-bottom:7px;padding-top:7px">Please fill out all entries marked * to continue and make sure they contain the right entries</div>
+        </div>
+        <div class="row createBondholderDiv" style="padding-top:5%;font-size:13px">
+        
+        	<div class="large-8 large-offset-2 columns">
+            	<form data-abide class="createBondholderForm" th:object="${createBondholderAccount}" th:action="${formAction}" method="post">
+                	
+        
+                	<div class="row">
+                    <fieldset>
+                    <legend style="width:100%;background:#d52e36;color:#fff;padding-top:10px;padding-bottom:10px;padding-left:5px;padding-right:5px">Bondholder Name</legend>
+                    	<div class="large-4 columns" style="padding-top:10px">
+                        	<small class="required" style="color:red">*</small>&nbsp;First Name
+                        </div>
+                        <div class="large-8 columns" style="float:left">
+                        	<input type="text" required ng-model="shareholderFirstName" th:field="*{firstName}"/>
+                            <small class="error">Please enter first name</small>
+                        </div>
+                        
+                        <div class="large-4 columns" style="padding-top:10px">
+                        	&nbsp;Middle Name
+                        </div>
+                        <div class="large-8 columns" style="float:left">
+                        	<input type="text" ng-model="shareholderMiddleName" th:field="*{middleName}"/>
+                        </div>
+                        
+                        <div class="large-4 columns" style="padding-top:10px" >
+                        	<small class="required" style="color:red">*</small>&nbsp;Last Name
+                        </div>
+                        <div class="large-8 columns" style="float:left">
+                        	<input type="text" required ng-model="shareholderLastName" th:field="*{lastName}"/>
+                            <small class="error">Please enter last name</small>
+                        </div>
+                       </fieldset> 
+                    </div>
+                    
+                    <div class="row" style="padding-top:10px">
+                    	<div class="large-4 columns" style="padding-top:10px">
+                        	<small class="required" style="color:red">*</small>&nbsp;Bondholder Type
+                        </div>
+                        <div class="large-8 columns">
+                        	<select required ng-model="holderType"  ng-options="holderType.type for holderType in holderTypes" ng-init="holderType=holderTypes[0]">
+                            </select>
+                            <input type="hidden" ng-value="holderType.id" th:field="*{typeId}" />
+                        </div>
+                        
+                        <div class="large-4 columns" style="padding-top:20px">
+                        	<small class="required" style="color:red">*</small>&nbsp;Bonholder Gender
+                        </div>
+                        <div class="large-8 columns" style="padding-top:20px">
+                        	 <input type="radio" ng-model="gender" value="Female" class="femaleRadio gender"/>&nbsp;Female  &nbsp;&nbsp; <input type="radio" ng-model="gender" class="gender" value="Male"/>&nbsp; Male
+                             <input type="hidden" th:field="*{gender}" class="genderField"/>
+                        </div>
+                        
+                        <div class="large-4 columns" style="padding-top:10px">
+                        	<small class="required" style="color:red">*</small>&nbsp;Date of Birth
+                        </div>
+                        <div class="large-8 columns">
+                        	<input type="text" class="dateofbirth" ng-model="shareholderDateOfBirth" data-date-format="dd/mm/yyyy" th:field="*{dob}"/>
+                        </div>
+                        
+                       <!--  <div class="large-4 columns" style="padding-top:20px" >
+                        	<small class="required" style="color:red">*</small>&nbsp;Bond Unit
+                        </div>
+                        <div class="large-8 columns" style="float:left" style="padding-top:10px">
+                        	<input type="number" required ng-model="bondUnit" min="0"  th:field="*{bondAccounts[0].bondUnits}"/>
+                            <small class="error">Please enter Bond Unit</small>
+                        </div>-->
+                        
+                        <div class="large-4 columns" style="padding-top:20px" >
+                        	<small class="required" style="color:red">*</small>&nbsp;Principal Bond Value
+                        </div>
+                        <div class="large-8 columns" style="float:left" style="padding-top:10px">
+                        	<input type="number" required ng-model="bondPrincipalValue" min="0"  th:field="*{bondAccounts[0].startingPrincipalValue}"/>
+                            <small class="error">Please enter Bond principal value</small>
+                        </div>
+                        
+                        <div class="large-4 columns" style="padding-top:10px">
+                        	<small class="required" style="color:red">*</small>&nbsp;Select Stockbroker
+                        </div>
+                        <div class="large-8 columns">
+                        	<select required ng-model="stockbroker" ng-options="stockbroker.name for stockbroker in stockbrokers" ng-init="stockbroker=stockbrokers[0]" ng-change="stockbrokerChange(stockbroker)">
+                            	
+                            </select>
+                            <input type="hidden" ng-value="stockbroker.id" th:field="*{holderStockbroker.id}"/>
+                            <input type="hidden" ng-value="stockbroker.name" th:field="*{holderStockbroker.name}"/>
+                        </div>
+                        
+                    </div>
+                    
+                    
+                    <div class="row" style="padding-top:10px">
+                    <input type="hidden" name="pryAddress" class="primaryAddress" value="residential"/>
+                     <fieldset class="addressFieldSet">
+                                <legend style="width:100%;background:#d52e36;color:#fff;padding-top:10px;padding-bottom:10px;padding-left:5px;padding-right:5px">Contact Details</legend>
+                                <div class="row addressDetails" style="background:#fff;margin:5px;padding:10px">
+                                <div class="large-12 columns" style="background:#d52e36;color:#fff;">
+                                
+                                	<div class="row" style="padding:0;margin:0">
+                                    	<div class="large-4 columns addressLabelNumber" style="padding-top:10px;font-size:14px;font-weight:bold;padding-left:20px">Residential Address</div>
+                                       
+                                        <div class="large-4 columns addressLabel" style="padding-top:10px;float:right">
+                                        	Make Primary
+                                            <span style="margin-left:15px;padding-top:40px"> 
+                                            	<input type="radio" class="makePrimary residential" checked name="residentialAddresses[0].primaryAddress"/>&nbsp;
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="large-4 columns" style="font-size:13px;padding-top:13px">
+                                    <small class="required" style="color:red">*</small> &nbsp;Address
+                                </div>
+                                <div class="large-8 columns" style="padding-top:10px">
+                                    <div class="row">
+                                    	<div class="large-12 columns">
+                                        	<small style="padding-bottom:3px">Line One</small>
+                                        	<input type="text" class="addressLineOne" required ng-model="residentialAddressLineOne" th:field="*{residentialAddresses[0].addressLine1}"/>
+                                    		<small class="error">Please enter company address line one</small>
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:10px">
+                                        	<small style="padding-bottom:3px">Line Two</small>
+                                        	<input type="text" class="addressLineTwo" ng-model="residentialAddressLineTwo" th:field="*{residentialAddresses[0].addressLine2}"/>
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:10px">
+                                        	<small style="padding-bottom:3px">Line Three</small>
+                                        	<input type="text" class="addressLineThree" ng-model="residentialAddressLineThree"  th:field="*{residentialAddresses[0].addressLine3}"/>
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:10px">
+                                        	<small style="padding-bottom:3px">Line Four</small>
+                                        	<input type="text" class="addressLineFour" ng-model="residentialAddressLineFour"  th:field="*{residentialAddresses[0].addressLine4}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="large-4 columns" style="font-size:13px;padding-top:10px">
+                                   &nbsp; &nbsp;Post Code
+                                </div>
+                                <div class="large-8 columns"  >
+                                    <div class="row">
+                                    	<div class="large-12 columns">
+                                        	<input type="text" class="postCode" ng-model="residentialAddressPostCode"  th:field="*{residentialAddresses[0].postCode}"/>
+                                        </div>
+                                     </div>
+                                </div>
+                                <div class="large-4 columns" style="font-size:13px;padding-top:15px">
+                                    <small class="required" style="color:red">*</small> &nbsp;City
+                                </div>
+                                <div class="large-8 columns">
+                                    <div class="row">
+                                    	<div class="large-12 columns">
+                                        	<input type="text" class="city"  required ng-model="residentialAddressCity"  th:field="*{residentialAddresses[0].city}"/>
+                                    		<small class="error">Please enter residential address city</small>
+                                        </div>
+                                     </div>
+                                </div>
+                                 <div class="large-4 columns" style="font-size:13px;padding-top:15px">
+                                    <small class="required" style="color:red">*</small> &nbsp;State
+                                </div>
+                                <div class="large-8 columns">
+                                    <div class="row">
+                                    	<div class="large-12 columns">
+                                        	<input type="text" class="state" required ng-model="residentialAddressState"  th:field="*{residentialAddresses[0].state}"/>
+                                    		<small class="error">Please enter residential address state</small>
+                                        </div>
+                                     </div>
+                                </div>
+                                 <div class="large-4 columns" style="font-size:13px;padding-top:15px">
+                                    <small class="required" style="color:red">*</small> &nbsp;Country
+                                </div>
+                                <div class="large-8 columns">
+                                    <div class="row">
+                                    	<div class="large-12 columns">
+                                        	<input type="text" class="country" required ng-model="residentialAddressCountry"  th:field="*{residentialAddresses[0].country}"/>
+                                    		<small class="error">Please enter residential address country</small>
+                                        </div>
+                                     </div>
+                                </div>
+                                </div>
+                                
+                                
+                                <!--Postal Address-->
+                                <!--	<div class="row postalAddressDetails" style="background:#fff;margin:5px;padding:10px;margin-top:20px">
+                                <div class="large-12 columns" style="background:#d52e36;color:#fff;">                               
+                                	<div class="row" style="padding:0;margin:0">
+                                    	<div class="large-4 columns addressLabelNumber" style="padding-top:10px;font-size:14px;font-weight:bold;padding-left:20px">Postal Address</div>
+                                       
+                                        <div class="large-4 columns addressLabel" style="padding-top:10px;float:right">
+                                        	Make Primary
+                                            <span style="margin-left:15px;padding-top:40px"> 
+                                            	<input type="radio" class="makePrimary postal" name="postalAddresses[0].primaryAddress"/>&nbsp;
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="large-4 columns" style="font-size:13px;padding-top:13px">
+                                    <small class="required" style="color:#fff">*</small> &nbsp;Address
+                                </div>
+                                <div class="large-8 columns" style="padding-top:10px">
+                                    <div class="row">
+                                    	<div class="large-12 columns">
+                                        	<small style="padding-bottom:3px">Line One</small>
+                                        	<input type="text" class="postalAddressLineOne" ng-model="postalAddressLineOne"  th:field="*{postalAddresses[0].addressLine1}"/>
+                                    		<small class="error">Please enter postal address address line one</small>
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:10px">
+                                        	<small style="padding-bottom:3px">Line Two</small>
+                                        	<input type="text" class="postalAddressLineTwo" ng-model="postalAddressLineTwo" th:field="*{postalAddresses[0].addressLine2}"/>
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:10px">
+                                        	<small style="padding-bottom:3px">Line Three</small>
+                                        	<input type="text" class="postalAddressLineThree" ng-model="postalAddressLineThree"   th:field="*{postalAddresses[0].addressLine3}"/>
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:10px">
+                                        	<small style="padding-bottom:3px">Line Four</small>
+                                        	<input type="text" class="postalAddressLineFour" ng-model="postalAddressLineFour"   th:field="*{postalAddresses[0].addressLine4}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="large-4 columns" style="font-size:13px;padding-top:10px">
+                                   &nbsp; &nbsp;Post Code
+                                </div>
+                                <div class="large-8 columns">
+                                    <div class="row">
+                                    	<div class="large-12 columns">
+                                        	<input type="text" class="postCode" ng-model="postalAddressPostCode"   th:field="*{postalAddresses[0].postCode}"/>
+                                        </div>
+                                     </div>
+                                </div>
+                                <div class="large-4 columns" style="font-size:13px;padding-top:15px">
+                                    <small class="required" style="color:#fff">*</small> &nbsp;City
+                                </div>
+                                <div class="large-8 columns">
+                                    <div class="row">
+                                    	<div class="large-12 columns">
+                                        	<input type="text" class="city" ng-model="postalAddressCity"   th:field="*{postalAddresses[0].city}"/>
+                                    		<small class="error">Please enter postal address city</small>
+                                        </div>
+                                     </div>
+                                </div>
+                                 <div class="large-4 columns" style="font-size:13px;padding-top:15px">
+                                    <small class="required" style="color:#fff">*</small> &nbsp;State
+                                </div>
+                                <div class="large-8 columns">
+                                    <div class="row">
+                                    	<div class="large-12 columns">
+                                        	<input type="text" class="state" ng-model="postalAddressState"   th:field="*{postalAddresses[0].state}"/>
+                                    		<small class="error">Please enter postal address state</small>
+                                        </div>
+                                     </div>
+                                </div>
+                                 <div class="large-4 columns" style="font-size:13px;padding-top:15px">
+                                    <small class="required" style="color:#fff">*</small> &nbsp;Country
+                                </div>
+                                <div class="large-8 columns">
+                                    <div class="row">
+                                    	<div class="large-12 columns">
+                                        	<input type="text" class="country" ng-model="postalAddressCountry"   th:field="*{postalAddresses[0].country}"/>
+                                    		<small class="error">Please enter postal address country</small>
+                                        </div>
+                                     </div>
+                                </div>
+                                </div>-->
+                                <!--Postal Address-->
+                                
+                            <!--email-->    
+                                <div class="row" style="background:#fff;margin:5px;padding:10px;margin-top:20px">
+                            <div class="large-4 columns" style="font-size:13px;padding-top:10px">
+                                <small class="required" style="color:red">*</small> &nbsp;Email Address
+                            </div>
+                            <div class="large-8 columns" style="padding-top:10px">
+                                <div class="row">
+                            <div class="large-12 columns">
+                            	<small>Email Address One</small>
+                                <small style="color:red;float:right" >Primary Email:&nbsp;<input type="radio" name="emailAddresses[0].primaryEmail" class="makePrimaryEmail" checked/>&nbsp;</small>
+                                <input type="email" required ng-model="holderEmailAddressOne" class="email" th:field="*{emailAddresses[0].emailAddress}" />
+                        		<small class="error">Please enter a valid email</small>
+                            </div>
+                            <!-- <div class="large-12 columns">
+                             	<small>Email Address Two</small>
+                                <small style="color:red;float:right" >Primary Email:&nbsp;<input type="radio" name="emailAddresses[1].primaryEmail" class="makePrimaryEmail"/></small>
+                                <input type="email" ng-model= "holderEmailAddressTwo" class="email" th:field="*{emailAddresses[1].emailAddress}" />
+                        		<small class="error">Please enter a valid email</small>
+                            </div>-->
+                        </div>
+                            </div>
+                </div>
+                <!--end of email-->
+                                
+                                <!--phone numbers-->
+                            <div class="row" style="background:#fff;margin:5px;padding:10px;margin-top:20px">
+                	<div class="large-4 columns" style="font-size:13px;padding-top:10px">
+                    	<small class="required" style="color:red">*</small> &nbsp;Phone Number
+                    </div>
+                    <div class="large-8 columns" style="padding-top:10px">
+                    	<div class="row">
+                            <div class="large-12 columns">
+                            	<small>Phone Number One</small>
+                                <small style="color:red;float:right" >Primary Number:&nbsp;<input type="radio" name="phoneNumbers[0].primaryPhoneNumber" class="makePrimaryNumber" checked/>&nbsp;</small>
+                                <input type="text" required ng-model="holderPhoneNumberOne" class="phoneNumber" th:field="*{phoneNumbers[0].phoneNumber}" />
+                        		<small class="error">Please enter phone number</small>
+                            </div>
+                             <!--<div class="large-12 columns">
+                             	<small>Phone Number Two</small>
+                                <small style="color:red;float:right" >Primary Number:&nbsp;<input type="radio" name="phoneNumbers[1].primaryPhoneNumber" class="makePrimaryNumber"/>&nbsp;</small>
+                                <input type="text" ng-model= "holderPhoneNumberTwo" class="phoneNumber" th:field="*{phoneNumbers[1].phoneNumber}"/>
+                        		<small class="error">Please enter phone number</small>
+                            </div>-->
+                        </div>
+                    </div>
+                    
+                   <!--end of phone numbers--> 
+                            </fieldset>
+                            
+                    </div>
+                    
+                     <div class="row" style="padding-top:10px">
+                    	
+                        
+                        <div class="large-4 columns" style="padding-top:10px">
+                        	<small class="required" style="color:red">*</small>&nbsp;Client Company
+                        </div>
+                        <div class="large-8 columns">
+                        	<select required ng-model="bondOffer" ng-options="bondOffer.name for bondOffer in bondOffers" ng-init="bondOffer=bondOffers[0]">
+                            </select>
+                            <input type="hidden" ng-value="bondOffer.id" th:field="*{bondAccounts[0].bondOfferId}"/>
+                        </div>
+                        
+                         <div class="large-4 columns" style="padding-top:20px" >
+                        	&nbsp;&nbsp;CHN Number
+                        </div>
+                        <div class="large-8 columns" style="float:left" style="padding-top:10px">
+                        	<input type="text" placeholder="CHN Number" ng-model="CHNNumber" th:field="*{chn}"/>
+                        </div>
+                        
+                        
+                        
+                    </div>
+                    <div class="row">
+                       <div class="large-12 columns text-right">
+                            <input type="button" class="button createBondholderAccountReset" value="Reset Form"/>
+                            <input type="button" class="button createBondholderAccount" value="Create Bondholder Account"/>
+                       </div>
+                   </div>
+                </form>
+            </div>
+        </div>
+        
+        
+        <!--confirm Details-->
+         <div class="row confirm-details" style="margin-top:3%;padding-top:3%;font-size:13px;display:none">
+        	<div class="large-8 large-offset-2 columns">
+            	
+                	
+                	<div class="row">
+                    <fieldset>
+                    <legend style="width:100%;background:#d52e36;color:#fff;padding-top:10px;padding-bottom:10px;padding-left:5px;padding-right:5px">Bondholder Name</legend>
+                    	<div class="large-4 columns" id="confirm-details">
+                        	First Name
+                        </div>
+                        <div class="large-8 columns" id="confirm-entries">
+                        	{{ shareholderFirstName }}
+                        </div>
+                        
+                        <div class="large-4 columns" id="confirm-details">
+                        	Middle Name
+                        </div>
+                        <div class="large-8 columns" id="confirm-entries">
+                        	{{ shareholderMiddleName }}
+                        </div>
+                        
+                        <div class="large-4 columns" id="confirm-details">
+                        	Last Name
+                        </div>
+                        <div class="large-8 columns" id="confirm-entries">
+                        	{{ shareholderLastName }}
+                        </div>
+                       </fieldset> 
+                    </div>
+                    
+                    <div class="row" style="padding-top:10px;margin-left:0px;margin-right:0px">
+                    	 <div class="large-4 columns" id="confirm-details">
+                        	Bondholder Type
+                        </div>
+                        <div class="large-8 columns" id="confirm-entries">
+                        	{{ holderType.type }}
+                        </div>                       
+                        <div class="large-4 columns" id="confirm-details">
+                        	Bondholder Gender
+                        </div>
+                        <div class="large-8 columns" id="confirm-entries">
+                        	{{ gender || 'Female'}}
+                        </div>
+                        
+                        <div class="large-4 columns" id="confirm-details">
+                        	Date of Birth
+                        </div>
+                        <div class="large-8 columns" id="confirm-entries">
+                        	{{ shareholderDateOfBirth }}
+                        </div>
+                        
+                     <!--    <div class="large-4 columns" id="confirm-details">
+                        	Bond Unit
+                        </div>
+                        <div class="large-8 columns" id="confirm-entries" style="float:left" style="padding-top:10px">
+                        	{{ bondUnit }}
+                        </div>-->
+                        
+                         <div class="large-4 columns" id="confirm-details">
+                        	Principal Bond Value
+                        </div>
+                        <div class="large-8 columns" id="confirm-entries" style="float:left" style="padding-top:10px">
+                        	{{ bondPrincipalValue }}
+                        </div>
+                        
+                        <div class="large-4 columns" id="confirm-details">
+                        	Select Stockbroker
+                        </div>
+                        <div class="large-8 columns" id="confirm-entries">
+                        	{{ stockbroker.name }}
+                        </div>
+                        
+                    </div>
+                    
+                    
+                    <div class="row" style="padding-top:10px">
+                     <fieldset class="addressFieldSet">
+                                <legend style="width:100%;background:#d52e36;color:#fff;padding-top:10px;padding-bottom:10px;padding-left:5px;padding-right:5px">Contact Details</legend>
+                                <div class="row addressDetails" style="background:#fff;margin:5px;padding:10px">
+                                <div class="large-12 columns" style="background:#d52e36;color:#fff;">
+                                
+                                	<div class="row" style="padding:0;margin:0">
+                                    	<div class="large-4 columns addressLabelNumber" style="padding-top:10px;font-size:14px;font-weight:bold;padding-left:20px">Residential Address</div>
+                                       
+                                        <div class="large-4 columns addressLabel" style="padding-top:10px;float:right">
+                                        	Make Primary
+                                            <span style="margin-left:15px;padding-top:40px"> 
+                                            	<input type="radio" name="addresses[0].primaryAddress" class="confirmMakePrimary" disabled checked/>&nbsp;
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="large-4 columns" id="confirm-details"  style="box-shadow:none">
+                                    Address
+                                </div>
+                                <div class="large-8 columns" id="confirm-entries" style="height:auto">
+                                    <div class="row">
+                                    	<div class="large-12 columns" style="padding-bottom:5px">
+                                        	<small >Line One</small>
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	{{ residentialAddressLineOne }}
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	<small >Line Two</small>
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	{{ residentialAddressLineTwo }}
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	<small >Line Three</small>
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	{{ residentialAddressLineThree }}
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	<small>Line Four</small>
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	{{ residentialAddressLineFour }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="large-4 columns" id="confirm-details">
+                                    Post Code
+                                </div>
+                                <div class="large-8 columns" id="confirm-entries">
+                                    {{ residentialAddressPostCode }}
+                                </div>
+                                <div class="large-4 columns" id="confirm-details">
+                                    City
+                                </div>
+                                <div class="large-8 columns" id="confirm-entries">
+                                    {{ residentialAddressCity }}
+                                </div>
+                                 <div class="large-4 columns" id="confirm-details">
+                                    State
+                                </div>
+                                <div class="large-8 columns" id="confirm-entries">
+                               	 	{{ residentialAddressState }}
+                                </div>
+                                 <div class="large-4 columns" id="confirm-details">
+                                    Country
+                                </div>
+                                <div class="large-8 columns" id="confirm-entries">
+                                   {{ residentialAddressCountry }}                                     
+                                </div>
+                                </div>
+                                
+                                
+                                <!--Postal Address-->
+                                	<!--<div class="row addressDetails" style="background:#fff;margin:5px;padding:10px;margin-top:20px">
+                                <div class="large-12 columns" style="background:#d52e36;color:#fff;">
+                                
+                                	<div class="row" style="padding:0;margin:0">
+                                    	<div class="large-4 columns addressLabelNumber" style="padding-top:10px;font-size:14px;font-weight:bold;padding-left:20px" >Postal Address</div>
+                                       
+                                        <div class="large-4 columns addressLabel" style="padding-top:10px;float:right">
+                                        	Make Primary
+                                            <span style="margin-left:15px;padding-top:40px"> 
+                                            	<input type="radio" name="addresses[0].primaryAddress"  disabled class="confirmMakePrimary"/>&nbsp;
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="large-4 columns" id="confirm-details" style="box-shadow:none">
+                                    Address
+                                </div>
+                                <div class="large-8 columns" id="confirm-entries" style="height:auto">
+                                    <div class="row">
+                                    	<div class="large-12 columns" style="padding-bottom:5px">
+                                        	<small >Line One</small>
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	{{ postalAddressLineOne }}
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	<small >Line Two</small>
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	{{ postalAddressLineTwo }}
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	<small >Line Three</small>
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	{{ postalAddressLineThree }}
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	<small>Line Four</small>
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	{{ postalAddressLineFour }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="large-4 columns" id="confirm-details">
+                                    Post Code
+                                </div>
+                                <div class="large-8 columns" id="confirm-entries">
+                                    {{ postalAddressPostCode }}                                   
+                                </div>
+                                <div class="large-4 columns" id="confirm-details">
+                                   City
+                                </div>
+                                <div class="large-8 columns" id="confirm-entries">                                   
+                                   {{ postalAddressCity }}
+                                </div>
+                                 <div class="large-4 columns" id="confirm-details">
+                                  State
+                                </div>
+                                <div class="large-8 columns" id="confirm-entries">
+                                    {{ postalAddressState }}
+                                </div>
+                                 <div class="large-4 columns" id="confirm-details">
+                                    Country
+                                </div>
+                                <div class="large-8 columns" id="confirm-entries">
+                                    {{ postalAddressCountry }}
+                                </div>
+                                </div>-->
+                                <!--Postal Address-->
+                                
+                       <div class="row" style="padding:20px">         
+                	<div class="large-4 columns" id="confirm-details" style="box-shadow:none">
+                    	Email Address
+                    </div>
+                    <div class="large-8 columns">
+                    	<div class="row">
+                            <div class="large-12 columns"   id="confirm-details">
+                            	<small>Phone Number One</small> 
+                               <small style="color:red;float:right" >Primary Email Address:&nbsp;<input type="radio"  class="confirmmakePrimaryEmail" disabled checked/>&nbsp;</small><br/>
+                            	<span style="font-size:13px">{{ holderEmailAddressOne }}</span>
+                            </div>
+                             <div class="large-12 columns"  id="confirm-details">
+                             	<small>Phone Number Two</small>
+                                <small style="color:red;float:right" >Primary Email Address:&nbsp;<input type="radio"  class="confirmmakePrimaryEmail" disabled/>&nbsp;</small><br/>
+                               <span style="font-size:13px">{{ holderEmailAddressTwo }}</span>
+                            </div>
+                        </div>
+                    </div>
+               </div>
+               
+               
+                <div class="row" style="padding:20px">         
+                	<div class="large-4 columns" id="confirm-details" style="box-shadow:none">
+                    	Phone Number
+                    </div>
+                    <div class="large-8 columns">
+                    	<div class="row">
+                            <div class="large-12 columns"   id="confirm-details">
+                            	<small>Phone Number One</small> 
+                               <small style="color:red;float:right" >Primary Number:&nbsp;<input type="radio"  class="confirmmakePrimaryNumber" disabled checked/>&nbsp;</small><br/>
+                            	<span style="font-size:13px">{{ holderPhoneNumberOne }}</span>
+                            </div>
+                             <div class="large-12 columns"  id="confirm-details">
+                             	<small>Phone Number Two</small>
+                                <small style="color:red;float:right" >Primary Number:&nbsp;<input type="radio"  class="confirmmakePrimaryNumber" disabled/>&nbsp;</small><br/>
+                               <span style="font-size:13px">{{ holderPhoneNumberTwo }}</span>
+                            </div>
+                        </div>
+                    </div>
+               </div>
+               
+                            </fieldset>
+                    </div>
+                    
+                     <div class="row" style="padding-top:10px;margin-left:8px;margin-right:8px">
+                    	                        
+                        <div class="large-4 columns" id="confirm-details">
+                        	Bond Offer
+                        </div>
+                        <div class="large-8 columns" id="confirm-entries">
+                        	{{ bondOffer.name }}
+                        </div>
+                        
+                         <div class="large-4 columns" id="confirm-details">
+                        	CHN Number
+                        </div>
+                        <div class="large-8 columns" id="confirm-entries">
+                        	{{ CHNNumber }}
+                        </div>
+                        
+                       
+                        
+                    </div>
+                    <div class="row" style="margin-top:20px">
+                       <div class="large-12 columns text-right">
+                            <input type="button" class="button createBondholderAccountBack" value="&laquo; Back"/>
+                            <input type="button" class="button submitBondholder" value="Confirm &amp; Create Bondholder Account"/>
+                       </div>
+                   </div>
+            </div>
+        </div>
+        <!--confirm Details-->
+</div>
+
+</body>
+<script  th:src="@{/scripts/vendor/jquery.js}"></script>
+<script  th:src="@{/scripts/vendor/foundation.min.js}"></script>
+<script  th:src="@{/scripts/vendor/angular.min.js}"></script>
+<script  th:src="@{/scripts/vendor/foundation.abide.js}"></script>
+<script  th:src="@{/scripts/vendor/jquery.form.min.js}"></script>
+<script  th:src="@{/scripts/vendor/foundation-datepicker.js}"></script>
+<script  th:src="@{/scripts/Holder/createBondholder.js}"></script>
+<script  th:src="@{/scripts/utility.js}"></script>
+<script>
+		$(document).foundation();
+	</script>
+</html>

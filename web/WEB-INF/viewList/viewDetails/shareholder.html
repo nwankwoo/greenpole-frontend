@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html ng-app = "createShareholderApp">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Africa Prudential Registrars Plc :: Create Shareholder Account</title>
+<link rel="icon" href="../resources/images/lg.png" th:href="@{/images/lg.png}"/>
+<link rel="stylesheet" href="../resources/styles/vendor/pace-dataurl.css" th:href="@{/styles/vendor/pace-dataurl.css}"/> 
+<link rel="stylesheet" href="../resources/styles/mainstyle.css" th:href="@{/styles/mainstyle.css}"/> 
+<link rel="stylesheet" th:href="@{/styles/vendor/foundation-datepicker.css}"/> 
+
+<script src="../resources/scripts/vendor/modernizr.js" th:src="@{/scripts/vendor/modernizr.js}"></script>
+
+
+</head>
+
+<body ng-controller="createShareholderController">
+<div class="row full-width">
+    	<div class="large-12 columns text-center title">
+        	<span>Shareholder Account Details</span>
+            
+            <div class="large-5 columns" style="float:right">
+            	<a data-dropdown="drop1" data-options="align:left" aria-controls="drop1" aria-expanded="false" style="font-size:11px;font-weight:bold;color:#000;float:right"> 
+                	<div class="bar">&nbsp;</div>
+                    <div class="bar">&nbsp;</div>
+                    <div class="bar">&nbsp;</div>
+                </a>
+                    <ul id="drop1" class="f-dropdown" data-dropdown-content aria-hidden="true" tabindex="-1">
+                      <li th:each="task : ${relatedTask}"><!--taskList :-->
+                      	<a th:href="${appendageUrl}+'&key='+${task.key}" style="font-weight:bolder;font-size:11px;text-align:left" th:text="${task.value.taskName}">
+                        	
+                        </a>
+                       </li>
+                      
+                    </ul>
+            </div>
+        </div>
+        
+        <!--confirm Details-->
+         <div class="row confirm-details" style="margin-top:3%;padding-top:3%;font-size:13px;display:block">
+        	<div class="large-8 large-offset-2 columns">
+            	
+                	
+                	<div class="row">
+                    <fieldset>
+                    <legend style="width:100%;background:#d52e36;color:#fff;padding-top:10px;padding-bottom:10px;padding-left:5px;padding-right:5px">
+                        		Shareholder Name</legend>
+                    	<div class="large-4 columns" id="confirm-details">
+                        	First Name
+                        </div>
+                        <div class="large-8 columns" id="confirm-entries">
+                        	<span th:text="${holder.firstName}"></span>
+                        </div>
+                        
+                        <div class="large-4 columns" id="confirm-details">
+                        	Middle Name
+                        </div>
+                        <div class="large-8 columns" id="confirm-entries">
+                        	<span th:text="${holder.middleName}"></span>
+                        </div>
+                        
+                        <div class="large-4 columns" id="confirm-details">
+                        	Last Name
+                        </div>
+                        <div class="large-8 columns" id="confirm-entries">
+                        	<span th:text="${holder.lastName}"></span>
+                        </div>
+                       </fieldset> 
+                    </div>
+                    
+                    <div class="row" style="padding-top:10px;margin-left:0px;margin-right:0px">
+                    	<div class="large-4 columns" id="confirm-details">
+                        	
+                        		Shareholder Type
+                        </div>
+                        <div class="large-8 columns" id="confirm-entries">
+                        	<span th:text="${holder.typeId}"></span>
+                        </div>
+                        
+                        <div class="large-4 columns" id="confirm-details">
+                        	
+                        		Shareholder Gender
+                        </div>
+                        <div class="large-8 columns" id="confirm-entries">
+                        	<span th:text="${holder.gender}"></span>
+                        </div>
+                        
+                        <div class="large-4 columns" id="confirm-details">
+                        	Date of Birth
+                        </div>
+                        <div class="large-8 columns" id="confirm-entries">
+                        	<span th:text="${holder.dob}"></span>
+                        </div>
+                        
+                       
+                        
+                        <div class="large-4 columns" id="confirm-details">
+                        	Stockbroker
+                        </div>
+                        <div class="large-8 columns" id="confirm-entries">
+                        	<span th:if="${holder.holderStockbroker!=null}">
+                        	<span th:text="${holder.holderStockbroker.name}"></span>
+                            </span>
+                        </div>
+                        
+                    </div>
+                    
+                    
+                    <div class="row" style="padding-top:10px">
+                     <fieldset class="addressFieldSet">
+                                <legend style="width:100%;background:#d52e36;color:#fff;padding-top:10px;padding-bottom:10px;padding-left:5px;padding-right:5px">Contact Details</legend>
+                                <div class="row addressDetails" style="background:#fff;margin:5px;padding:10px" th:each="address,index : ${holder.residentialAddresses}">
+                                <div class="large-12 columns" style="background:#d52e36;color:#fff;">
+                                
+                                	<div class="row" style="padding:0;margin:0">
+                                    	<div class="large-4 columns addressLabelNumber" style="padding-top:10px;font-size:14px;font-weight:bold;padding-left:20px">Residential Address</div>
+                                       
+                                        <div class="large-4 columns addressLabel" style="padding-top:10px;float:right">
+                                        	Make Primary
+                                            <span style="margin-left:15px;padding-top:40px"> 
+                                            	<input type="radio" name="addresses[0].primaryAddress" class="confirmMakePrimary" disabled checked/>&nbsp;
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="large-4 columns" id="confirm-details"  style="box-shadow:none">
+                                    Address
+                                </div>
+                                <div class="large-8 columns" id="confirm-entries" style="height:auto">
+                                    <div class="row">
+                                    	<div class="large-12 columns" style="padding-bottom:5px">
+                                        	<small >Line One</small>
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	<span th:text="${address.addressLine1}"></span>
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	<small >Line Two</small>
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	<span th:text="${address.addressLine2}"></span>
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	<small >Line Three</small>
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	<span th:text="${address.addressLine3}"></span>
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	<small>Line Four</small>
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	<span th:text="${address.addressLine4}"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="large-4 columns" id="confirm-details">
+                                    Post Code
+                                </div>
+                                <div class="large-8 columns" id="confirm-entries">
+                                    <span th:text="${address.postCode}"></span>
+                                </div>
+                                <div class="large-4 columns" id="confirm-details">
+                                    City
+                                </div>
+                                <div class="large-8 columns" id="confirm-entries">
+                                    <span th:text="${address.city}"></span>
+                                </div>
+                                 <div class="large-4 columns" id="confirm-details">
+                                    State
+                                </div>
+                                <div class="large-8 columns" id="confirm-entries">
+                               	 	<span th:text="${address.state}"></span>
+                                </div>
+                                 <div class="large-4 columns" id="confirm-details">
+                                    Country
+                                </div>
+                                <div class="large-8 columns" id="confirm-entries">
+                                   <span th:text="${address.country}"></span>                                   
+                                </div>
+                                </div>
+                                
+                                
+                                <!--Postal Address-->
+                               <!-- 	<div class="row addressDetails" style="background:#fff;margin:5px;padding:10px;margin-top:20px">
+                                <div class="large-12 columns" style="background:#d52e36;color:#fff;">
+                                
+                                	<div class="row" style="padding:0;margin:0">
+                                    	<div class="large-4 columns addressLabelNumber" style="padding-top:10px;font-size:14px;font-weight:bold;padding-left:20px" >Postal Address</div>
+                                       
+                                        <div class="large-4 columns addressLabel" style="padding-top:10px;float:right">
+                                        	Make Primary
+                                            <span style="margin-left:15px;padding-top:40px"> 
+                                            	<input type="radio" name="addresses[0].primaryAddress"  disabled class="confirmMakePrimary"/>&nbsp;
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="large-4 columns" id="confirm-details" style="box-shadow:none">
+                                    Address
+                                </div>
+                                <div class="large-8 columns" id="confirm-entries" style="height:auto">
+                                    <div class="row">
+                                    	<div class="large-12 columns" style="padding-bottom:5px">
+                                        	<small >Line One</small>
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	{{ postalAddressLineOne }}
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	<small >Line Two</small>
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	{{ postalAddressLineTwo }}
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	<small >Line Three</small>
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	{{ postalAddressLineThree }}
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	<small>Line Four</small>
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	{{ postalAddressLineFour }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="large-4 columns" id="confirm-details">
+                                    Post Code
+                                </div>
+                                <div class="large-8 columns" id="confirm-entries">
+                                    {{ postalAddressPostCode }}                                   
+                                </div>
+                                <div class="large-4 columns" id="confirm-details">
+                                   City
+                                </div>
+                                <div class="large-8 columns" id="confirm-entries">                                   
+                                   {{ postalAddressCity }}
+                                </div>
+                                 <div class="large-4 columns" id="confirm-details">
+                                  State
+                                </div>
+                                <div class="large-8 columns" id="confirm-entries">
+                                    {{ postalAddressState }}
+                                </div>
+                                 <div class="large-4 columns" id="confirm-details">
+                                    Country
+                                </div>
+                                <div class="large-8 columns" id="confirm-entries">
+                                    {{ postalAddressCountry }}
+                                </div>
+                                </div>-->
+                                <!--Postal Address-->
+                                
+                       <div class="row" style="padding:20px">         
+                	<div class="large-4 columns" id="confirm-details" style="box-shadow:none">
+                    	Email Address
+                    </div>
+                    <div class="large-8 columns">
+                    	<div class="row">
+                            <div class="large-12 columns"   id="confirm-details" th:each="address,index : ${holder.emailAddresses}">
+                            	<small>Email Address One</small> 
+                               <small style="color:red;float:right" >Primary Email Address:&nbsp;<input type="radio"  class="confirmmakePrimaryEmail" disabled checked/>&nbsp;</small><br/>
+                            	<span style="font-size:13px"><span th:text="${address.emailAddress}"></span></span>
+                            </div>
+                            <!-- <div class="large-12 columns"  id="confirm-details">
+                             	<small>Email Address Two</small>
+                                <small style="color:red;float:right" >Primary Email Address:&nbsp;<input type="radio"  class="confirmmakePrimaryEmail" disabled/>&nbsp;</small><br/>
+                               <span style="font-size:13px">{{ holderEmailAddressTwo }}</span>
+                            </div>-->
+                        </div>
+                    </div>
+               </div>
+               
+               
+                <div class="row" style="padding:20px">         
+                	<div class="large-4 columns" id="confirm-details" style="box-shadow:none">
+                    	Phone Number
+                    </div>
+                    <div class="large-8 columns">
+                    	<div class="row">
+                            <div class="large-12 columns"   id="confirm-details" th:each="phonenumber,index : ${holder.phoneNumbers}">
+                            	<small>Phone Number One</small> 
+                               <small style="color:red;float:right" >Primary Number:&nbsp;<input type="radio"  class="confirmmakePrimaryNumber" disabled checked/>&nbsp;</small><br/>
+                            	<span style="font-size:13px"><span th:text="${phonenumber.phoneNumber}"></span></span>
+                            </div>
+                            <!-- <div class="large-12 columns"  id="confirm-details">
+                             	<small>Phone Number Two</small>
+                                <small style="color:red;float:right" >Primary Number:&nbsp;<input type="radio"  class="confirmmakePrimaryNumber" disabled/>&nbsp;</small><br/>
+                               <span style="font-size:13px">{{ holderPhoneNumberTwo }}</span>
+                            </div>-->
+                        </div>
+                    </div>
+               </div>
+               
+                            </fieldset>
+                    </div>
+                    
+                     <div class="row" style="padding-top:10px;margin-left:8px;margin-right:8px;margin-bottom:20px">
+                    	<div class="large-4 columns" id="confirm-details">
+                        	Tax Exempted
+                        </div>
+                        <div class="large-8 columns" id="confirm-entries">
+                        	<span th:if="${holder.taxExempted == true}">
+                        		<input type="checkbox" disabled checked>&nbsp;Tax Exempted
+                            </span>
+                            
+                            <span th:if="${holder.taxExempted == false}">
+                        		<input type="checkbox" disabled >&nbsp;Tax Exempted
+                            </span>
+                        </div>
+                        
+                        
+                         <div class="large-4 columns" id="confirm-details">
+                        	CHN Number
+                        </div>
+                        <div class="large-8 columns" id="confirm-entries" style="text-transform:uppercase">
+                        	<span th:text="${holder.chn}"></span>
+                        </div>
+                        
+                        <div class="large-4 columns" id="confirm-details">
+                        	ESOP Status
+                        </div>
+                        <div class="large-8 columns" id="confirm-entries">
+                        	
+                            
+                            <span th:if="${!holder.companyAccounts.isEmpty()}">
+                            	<span th:if="${holder.companyAccounts[0].esop == true}">
+                        			<input type="checkbox" disabled checked>&nbsp;ESOP
+                                </span>
+                                
+                                <span th:if="${holder.companyAccounts[0].esop == false}">
+                        			<input type="checkbox" disabled>&nbsp;ESOP
+                                </span>
+                            </span>
+                        </div>
+                        
+                    </div>
+                    
+            </div>
+        </div>
+        <!--confirm Details-->
+</div>
+
+</body>
+
+<script  th:src="@{/scripts/vendor/jquery.js}"></script>
+<script  th:src="@{/scripts/vendor/foundation.min.js}"></script>
+<script>
+		$(document).foundation();
+		$(".decline").click(function(e) {
+            
+        });
+		
+		
+	</script>
+
+<script th:inline="javascript">
+console.log(/*[[${holder}]]*/);
+</script>
+</html>

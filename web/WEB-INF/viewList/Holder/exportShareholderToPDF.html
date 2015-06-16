@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html ng-app = "QueryShareholderAccountApp">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Africa Prudential Registrars Plc :: Query Shareholder Account Details</title>
+<link rel="icon" th:href="@{/images/lg.png}"/>
+<link rel="stylesheet" type="text/css" th:href="@{/styles/vendor/pace-dataurl.css}"/> 
+<link rel="stylesheet" type="text/css" th:href="@{/styles/mainstyle.css}"/> 
+<link rel="stylesheet" type="text/css" th:href="@{/styles/vendor/foundation-datepicker.css}"/> 
+</head>
+
+<body>
+
+ <div class="large-12 columns grid" style="padding-top:10px;padding-left:25px;padding-right:25px">
+                <table cellpadding="0" cellspacing="0" border="1" class="full-width" width="100%" style="border-spacing:0px;border-color:#000;" >
+                    <tr style="line-height:1em;background:#ccc">
+                        <td width="2%" align="center" style="font-weight:bold;font-size:11px">SN</td>
+                        <td width="20%" align="center" style="font-weight:bold;font-size:11px">Shareholder Name</td>
+                        <td width="5%" align="center" style="font-weight:bold;font-size:11px">CHN Number</td>                        
+                        <td align="center" style="font-weight:bold;font-size:11px">Email Address(es)</td>
+                        <td align="center" style="font-weight:bold;font-size:11px">Phone Number(s)</td>
+                        <td align="center" style="font-weight:bold;font-size:11px">Total Holdings</td>
+                        <td align="center" style="font-weight:bold;font-size:11px">Shareholder Type</td>                        
+                    </tr>
+                   <tr th:each="shareholder,stat : ${shareholdersList}">
+                   		<td  width="3%" align="center" style="font-weight:bold;font-size:11px" th:text="${stat.index+1}"></td>
+                        <td width="20%" align="center" style="font-weight:bold;font-size:11px" th:text="${shareholder.value[0]}">
+                        </td>
+                        <td width="15%" align="center" style="font-weight:bold;font-size:11px" th:text="${shareholder.value[1]}"></td>
+                        <td th:text="${shareholder.value[2]}" style="font-weight:bold;font-size:11px"></td>
+                        <td align="center" th:text="${shareholder.value[3]}" style="font-weight:bold;font-size:11px"></td>
+                        <td align="center" style="font-weight:bold;font-size:11px" th:text="${shareholder.value[4]}"></td>
+                        <td align="center" style="font-weight:bold;font-size:11px" th:text="${shareholder.value[5]}"></td>
+                          </tr>
+                </table>
+            </div>
+            <input type="text" th:value="${shareholderList}"/>
+<script  th:src="@{/scripts/vendor/jquery.js}"></script>
+   <!-- <script type="text/javascript" th:src="@{/scripts/vendor/export/jqxcore.js}"></script>
+    <script type="text/javascript" th:src="@{/scripts/vendor/export/jqxbuttons.js}"></script>
+    <script type="text/javascript" th:src="@{/scripts/vendor/export/jqxscrollbar.js}"></script>
+    <script type="text/javascript" th:src="@{/scripts/vendor/export/jqxmenu.js}"></script>
+    <script type="text/javascript" th:src="@{/scripts/vendor/export/jqxcheckbox.js}"></script>
+    <script type="text/javascript" th:src="@{/scripts/vendor/export/jqxgrid.js}"></script>
+    <script type="text/javascript" th:src="@{/scripts/vendor/export/jqxgrid.selection.js}"></script> 
+    <script type="text/javascript" th:src="@{/scripts/vendor/export/jqxgrid.columnsresize.js}"></script> 
+    <script type="text/javascript" th:src="@{/scripts/vendor/export/jqxdata.js}"></script> 
+    <script type="text/javascript" th:src="@{/scripts/vendor/export/jqxdata.export.js}"></script> 
+    <script type="text/javascript" th:src="@{/scripts/vendor/export/jqxgrid.export.js}"></script> 
+    <script type="text/javascript" th:src="@{/scripts/vendor/export/jqxgrid.sort.js}"></script> 
+    <script type="text/javascript" th:src="@{/scripts/vendor/export/demos.js}"></script>
+    <script type="text/javascript" th:src="@{/scripts/vendor/export/generatedata.js}"></script>-->
+
+<script th:inline="javascript">
+var data = JSON.stringify(/*[[${shareholdersList}]]*/);
+data=($.parseJSON(data));
+var object={}
+var k=0;
+//var json = 
+$.each(data,function(index,value){
+	var row=[];
+	var i=0;
+	var t=value;
+	console.log(t)
+	$.each(t,function(index2,value2){
+		console.log(value2);
+		switch(i){
+			case 0:
+				row['name']=value2;
+				
+				break;
+			case 1:
+				row['chn']=value2;
+				break;
+			case 2:
+				row['email']=value2;
+				break;
+			case 3:
+				row['number']=value2;
+				break;
+			case 4:
+				row['holdings']=value2;
+				break;
+			case 5:
+				row['type']=value2;
+				break;
+			default:
+				break;
+		}
+		i++;
+	});
+	console.log(row);
+	object[k]=row;
+	k++;
+	
+});
+console.log(object);
+	$(document).ready(function(e) {
+         $(".grid").jqxGrid('exportdata', 'pdf', 'jqxGrid');
+
+    });
+</script>
+</body>
+</html>

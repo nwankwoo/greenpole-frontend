@@ -1,0 +1,258 @@
+<!doctype html>
+<html ng-app='QueryClientCompanyApp'>
+<head>
+<meta charset="utf-8">
+<title>Afica Prudential Registrars Plc :: Query Users</title>
+<link rel="icon"  th:href="@{/images/lg.png}"/>
+<link rel="stylesheet" th:href="@{/styles/vendor/pace-dataurl.css}"/> 
+<link rel="stylesheet" href="../resources/styles/mainstyle.css" th:href="@{/styles/mainstyle.css}"/> 
+<script th:src="@{/scripts/vendor/modernizr.js}"></script>
+</head>
+
+<body ng-controller='queryClientCompanyCtrl'>
+<div class="row full-width">
+    	<div class="large-12 small-12 columns text-center title" style="border-bottom:1px solid #fff">
+        	<span id="title">Query Client Company</span>
+        </div>
+        
+        <ul class="tabs" data-tab>
+          <li class="tab-title active"><a href="#exactquerySearch">Exact Query Search</a></li>
+          <li class="tab-title"><a href="#rangeQuerySearch">Range Query Search</a></li>
+        </ul>
+        <div class="row error-alert"  style="padding-bottom:5px;padding-left:15px;width:80%;display:none;margin:5px;margin-top:10px">
+                        	<div data-alert class="large-12 columns large-centered alert-box alert" style="padding-bottom:7px;padding-top:7px">Please fill out all entries or remove unwanted ones to continue</div>
+                        </div>
+        <div class="tabs-content">
+          <div class="content active" id="exactquerySearch">
+          <input th:value="${formAction} + '&' + ${_csrf.parameterName}  + '='+ ${_csrf.token}" class="action" type="hidden"/>
+          
+                <div class="large-7 columns " style="font-size:13px;padding-top:10px;margin-left:20px">
+                <div class="row componentHolder">
+                <form class="exactClientCompanyQuery"  method="post" th:object = "${queryClientCompany}" ng-submit="exactClientCompanyQuery()">
+                 <input type="hidden" th:field="*{descriptor}" class="exactDescriptor"/>
+                 <div class="searchFormDiv">
+                <fieldset class="searchForm" style="margin-top:10px;margin-left:5px">
+                    <legend style="width:100%;background:#d52e36;color:#fff;padding-top:10px;padding-bottom:10px;padding-left:5px;padding-right:5px">
+                    <span class="filterLabel">Search Filter One</span>   
+                    <span class="remove" style="float:right;cursor:pointer;display:none">Remove</span>
+                    <span class="add" style="float:right;cursor:pointer">Add&nbsp;&nbsp;</span>
+                    
+                    </legend>
+                    <div class="large-3 columns" style="padding-top:10px">Search Criteria</div>
+                    <div class="large-9 columns" style="padding-bottom:10px">
+                        <select class="exactSearchCriteria">
+                            <option value="0">Select Criteria</option>
+                            <option value="name">Client company name</option>
+                            <option value="code">Client company code</option>
+                            <option value="ceo">Name of CEO / MD</option>
+                            <option value="addresses">Address</option>
+                            <option value="phoneNumbers">Phone number</option>
+                            <option value="emailAddresses">Email address</option>
+                            <option value="depositoryName">Depository</option>
+                        </select>
+                    </div>
+                    <div class="large-3 columns" style="padding-top:10px">Search Parameter</div>
+                    <div class="large-9 columns searchParameterHolder">
+                        <input type="text" class="searchParameter" />
+                        
+                    </div>
+                  </fieldset>
+                  </div>
+                 <div class="row" style="padding-top:20px">
+                     
+                    <div class="large-12 text-right columns " ><!--exactClientCompanyQueryButton-->
+                        <input type="submit" class="button " value="Query Client Company" />
+                    </div>
+                </div>
+                </form>
+            </div>
+            
+            
+          </div>
+          </div>
+          
+          <!--rangeQuerySearch-->
+          <div class="content" id="rangeQuerySearch">
+            
+            
+            <div class="large-7 columns " style="font-size:13px;padding-top:10px;margin-left:20px">
+                <div class="row ">
+                <form class="rangeComponentHolder rangeClientCompanyQuery" ng-submit="rangeClientCompanyQueryButton()" th:object = "${queryClientCompany}" method="post">
+                <input type="hidden" class="_descriptor" th:field="*{descriptor}"/>
+                <div class="rangeSearchFormDiv">
+                <fieldset class="rangeSearchForm" style="margin-top:10px;margin-left:5px">
+                    <legend style="width:100%;background:#d52e36;color:#fff;padding-top:10px;padding-bottom:10px;padding-left:5px;padding-right:5px">
+                    <span class="rangeFilterLabel">Search Filter One</span>   
+                    <span class="rangeRemove" style="float:right;cursor:pointer;display:none">Remove</span>
+                    <span class="rangeAdd" style="float:right;cursor:pointer">Add&nbsp;&nbsp;</span>
+                    
+                    </legend>
+                    <div class="large-3 columns" style="padding-top:10px">Search Criteria</div>
+                    <div class="large-9 columns" style="padding-bottom:10px">
+                        <select class="rangeCriteria">
+                            <option value="0">Select Criteria</option>
+                            <option value="shareUnit">Share Unit</option>
+                            <option value="numberOfShareholders">Number of Shareholders</option>
+                            <option value="numberOfBondholders">Number of Bondholders</option>
+                        </select>
+                    </div>
+                    <div class="large-3 columns" style="padding-top:20px">Search Parameter</div>
+                    <div class="large-9 columns rangeField">
+                        <input type="number" class="rangeExact" min="0"/>
+                        
+                    </div>
+                   
+                    <div class="large-12 columns text-right">
+                    	<a style="font-weight:bold" class="rangeSwitch">Range</a>
+                    </div>
+                  </fieldset>
+                  </div>
+                   <div class="large-12 text-right columns" style="margin-top:10px">
+                    <!-- rangeClientCompanyQueryButton-->
+                        <input type="submit" class="button " value="Query Client Company"/>
+                    </div>
+                    
+                </div>
+                 <!--<div class="row" style="padding-top:20px">-->
+                     
+                   
+                </form>
+            </div>
+            
+          </div>
+         
+        </div>
+       
+</div>
+
+<div class="row full-width">
+	<div class="large-12 colums">
+    	<div class="large-12 small-12 columns text-left title" style="height:30px;font-size:15px;font-weight:bold;padding-top:7px">
+        	<span id="title">:: Client Company Query Result</span>
+        </div>
+    </div>
+</div>
+
+<div >
+ <div class="row full-width" style="padding-bottom:10px"  >
+        	
+        	<div class="large-1 columns large-offset-8" style="padding:0;margin:0;padding-top:10px;width:100px" >
+            	<a href="#" style="font-size:11px;font-weight:bold;color:#000" class="printClientCompanies"> <img th:src="@{/images/print.png}"/> &nbsp;Print Report</a>
+            </div>
+            <div class="large-1 columns" style="margin:0;padding:0;float:left;margin-left:15px;width:250px;padding-top:10px">
+            	<a data-dropdown="drop1" aria-controls="drop1" aria-expanded="false" style="font-size:11px;font-weight:bold;color:#000"> 
+                	<img th:src="@{/images/export.png}"/> &nbsp;Export Report
+                </a>
+                    <ul id="drop1" class="f-dropdown" data-dropdown-content aria-hidden="true" tabindex="-1">
+                      <li><a href="#" style="font-weight:bolder;font-size:11px" class="exportToPdf">Export to pdf</a></li>
+                      <li><a href="#" style="font-weight:bolder;font-size:11px" class="exportToExcel">Export to MS Excel</a></li>
+                      <li><a href="#" style="font-weight:bolder;font-size:11px" class="exportToCsv">Export to CSV (Comma Separated List)</a></li>
+                    </ul>
+            </div>
+        </div>
+        <div class="row full-width" style="background:#fff;">
+        <div class="large-1 columns" style="font-size:11px;padding:0;margin:0;padding-left:25px;font-weight:bold;padding-top:23px;width:130px">
+        Number of records:  
+        </div>
+        <div class="large-1 columns" style="padding-top:10px">
+        	<input type="text" style="width:53%" class="pageSize" ng-init="pageSize" ng-model="pageSize" ng-keyup="key($event)" ng-keypress="filter($event)"/>
+        </div>
+        <div class="large-1 columns text-right" style="font-size:11px;padding:0;margin:0;padding-left:25px;font-weight:bold;padding-top:23px;width:130px;">
+        Filter Results: 
+        </div>
+        <div class="large-3 columns" style="margin:0;padding-top:10px;">
+            	<input type="text" placeholder="Search" ng-model="searchText"/>
+        </div>
+         
+        	<div class="large-5 columns" style="float:left;background:#fff;padding-top:12px;padding-bottom:10px;" align="center">
+            <div class="row full-width">
+            	<div class="large-1" style="font-size:11px;font-weight:bold;float:left;width:80px;padding-top:10px">
+                	Result Pages:
+                </div>
+                
+                <div class="large-7" style="float:left;width:200px">
+                     <ul class="pagination">
+                        <li style="padding-top:3px" ng-class="previousPage <= 0 ? 'arrow unavailable' : 'arrow'">
+                        	
+                            <span ng-if="previousPage > 0">
+                            	<a ng-click="getPage(previousPage)" >&laquo;</a>
+                            </span>
+                            <span ng-if="previousPage <= 0">
+                            	
+                            </span>
+                        </li>
+                        
+                        <li ng-repeat="page in numberOfPages | limitTo:5" ng-class="page == currentPage ? 'current' : ''">
+                            <a style="padding:5px" ng-click="getPage(page)">{{ page }}</a>
+                        </li>
+                        
+                        <li  style="padding-top:3px"  ng-class="currentPage < totalPages ? 'arrow' : 'arrow unavailable'">
+                        	<span ng-if="nextPage > totalPages">
+                            </span>
+                            <span ng-if="nextPage <= totalPages">
+                            	<a ng-click="getPage(nextPage)">&raquo;</a>
+                            </span>
+                            
+                        </li>
+                    </ul>
+                </div>
+                <div class="large-4 text-left" style="font-size:11px;font-weight:bold;float:left;width:180px;padding-top:10px">
+                	Total Records Found : {{ totalRecord }}
+                </div>
+            </div>
+                        
+            </div>
+        </div>
+        <div class="row full-width">
+            <div class="large-12 columns" style="padding-top:10px;padding-left:25px;padding-right:25px">
+                <table cellpadding="0" cellspacing="0" border="1" class="full-width" width="100%" >
+                    <tr style="line-height:1em">
+                        <td width="2%" align="center" style="font-weight:bold;font-size:11px">SN</td>
+                        <td width="20%" align="center" style="font-weight:bold;font-size:11px">Company Name</td>
+                        <td width="20%" align="center" style="font-weight:bold;font-size:11px">Address</td>
+                        <td align="center" style="font-weight:bold;font-size:11px">Depository</td>
+                        <td align="center" style="font-weight:bold;font-size:11px">Email Address</td>
+                        <td align="center" style="font-weight:bold;font-size:11px">No. of Shareholders</td>
+                        <td align="center" style="font-weight:bold;font-size:11px">No. of Bondholders</td>
+                        <td align="center" style="font-weight:bold;font-size:11px">Share Unit Price</td>
+                        <!--<td width="5%" align="center" style="font-weight:bold">Edit</td>
+                        <td width="5%" align="center" style="font-weight:bold">Delete</td>-->
+                    </tr>
+                   <tr ng-repeat="clientCompany in clientCompanies | filter:searchText | orderBy : 'clientCompany.name'">
+                   		<td>{{previousPage*_pageSize+$index+1}}</td>
+                        <td>
+                        	<a href="getClientCompanyDetails/{{clientCompany.id}}/{{clientCompany.name}}" style="color:#000;font-size:1em"><b>{{clientCompany.code}}</b> {{clientCompany.name}}</a></td>
+                        <td>
+                        <small style="font-size:0.8em">{{clientCompany.addresses[0].addressLine1}}, {{clientCompany.addresses[0].addressLine2}}, {{clientCompany.addresses[0].addressLine3}}, {{clientCompany.addresses[0].addressLine4}} <br/>
+                        {{clientCompany.addresses[0].postCode}}<br/>
+                        {{clientCompany.addresses[0].state}}<br/>
+                        {{clientCompany.addresses[0].country}}<br/>
+                        </small>
+                        </td>
+                        <td>{{clientCompany.depositoryName}}</td>
+                        <td>{{clientCompany.emailAddresses[0].emailAddress}}</td>
+                        <td align="center">{{clientCompany.noShareholders}}</td>
+                        <td align="center">{{clientCompany.noBondholders}}</td>
+                        <td align="center">{{clientCompany.shareUnitPrice | number:2}}</td>
+                   </tr>
+                </table>
+            </div>
+            <div class="large-12 columns">
+            	
+            </div>
+        </div>
+</div> 
+<script th:src="@{/scripts/vendor/jquery.js}"></script>
+<script th:src="@{/scripts/vendor/foundation.min.js}"></script>
+<script th:src="@{/scripts/vendor/foundation.dropdown.js}"></script>
+<script th:src="@{/scripts/vendor/angular.min.js}"></script>
+<script th:src="@{/scripts/vendor/numberToWords.js}"></script>
+<script th:src="@{/scripts/vendor/jquery.form.min.js}"></script>
+<script th:src="@{/scripts/utility.js}"></script>
+<script th:src="@{/scripts/client_company/queryClientCompany.js}"></script>
+<script>
+$(document).foundation();
+</script>
+      
+</body>
+</html>

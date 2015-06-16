@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Africa Prudential Registrars Plc :: Transfer Bond Unit</title>
+<link rel="icon" th:href="@{/images/lg.png}"/>
+<link rel="stylesheet" th:href="@{/styles/vendor/pace-dataurl.css}"/> 
+<link rel="stylesheet" th:href="@{/styles/mainstyle.css}"/> 
+<link rel="stylesheet" th:href="@{/styles/vendor/foundation-datepicker.css}"/> 
+
+<script th:src="@{/scripts/vendor/modernizr.js}"></script>
+</head>
+
+<body>
+<div class="row full-width">
+    	<div class="large-12 small-12 columns text-center title">
+        	<span id="title">Transfer Bond Unit</span>
+        </div>
+        <input type="hidden" th:value="${formAction} + '&' + ${_csrf.parameterName}  + '='+ ${_csrf.token}" class="action"/>
+        
+        <div class="row" style="padding-left:2%;padding-top:4.8%">
+                 <ul class="tabs" data-tab>
+                      <li class="tab-title active">
+                      		<a href="#queryShareholder" class="queryShareholder">Select Source Bondholder Account</a>
+                      </li>
+                      
+                      <li class="tab-title">                      	
+                       <a href="#selectClientCompanyAccount" class="selectClientCompanyAccount">Select Bond Offer</a>
+                      </li>
+                      
+                      <li class="tab-title">                      	
+                       <a href="#selectDestinationShareholderAccount" class="selectDestinationShareholderAccount">Select Destination Bondholder Account</a>
+                      </li>
+                      
+                       <li class="tab-title">                      	
+                       <a href="#confirmUnitTransfer" class="confirmUnitTransfer">Confirm Unit Transfer</a>
+                      </li>
+                 	</ul>
+                     <div style="width:80%;background:none;height:40px;top:-40px;position:relative;display:block"></div>
+                     
+                      <div class="tabs-content" style="font-size:13px;margin-top:-40px;position:relative">
+                     
+                     <div class="large-8 columns" style="height:58px">
+                     	<div class="row error-alert"  style="padding-bottom:5px;padding-left:1px;width:100%;display:none;padding-top:5px">
+                        	<div data-alert class="large-12 columns large-centered alert-box alert" style="padding-bottom:7px;padding-top:7px">Please fill out all entries marked * to continue and make sure they contain the right entries</div>
+                        </div>
+                     </div>
+                     <div class="large-4 columns" style="float:right;padding-top:20px">
+                            <button class="button previous" style="display:none">&laquo; &nbsp;Previous </button>
+                            <button class="button next">Next &nbsp; &raquo;</button>
+                      </div>  
+                   
+                    	<div  class="content active" id="queryShareholder" style="float:right">
+                        	<iframe class="large-12 columns" style="border:none;display:block;margin:0;padding:0;height:500px" src="" frameborder="0" seamless></iframe>
+                        </div>
+                        
+                        
+                        <div class="content" id="selectClientCompanyAccount">
+                        	<div class="row" style="margin-left:50px">
+                            	<div class="large-6 columns confirmAccountList" style="font-weight:bold;padding:5px">
+                                	Primary Account
+                                </div>
+                                
+                                
+                                 
+                            </div>
+                        </div>
+                        
+                        <div class="content" id="selectDestinationShareholderAccount">
+                        	<iframe class="large-12 columns" style="border:none;display:block;margin:0;padding:0;height:500px" src="" frameborder="0" seamless></iframe>
+                            
+                            
+                        </div>
+                        
+                         <div class="content" id="confirmUnitTransfer">
+                        	<div class="large-6 columns" style="padding-left:5%">
+                            	<div class="row">
+                                	<div class="large-12 columns" style="font-weight:bold;padding:5px">
+                                    	Source Holder Account
+                                    </div>
+                                    <div class="large-12 columns sourceHolder" style="padding:5px">
+                                    	Source Holder Account
+                                    </div>
+                                    <div class="large-12 columns" style="font-weight:bold;padding:5px">
+                                    	Bond Offer Account
+                                    </div>
+                                    <div class="large-12 columns ccAcount" style="padding:5px">
+                                    	client Account
+                                    </div>
+                                    <div class="large-8 columns" style="font-weight:bold;padding:5px;padding-top:10px;padding-bottom:10px">
+                                    	Units To Transfer
+                                    </div>
+                                    <div class="large-4 columns transferUnit" style="padding:5px;padding-top:10px;padding-bottom:10px">
+                                    	Units To Transfer
+                                    </div>
+                                    <div class="large-12 columns" style="font-weight:bold;padding:5px">
+                                    	Destination Holder Account
+                                    </div>
+                                    <div class="large-12 columns destHolder" style="padding:5px">
+                                    	Destination Holder Account
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="large-12 columns text-right" style="font-weight:bold;padding:5px;padding-right:50px">
+                                 <input type="button" class="button resetForm" value="Reset Form"/>
+                                 <input type="button" class="button confirmAndTransferUnits" value="Confirm &amp; Transfer Units"/>
+                             </div>
+                        </div>
+                       
+                   </div>
+                   
+                   
+            </div>
+<div>
+<input type="hidden" value="transferShareUnit" class="location"/>
+<input type="hidden" class="shareholderList"/>
+<div class="destHolderDiv"></div>
+<script th:src="@{/scripts/vendor/jquery.js}"></script>
+<script th:src="@{/scripts/vendor/foundation.min.js}"></script>
+<script th:src="@{/scripts/vendor/angular.min.js}"></script>
+<script  th:src="@{/scripts/vendor/foundation-datepicker.js}"></script>
+<script th:src="@{/scripts/utility.js}"></script>
+<script th:src="@{/scripts/Holder/transferBondUnit.js}"></script>
+<script>
+$(document).foundation();
+</script>         
+</body>
+</html>

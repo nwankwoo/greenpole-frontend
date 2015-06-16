@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Afica Prudential Registrars Plc :: Create New User</title>
+<link rel="icon" href="../resources/images/lg.png" th:href="@{/images/lg.png}"/>
+<link rel="stylesheet" href="../resources/styles/vendor/pace-dataurl.css" th:href="@{/styles/vendor/pace-dataurl.css}"/> 
+<link rel="stylesheet" href="../resources/styles/mainstyle.css" th:href="@{/styles/mainstyle.css}"/> 
+<script src="../resources/scripts/vendor/modernizr.js" th:src="@{/dmz/scripts/vendor/modernizr.js}"></script>
+</head>
+
+<body ng-controller="myController">
+	<div class="row full-width">
+    	<div class="large-12 small-12 columns text-center title">
+        	<span id="title">Create New User Account</span>
+        </div>
+        <div class="row">
+        	<div class="large-12 small-12 columns" style="margin-left:20px;margin-top:10px" >
+                <form action="#" th:action= "${formAction}" data-abide method="post" class="createNewUserForm" th:object="${createNewUser}">
+                <div class="main-form">
+                		<div class="row error-alert"  style="padding-bottom:5px;padding-left:15px;width:80%;display:none">
+                        	<div data-alert class="large-12 alert-box alert" style="padding-bottom:7px;padding-top:7px">Please fill out all entries marked * to continue </div>
+                        </div>
+                    <div class="row">
+                    	
+                    	<div class="large-6 columns" style="width:50%;">
+                        	<fieldset style="border:1px solid #ccc;font-size:13px;">
+                                <legend style="background:none">User Personal Details</legend>
+                                
+                                <div class="row">
+                                    <div class="large-9 columns" style="padding-top:5px;padding-bottom:5px">
+                                        <small class="required" style="color:red">*</small> &nbsp;First Name
+                                    </div>
+                                </div>
+                                <div class="row" >
+                                    <div class="large-12 columns">
+                                        <input type="text" th:field="*{firstName}" ng-model="first_name" required placeholder="First Name" style="margin:0" class="firstName"/>
+                                        <small class="error">Please enter first name</small>
+                                     </div>
+                                </div>
+                                
+                                
+                                <div class="row">
+                                    <div class="large-9 columns" style="padding-top:5px;padding-bottom:5px">
+                                        &nbsp;&nbsp;Middle Name
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="large-12 columns">
+                                        <input type="text" ng-model="middle_name" th:field="*{middleName}" placeholder="Middle Name" style="margin:0"/>
+                                    </div>
+                                </div>
+                                
+                                
+                                <div class="row">
+                                    <div class="large-9 columns" style="padding-top:5px;padding-bottom:5px">
+                                        <small class="required"  style="color:red">*</small> &nbsp;Last Name
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="large-12 columns">
+                                        <input type="text" ng-model="last_name" th:field="*{lastName}" required placeholder="Last Name" style="margin:0" class="lastName"/>
+                                        <small class="error">Please enter last name</small>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                	<div class="large-12 columns">&nbsp;</div>
+                                </div>
+                                 <div class="row">
+                                	<div class="large-12 columns">&nbsp;</div>
+                                </div>
+                            </fieldset>
+                          
+                           <div class="row">
+                           
+                    	<div class="large-12 columns">
+                        	<div class="row">
+                            	<div class="large-4 columns" style="padding-top:10px;font-size:13px">
+                                    <small class="required" style="color:red">*</small> &nbsp;User Type
+                                </div>
+                                <div class="large-8 columns" style="margin-top:5px;font-size:13px;" >
+                     <input  type="radio" checked="checked" th:field="*{userType}" th:value="'Regular User'" ng-model="userType" class="checked"/>
+                     <label>Regular User</label>
+                     <input type="radio" th:field="*{userType}" th:value="Administrator"  ng-model="userType"  class="Administrator" /><label>Administrator</label>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                            	<div class="large-4 columns" style="padding-top:10px;font-size:13px">
+                                    <small class="required" style="color:red">*</small> &nbsp;<span>Grant Authorisation Role</span>
+                                </div>
+                                <div class="large-8 columns" style="margin-top:5px;font-size:13px;">
+                     <input type="radio" th:value="No" th:field="*{grantAuthorisationRole}" checked="checked" ng-model="grantAuthorisationRole" class="grantAuthorisationRole" class="checked"/><label>No</label>
+                                    <input type="radio" th:field="*{grantAuthorisationRole}" th:value="Yes" ng-model="grantAuthorisationRole" class="grantAuthorisationRole"/><label>Yes</label>
+                                </div>
+                            </div>
+                        
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                    	<div class="large-12 columns">
+                        	<div class="row">
+                            	<div class="large-4 columns" style="padding-top:10px;font-size:13px">
+                                    <small class="required" style="color:red">*</small> &nbsp;Department
+                                </div>
+                                <div class="large-8 columns" style="margin-top:5px;font-size:13px">
+                                    <select  ng-model="department" ng-options="department as department.departmentName for department in departments" ng-change="onChange(department)" class="department" required>
+                                        <option value="" selected>Select Department</option>
+                                    </select>
+                                    <input type="hidden" name="department" value="{{department.departmentID}}" class="department_value"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                            	<div class="large-4 columns" style="padding-top:10px;font-size:13px">
+                                    <small class="required" style="color:red">*</small> &nbsp;Unit
+                                </div>
+                                <div class="large-8 columns" style="margin-top:5px;font-size:13px">
+                                    <select  ng-model="unit" ng-options="unit as unit.name for unit in units" class="unit" required>
+                                        <option value="" selected>Select Unit</option>
+                                    </select>
+                                    <input type="hidden" name="unit" value="{{unit.unitID}}" class="unit_value"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                      
+                        </div>
+                        
+                        <div class="large-6 columns" style="margin:0px;padding:0px;float:left;width:47%">
+                        	<fieldset style="border:1px solid #ccc;font-size:13px">
+                                <legend style="background:none">User Accounts Details</legend>
+                                
+                                <div class="row">
+                                    <div class="large-9 columns" style="padding-top:5px;padding-bottom:5px">
+                                        <small class="required" style="color:red">*</small> &nbsp;Username(E-mail Address)
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="large-12 columns">
+                                        <input type="email"  name="username" readonly placeholder="Username (E-mail Address)" style="margin:0" value="{{first_name}}.{{last_name}}@africaprudentialregistrars.com"  class="username"/>
+                                        <small class="error">Please enter a valid email address as username</small>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="large-9 columns" style="padding-top:5px;padding-bottom:5px">
+                                        <small class="required" style="color:red">*</small> &nbsp;Password
+                                    </div>
+                                </div>
+                                <div class="row password">
+                                    <div class="large-12 columns">
+                                        <input type="password" id="password" th:field="*{password}" ng-model="password" required placeholder="Password" style="margin:0"/>
+                                        <small class="error">Please enter enter password</small>
+                                    </div>
+                                    <div class="large-2 columns">
+                                    <span class="label pwstrength_viewport_verdict pwd_verdict" style="display:none"></span>
+                                    </div>
+                                </div>
+                                
+                                
+                                <div class="row">
+                                    <div class="large-9 columns" style="padding-top:5px;padding-bottom:5px">
+                                        <small class="required" style="color:red">*</small> &nbsp;Confirm Password
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="large-12 columns">
+                                        <input type="password" ng-model="confirm_password" required placeholder="Confirm Password" data-equalto="password" style="margin:0"/>
+                                        <small class="error">Password do not match</small>
+                                     </div>
+                                </div>
+                                 
+                                
+                                 <div class="row">
+                                	<div class="large-12 columns">&nbsp;</div>
+                                </div>
+                            </fieldset>
+                            
+                             <div class="row">
+                    	<div class="large-12 columns" style="margin-top:10px">
+                        	<fieldset style="border:1px solid #ccc;font-size:13px">
+                            	<legend style="background:none">Share Holdings Settings</legend>
+                                
+                                
+                                <div class="row">
+                                    <div class="large-9 columns" style="padding-top:5px;padding-bottom:5px">
+                                        <small class="required" style="color:red">*</small> &nbsp;Maximum Individual Share Holdings
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="large-12 columns">
+                                        <input type="number" ng-model="maximum_individual_share_holding" required placeholder="Maximum Individual Share Holdings"  style="margin:0" min="0" th:field="*{maximumIndividualShareHoldings}"/>
+                                        <small class="error">Please enter maximum individual share holdings</small>
+                                     </div>
+                                </div>
+                                 
+                                <div class="row">
+                                    <div class="large-9 columns" style="padding-top:5px;padding-bottom:5px">
+                                        <small class="required" style="color:red">*</small> &nbsp;Maximum Total Share Holdings
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="large-12 columns">
+                                        <input type="number" ng-model="maximum_total_share_holding" required placeholder="Maximum Total Share Holdings" style="margin:0" min="0" class="holdings" th:field="*{maximumTotalShareHoldings}"/>
+                                        <small class="error">Please enter maximum total share holdings</small>
+                                     </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                        </div>
+                    </div>
+                    
+                   
+                    
+                   
+                    <div class="row">
+                    	<div class="large-12 columns" style="margin-top:20px;">
+                        	<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        	<input type="button" class="button large-push-8 clearform" value="Clear Form" />
+                            <input type="button" class="button large-push-8 createUserAccountNext" value="Create User Account"  />
+                        </div>
+                    </div>
+                 </div>
+                 
+                 
+                 
+                 
+                 
+                 <div class="confirm-form" style="display:none">
+                     <div class="row">
+                         <div class="large-6 columns" style="width:45%;">
+                             <fieldset style="border:1px solid #ccc;font-size:13px;">
+                                <legend style="background:none">User Personal Details</legend>
+                                <div class="row">
+                                        <div class="large-3 columns" id="confirm-details" style="font-weight:bold;">
+                                        First Name
+                                    </div>
+                                    <div class="large-9 columns" id="confirm-details">{{first_name}}</div>
+                                </div>
+                                <div class="row">
+                                        <div class="large-3 columns" id="confirm-details" style="font-weight:bold">
+                                        Middle Name
+                                    </div>
+                                    <div class="large-9 columns" id="confirm-details" >{{middle_name}}</div>
+                                </div>
+                                <div class="row">
+                                        <div class="large-3 columns" id="confirm-details" style="font-weight:bold">
+                                        Last Name
+                                    </div>
+                                    <div class="large-9 columns" id="confirm-details">{{last_name}}</div>
+                                </div>
+                                </fieldset>
+                                 <div class="row">
+                        <div class="large-12 columns">
+                        	<div class="row">
+                            	<div class="large-4 columns" id="confirm-details" style="font-size:13px;font-weight:bold">
+                                   User Type
+                                </div>
+                                <div class="large-8 columns" id="confirm-details" style="font-size:13px;">
+                                    {{userType || 'Regular User'}}
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                            	<div class="large-4 columns" id="confirm-details" style="font-size:12px;font-weight:bold">
+                                   Grant Authorisation Role
+                                </div>
+                                <div class="large-8 columns" id="confirm-details" style="font-size:13px;">
+                                    {{grantAuthorisationRole || 'No'}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                     
+                    <div class="row">
+                    	<div class="large-12 columns">
+                        	<div class="row">
+                            	<div class="large-4 columns" id="confirm-details" style="font-size:13px;font-weight:bold">
+                                    Department
+                                </div>
+                                <div class="large-8 columns" id="confirm-details" style="font-size:13px">
+                                    {{department.departmentName}}
+                                </div>
+                            </div>
+                            <div class="row">
+                            	<div class="large-4 columns" id="confirm-details" style="font-size:13px;font-weight:bold">
+                                    Unit
+                                </div>
+                                <div class="large-8 columns" id="confirm-details" style="font-size:13px">
+                                    {{unit.name}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                           
+                         </div>
+                    
+                         <div class="large-6 columns" style="margin:0px;padding:0px;float:left">
+                             <fieldset style="border:1px solid #ccc;font-size:13px;padding-bottom:0px">
+                                <legend style="background:none;font-weight:bold">User Accounts Details</legend>
+                                <div class="row">
+                                        <div class="large-4 columns" id="confirm-details" style="font-weight:bold">
+                                        Username
+                                    </div>
+                                    <div class="large-8 columns" id="confirm-details">{{first_name}}.{{last_name}}@africaprudentialregistrars.com</div>
+                                </div>
+                                <div class="row">
+                                        <div class="large-4 columns" id="confirm-details" style="font-weight:bold">
+                                        Password
+                                    </div>
+                                    <div class="large-4 columns" id="confirm-details">
+                                        <span class="_password" style="display:none">{{password}}</span>
+                                        <span class="default_password">*************</span>
+                                    </div>
+                                    
+                                     <div class="large-3 columns">
+                                      <input type="button" class="button showpassword" value="Show Password" style="float:right"/>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <div class="row">
+                    	<div class="large-12 columns" style="margin-top:10px">
+                            <fieldset style="border:1px solid #ccc;font-size:13px;padding-bottom:0px">
+                                <legend style="background:none;font-weight:bold"> Share Holdings Settings</legend>
+                            	 <div class="row">
+                                        <div class="large-8 columns" id="confirm-details" style="font-weight:bold"><span class="large-9 columns" style="padding-top:5px;padding-bottom:5px">Maximum Individual Share Holdings</span></div>
+                                    <div class="large-4 columns" id="confirm-details">{{maximum_individual_share_holding}}</div>
+                                </div>
+                                 <div class="row">
+                                        <div class="large-8 columns" id="confirm-details" style="font-weight:bold"><span class="large-9 columns" style="padding-top:5px;padding-bottom:5px">Maximum Total Share Holdings </span></div>
+                                    <div class="large-4 columns" id="confirm-details">{{maximum_total_share_holding}}</div>
+                                </div>
+                            </fieldset>
+                            </div>
+                            </div>
+                         </div>
+                     </div>
+                   
+                     
+                    
+                    <div class="row">
+                    	<div class="large-12  columns" style="margin-top:20px;">
+                        	<input type="button" class="button large-push-8 back" value="&laquo; Back"/>
+                            <input type="button" class="button large-push-8 createUserAccount" value="Confirm &amp; Create User Account"/>
+                        </div>
+                    </div>
+                 </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+<script src="../resources/scripts/vendor/jquery.js" th:src="@{/scripts/vendor/jquery.js}"></script>
+<script src="../resources/scripts/vendor/foundation.min.js" th:src="@{/scripts/vendor/foundation.min.js}"></script>
+<script src="../resources/scripts/vendor/angular.min.js" th:src="@{/scripts/vendor/angular.min.js}"></script>
+<script src="../resources/scripts/vendor/foundation/foundation.abide.js" th:src="@{/scripts/vendor/foundation.abide.js}"></script>
+<script src="../resources/scripts/vendor/pwstrength.js" th:src="@{/scripts/vendor/pwstrength.js}"></script>
+<script src="../resources/scripts/vendor/pace.min.js" th:src="@{/scripts/vendor/pace.min.js}"></script>
+<script src="../resources/scripts/vendor/jquery.form.min.js" th:src="@{/scripts/vendor/jquery.form.min.js}"></script>
+<script src="../resources/scripts/utility.js" th:src="@{/scripts/utility.js}"></script>
+<script src="../resources/scripts/user_management/createNewUser.js" th:src="@{/scripts/user_management/createNewUser.js}"></script>
+    <script>
+		$(document).foundation();
+	</script>
+    
+</body>
+</html>

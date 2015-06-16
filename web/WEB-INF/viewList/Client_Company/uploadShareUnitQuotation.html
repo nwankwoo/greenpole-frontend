@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Afica Prudential Registrars Plc :: Upload Share Unit Quotation</title>
+<link rel="icon" href="../resources/images/lg.png" th:href="@{/images/lg.png}"/>
+<link rel="stylesheet" href="../resources/styles/vendor/pace-dataurl.css" th:href="@{/styles/vendor/pace-dataurl.css}"/> 
+<link rel="stylesheet" href="../resources/styles/mainstyle.css" th:href="@{/styles/mainstyle.css}"/> 
+<script src="../resources/scripts/vendor/modernizr.js" th:src="@{/scripts/vendor/modernizr.js}"></script>
+
+</head>
+
+<body >
+<div class="row full-width">
+    	<div class="large-12 small-12 columns text-center title">
+        	<span id="title">Upload Share Unit Quotations</span>
+        </div>
+        <div class="row" style="margin-top:3%;padding-top:2%;margin-left:2%;font-size:13px;">
+        <div class="row error-alert"  style="padding-bottom:5px;padding-left:15px;width:80%;display:none">
+                        	<div data-alert class="large-7 columns alert-box alert" style="padding-bottom:7px;padding-top:7px">Please select a valid share quotation file. File type must be csv.</div>
+                        </div>
+        	<div class="large-7 columns">
+            	<div class="row">
+                	<form  th:action= "${formAction} + '&' + ${_csrf.parameterName}  + '='+ ${_csrf.token}" data-abide method="post" class="uploadShareUnitQuotationForm" enctype="multipart/form-data">
+                        <div class="large-5 columns">
+                            <small class="required" style="color:red">*</small>&nbsp;Select Share Unit Quation File
+                        </div>
+                        <div class="large-6 columns" style="float:left">
+                            <input type="file" accept=".csv" class="shareUnitQuotationFile" name="shareUnitQuotation">
+                        </div>
+                        
+                        <div class="large-11 columns">
+                        	<input type="button" class="button resetForm" value="Reset Form"/>
+                        	<input type="button" class="button uploadShareUnitQuotationButton" value="Upload Share Unit Quoatation"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+</div>
+<script th:src="@{/scripts/vendor/jquery.js}"></script>
+<script th:src="@{/scripts/vendor/foundation.min.js}"></script>
+<script th:src="@{/scripts/vendor/jquery.form.min.js}"></script>
+<script th:src="@{/scripts/utility.js}"></script>
+<script th:src="@{/scripts/client_company/uploadShareUnitQuotation.js}"></script>
+<script>
+$(document).foundation();
+</script>
+</body>
+</html>

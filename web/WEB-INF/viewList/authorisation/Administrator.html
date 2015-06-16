@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html ng-app="Administrator">
+<head>
+<meta name="_csrf" th:content="${_csrf.token}"/>
+<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Afica Prudential Registrars Plc :: Create Administrators</title>
+<link rel="icon" href="../resources/images/lg.png" th:href="@{/images/lg.png}"/>
+<link rel="stylesheet" href="../resources/styles/vendor/pace-dataurl.css" th:href="@{/styles/vendor/pace-dataurl.css}"/> 
+<link rel="stylesheet" href="../resources/styles/mainstyle.css" th:href="@{/styles/mainstyle.css}"/> 
+<link rel="stylesheet" th:href="@{/styles/vendor/foundation-datepicker.css}"/> 
+
+<script src="../resources/scripts/vendor/modernizr.js" th:src="@{/scripts/vendor/modernizr.js}"></script>
+
+</head>
+
+<body ng-controller="AdministratorController">
+<div class="row full-width">
+    	<div class="large-12 small-12 columns text-center title">
+        	<span id="title">Create Administrators</span>
+        </div>
+</div>
+
+
+<div class="row full-width upload-signature" style="font-size:13px;padding-top:10px;margin-left:10px;margin-right:20px">
+	<!--large-8-->
+    <div class="large-8 columns">
+    	<input type="hidden" value="1" name="holderId" />
+        
+    	<div class="row">
+        	<div class="large-4 columns" id="confirm-details">Holder's Name</div>
+            <div class="large-8 columns" id="confirm-entries">
+            	<span th:text="${model.firstName}+' '+${model.middleName}+' '+${model.lastName}"></span>
+            </div>
+        </div>
+        
+        <!--row-->
+        <div class="row">
+        	<div class="large-4 columns" id="confirm-details">Holder's Address</div>
+            
+            <!--large-8-->
+            <div class="large-8 columns" id="confirm-entries" style="height:auto">
+            	
+                <!--row-->
+                <div class="row">
+                	<div class="large-12 columns">
+                    	<span th:text="${model.residentialAddresses[0].addressLine1}"></span>
+                    </div>
+                    <div class="large-12 columns">
+                    	<span th:text="${model.residentialAddresses[0].addressLine2}"></span>
+                    </div>
+                    <div class="large-12 columns">
+                    	<span th:text="${model.residentialAddresses[0].addressLine3}"></span>
+                    </div>
+                    <div class="large-12 columns">
+                    	<span th:text="${model.residentialAddresses[0].addressLine4}"></span>
+                    </div>
+                    <div class="large-12 columns">
+                    	<span th:text="${model.residentialAddresses[0].postCode}"></span>
+                    </div>
+                    <div class="large-12 columns">
+                    	<span th:text="${model.residentialAddresses[0].city}"></span>
+                    </div>
+                    <div class="large-12 columns">
+                    	<span th:text="${model.residentialAddresses[0].state}"></span>
+                    </div>
+                    <div class="large-12 columns">
+                    	<span th:text="${model.residentialAddresses[0].country}"></span>
+                    </div>
+                </div>
+                <!--end of row-->
+                
+            </div>
+            <!--end of large-8-->
+            
+        </div>
+        <!--row-->
+        
+    </div>
+    <!--end of large-8-->
+    <div class="administratorHolder" style="display:block"></div>
+</div>
+</form>
+<!--row-->
+<div class="row full-width administratorsContainer">
+
+                        
+	<div class="large-12 columns administrator" style="padding-top:10px">
+    	<fieldset class="administratorFieldSet" style="border:1px solid #000;margin-bottom:10px">
+        
+         	<legend id="legend">
+             	Administrator Details
+                
+<!-- ng-init="administrator=administratorList[0]"           	<span style="float:right;cursor:pointer;margin-left:50px" class="addAdministrator">Add</span>
+-->                
+                <span style="float:right;width:400px">
+                	<span style="top:-10px;position:relative;font-size:13px">Registered Administrator:&nbsp;</span>
+                    	<span style="top:-8px;position:relative;font-size:13px">
+                    	<select style="display:inline;width:40%;height:1.9rem;color:#000;font-size:12px" ng-options="administrator.administratorName for administrator in administratorList" ng-model="administrator"  ng-change="getAdministrator(administrator)">
+                        	<option>None</option>
+                        </select>
+                        </span>
+                </span>
+            </legend>
+             <div class="row administratordetails">
+             	 <div class="large-12 columns" style="margin-bottom:5px">
+                 	 <ul class="tabs" data-tab>
+                      <li class="tab-title active">
+                      <a href="#administratorContactDetailsPersonalDetails" class="administratorContactDetailsPersonalDetails">Personal Details</a>
+                      </li>
+                       <li class="tab-title">
+                      	<a href="#administratorAddressSettings" class="administratorAddressSettings">
+                        Address Settings
+                        </a>
+                      </li>
+                      <li class="tab-title">
+                      	<a href="#administratorContactDetailsResidential" class="administratorContactDetailsResidential">Residential Address</a>
+                      </li>
+                      <li class="tab-title"><a href="#administratorContactDetailsPostal" class="administratorContactDetailsPostal">Postal Address</a></li>
+                      <li class="tab-title"><a href="#administratorContactDetailsEmail" class="administratorContactDetailsEmail">Email Address</a></li>
+                      <li class="tab-title"><a href="#administratorContactDetailsPhone" class="administratorContactDetailsPhone">Phone Number</a></li>
+                 	</ul>
+                    
+                    <div style="width:80%;background:none;height:40px;top:-40px;position:relative;display:block"></div>
+                    
+                    <!--tab-content-->
+                    <div class="tabs-content" style="font-size:13px">
+                     
+                     <div class="large-8 columns">
+                     	<div class="row error-alert"  style="padding-bottom:5px;padding-left:1px;width:100%;display:none">
+                        	<div data-alert class="large-12 columns large-centered alert-box alert" style="padding-bottom:7px;padding-top:7px">Please fill out all entries marked * to continue and make sure they contain the right entries</div>
+                        </div>
+                     </div>  
+                     
+                     <div class="large-8 columns">
+                     	<div class="row success-alert"  style="padding-bottom:5px;padding-left:1px;width:100%;display:none">
+                        	<div data-alert class="large-12 columns large-centered alert-box success" style="padding-bottom:7px;padding-top:7px">Administrator added successfully. Click Create Administrator when done to create administrators</div>
+                        </div>
+                     </div>  
+                     
+                     <div class="large-4 columns text-right" style="float:right">
+                        <button class="button previous" style="display:none">&laquo; &nbsp;Previous </button>
+                        <button class="button next">Next &nbsp; &raquo;</button>
+                    </div>
+                    	<div  class="content active" id="administratorContactDetailsPersonalDetails">
+                	<fieldset class="administratorContactDetails" style="border:none;background:#fff;width:80%">
+                        <legend id="legend" >
+                            Personal Details
+                        </legend>
+                        <div class="row">
+                        	<div class="large-2 columns" style="padding-bottom:5px;padding-top:10px">
+                            	<small class="required" style="color:red">*</small>&nbsp;First Name
+                            </div>
+                            <div class="large-6 columns" style="float:left">
+                            	<input type="text" placeholder="First Name" name="firstName" class="firstName" ng-model="firstName" readonly/>
+                                <small class="error" style="display:none">Please enter first name</small>
+                            </div>
+                        </div>
+                        
+                         <div class="row">
+                        	<div class="large-2 columns" style="padding-bottom:5px">
+                            	&nbsp;&nbsp;Middle Name
+                            </div>
+                            <div class="large-6 columns" style="float:left;padding-bottom:10px">
+                            	<input type="text" placeholder="Middle Name" name="middleName" class="middleName" ng-model="middleName" readonly/>
+                            </div>
+                        </div>
+                        
+                         <div class="row">
+                        	<div class="large-2 columns" style="padding-bottom:5px;">
+                            	<small class="required" style="color:red">*</small>&nbsp;Last Name
+                            </div>
+                            <div class="large-6 columns" style="float:left">
+                            	<input type="text" placeholder="Last Name" name="lastName" class="lastName" ng-model="lastName" readonly/>
+                                 <small class="error" style="display:none">Please enter last name</small>
+                            </div>
+                        </div>
+                        
+                         <div class="row">
+                        	<div class="large-2 columns" style="padding-bottom:5px">
+                            	<small class="required" style="color:red">*</small>&nbsp;Date of Birth
+                            </div>
+                            <div class="large-6 columns" style="float:left">
+                            	<input type="text" placeholder="Date of Birth" name="dob" class="dob" ng-model="dob" data-date-format="dd/mm/yyyy" readonly/>
+                                 <small class="error" style="display:none">Please enter date of birth</small>
+                            </div>
+                        </div>
+                        
+                     </fieldset>
+                    </div> 
+                    
+                    <div class="content" id="administratorAddressSettings">
+                    <fieldset class="administratorContactDetails" style="border:none;width:80%;background:#fff">
+                        <legend id="legend">
+                            Address Settings
+                        </legend>
+                        <div class="row">
+                        	<div class="large-2 columns" style="padding-bottom:5px;padding-top:15px">
+                            	<small class="required" style="color:red">*</small>&nbsp;Primary Address
+                            </div>
+                            <div class="large-6 columns" style="padding-bottom:5px;padding-top:10px;float:left">
+                            	<select class="selectPrimaryAddress" >
+                                    <option value="residential">Residential Address</option>
+                                    <option value="postal">Postal Address</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                     
+                     <div class="content" id="administratorContactDetailsResidential">
+                     <fieldset class="administratorContactDetails" style="border:none;width:80%;background:#fff">
+                        <legend id="legend">
+                            Residential Address
+                        </legend>
+                        <div class="row">
+                        	<div class="large-2 columns" style="padding-bottom:5px;padding-top:10px">
+                            	<small class="required" style="color:red">*</small>&nbsp;Address
+                            </div>
+                            <div class="large-6 columns" style="float:left">
+                            	<div class="row">
+                                	<!-- Line Address-->
+                                	<div class="large-12 columns">
+                                    	<div class="row">
+                                            <div class="large-12 columns">
+                                                <small>Line One</small>
+                                                <input type="text" name="residentialAddress.addressLine1" class="residentialAddressLine1" ng-model="residentialAddressLine1" readonly/>
+                                            </div>
+                                            <div class="large-12 columns">
+                                                <small>Line Two</small>
+                                                <input type="text" name="residentialAddress.addressLine2" class="residentialAddressLine2" ng-model="residentialAddressLine2" readonly/>
+                                            </div>
+                                            <div class="large-12 columns">
+                                                <small>Line Three</small>
+                                                <input type="text" name="residentialAddress.addressLine3" class="residentialAddressLine3" ng-model="residentialAddressLine3" readonly/>
+                                            </div>
+                                            <div class="large-12 columns" style="padding-bottom:10px">
+                                                <small>Line Four</small>
+                                                <input type="text" name="residentialAddress.addressLine4" class="residentialAddressLine4" ng-model="residentialAddressLine4" readonly/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--End of Line Address-->
+                                </div>
+                            </div>
+                        </div>
+                        
+                         <div class="row">
+                        	<div class="large-2 columns" style="padding-top:10px;">
+                            	&nbsp;&nbsp;Post Code
+                            </div>
+                            <div class="large-6 columns" style="float:left;padding-bottom:10px">
+                            	<input type="text" placeholder="Post Code" name="residentialAddress.postCode" class="residentialPostCode" ng-model="residentialPostCode" readonly/>
+                            </div>
+                        </div>
+                        
+                         <div class="row">
+                        	<div class="large-2 columns" style="padding-top:10px;">
+                            	<small class="required" style="color:red">*</small>&nbsp;City
+                            </div>
+                            <div class="large-6 columns" style="float:left">
+                            	<input type="text" placeholder="City" name="residentialAddress.city" class="residentialCity" ng-model="residentialCity" readonly/>
+                                 <small class="error" style="display:none">Please enter city</small>
+                            </div>
+                        </div>
+                        
+                         <div class="row">
+                        	<div class="large-2 columns" style="padding-top:10px">
+                            	<small class="required" style="color:red">*</small>&nbsp;State
+                            </div>
+                            <div class="large-6 columns" style="float:left">
+                            	<input type="text" placeholder="State" name="residentialAddress.state" class="residentialState" ng-model="residentialState" readonly/>
+                                 <small class="error" style="display:none">Please enter state</small>
+                            </div>
+                        </div>
+                        
+                         <div class="row">
+                        	<div class="large-2 columns" style="padding-top:10px">
+                            	<small class="required" style="color:red">*</small>&nbsp;Country
+                            </div>
+                            <div class="large-6 columns" style="float:left">
+                            	<input type="text" placeholder="Country" name="residentialAddress.country" class="residentialCountry" ng-model="residentialCountry" readonly/>
+                                 <small class="error" style="display:none">Please enter country</small>
+                            </div>
+                        </div>
+                        
+                     </fieldset>
+                     </div>
+                     
+                     
+                     <div class="content" id="administratorContactDetailsPostal">
+                     <!-- Postal Address-->
+                     	
+                         <fieldset class="administratorContactDetails" style="border:none;width:80%;background:#fff">
+                        <legend id="legend">
+                            Postal Address
+                        </legend>
+                        <div class="row">
+                        	<div class="large-2 columns" style="padding-bottom:5px;padding-top:10px">
+                            	<small class="required" style="color:red">*</small>&nbsp;Address
+                            </div>
+                            <div class="large-6 columns" style="float:left">
+                            	<div class="row">
+                                	<!-- Line Address-->
+                                	<div class="large-12 columns">
+                                    	<div class="row">
+                                            <div class="large-12 columns">
+                                                <small>Line One</small>
+                                                <input type="text" name="postalAddress.addressLine1" class="postalAddressLine1" ng-model="postalAddressLine1" readonly/>
+                                            </div>
+                                            <div class="large-12 columns">
+                                                <small>Line Two</small>
+                                                <input type="text" name="postalAddress.addressLine2" class="postalAddressLine2" ng-model="postalAddressLine2" readonly/>
+                                            </div>
+                                            <div class="large-12 columns">
+                                                <small>Line Three</small>
+                                                <input type="text"  name="postalAddress.addressLine3" class="postalAddressLine3" ng-model="postalAddressLine3" readonly/>
+                                            </div>
+                                            <div class="large-12 columns" style="padding-bottom:10px">
+                                                <small>Line Four</small>
+                                                <input type="text"  name="postalAddress.addressLine4" class="postalAddressLine4" ng-model="postalAddressLine4" readonly/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--End of Line Address-->
+                                </div>
+                            </div>
+                        </div>
+                        
+                         <div class="row">
+                        	<div class="large-2 columns" style="padding-top:10px">
+                            	&nbsp;&nbsp;Post Code
+                            </div>
+                            <div class="large-6 columns" style="float:left;padding-bottom:10px">
+                            	<input type="text" placeholder="Post Code"  name="postalAddress.postCode" class="postalAddressPostCode" ng-model="postalAddressPostCode" readonly/>
+                            </div>
+                        </div>
+                        
+                         <div class="row">
+                        	<div class="large-2 columns" style="padding-top:10px;">
+                            	<small class="required" style="color:red">*</small>&nbsp;City
+                            </div>
+                            <div class="large-6 columns" style="float:left">
+                            	<input type="text" placeholder="City"  name="postalAddress.city" class="postalAddressCity" ng-model="postalAddressCity" readonly/>
+                                 <small class="error" style="display:none">Please enter city</small>
+                            </div>
+                        </div>
+                        
+                         <div class="row">
+                        	<div class="large-2 columns" style="padding-top:10px">
+                            	<small class="required" style="color:red">*</small>&nbsp;State
+                            </div>
+                            <div class="large-6 columns" style="float:left">
+                            	<input type="text" placeholder="State"  name="postalAddress.state" class="postalAddressState" ng-model="postalAddressState" readonly/>
+                                 <small class="error" style="display:none">Please enter state</small>
+                            </div>
+                        </div>
+                        
+                         <div class="row">
+                        	<div class="large-2 columns" style="padding-top:10px">
+                            	<small class="required" style="color:red">*</small>&nbsp;Country
+                            </div>
+                            <div class="large-6 columns" style="float:left">
+                            	<input type="text" placeholder="Country"  name="postalAddress.country" class="postalAddressCountry" ng-model="postalAddressCountry"/>
+                                 <small class="error" style="display:none">Please enter country</small>
+                            </div>
+                        </div>
+                        
+                     </fieldset>
+                     
+                     <!--End of Postal Address-->
+                     </div>
+                     
+                     <div class="content" id="administratorContactDetailsEmail">
+                     <!-- Email Address-->
+                     <fieldset class="administratorContactDetails" style="border:none;width:80%;background:#fff">
+                        <legend id="legend" style="width:80%">
+                            Email Addresses
+                        </legend>
+                        
+                         <div class="row" style="margin:5px;padding:10px;margin-top:20px">
+                            <div class="large-2 columns" style="font-size:13px;padding-top:20px">
+                                <small class="required" style="color:red">*</small> &nbsp;Email Address
+                            </div>
+                            <div class="large-6 columns" style="padding-top:10px;float:left">
+                                <div class="row">
+                                    <div class="large-12 columns emailDetailsOne">
+                                        <small>Email Address One</small>
+                                       		<small style="color:red;float:right">
+                                            	Primary Email:&nbsp;
+                                                <input type="radio" name="primaryEmail" class="makePrimaryEmailOne" checked/>
+                                             </small>
+                                        <input type="email"  name="emailAddress" class="emailAddressOne" style="margin-top:-30px" ng-model="emailAddressOne" readonly/>
+                                        <small class="error" style="display:none">Please enter a valid email</small>
+                                    </div>
+                                     <div class="large-12 columns emailDetailsTwo">
+                                        <small>Email Address Two</small>
+                                        <small style="color:red;float:right" >Primary Email:&nbsp;<input type="radio" name="primaryEmail" class="makePrimaryEmailTwo" readonly/></small>
+                                        <input type="email" name="emailAddress" class="emailAddressTwo" ng-model="emailAddressTwo"/>
+                                        <small class="error" style="display:none">Please enter a valid email</small>
+                                    </div>
+                        		</div>
+                           </div>
+                		</div>
+                
+                     </fieldset>
+                     <!-- End of Email Address-->
+                     </div>
+                     
+                     <div class="content" id="administratorContactDetailsPhone">
+                     <!-- Phone Address-->
+                     <fieldset class="administratorContactDetails" style="border:none;width:80%;background:#fff">
+                        <legend id="legend">
+                           Phone Numbers
+                        </legend>
+                        
+                         <div class="row" style="margin:5px;padding:10px;margin-top:20px">
+                            <div class="large-3 columns" style="font-size:13px;padding-top:20px">
+                                <small class="required" style="color:red">*</small> &nbsp;Phone Numbers
+                            </div>
+                            <div class="large-6 columns" style="padding-top:10px;float:left">
+                                <div class="row">
+                                    <div class="large-12 columns phoneNumberOne">
+                                        <small>Phone Number One</small>
+                                       		<small style="color:red;float:right">
+                                            	Primary Number:&nbsp;
+                                                <input type="radio" name="primaryPhoneNumber" class="makePrimaryNumberOne" checked disabled/>
+                                            </small>
+                                        <input type="text"  name="phoneNumber"  class="phoneNumberOneText" style="margin-top:-30px" readonly/>
+                                        <small class="error" style="display:none">Please enter a phone number</small>
+                                    </div>
+                                     <div class="large-12 columns phoneNumberTwo">
+                                        <small>Phone Number Two</small>
+                                        <small style="color:red;float:right" >Primary Number:&nbsp;<input type="radio" name="primaryPhoneNumber" class="makePrimaryNumberTwo" disabled/></small>
+                                        <input type="text" class="phoneNumberTwoText" name="phoneNumber" readonly/>
+                                        <small class="error" style="display:none">Please enter a phone number</small>
+                                    </div>
+                                    
+                                    
+                        		</div>
+                               
+                           </div>
+                           
+                		</div>
+                
+                     </fieldset>
+                     </div>
+                     <!-- End of Email Address-->
+                    </div>
+                    <!--end of tab-content-->
+                    
+                 </div>
+             </div> 
+             <div class="large-12 columns text-right" style="margin-right:200px">
+                 	<button class="button previous" style="display:none">&laquo; &nbsp;Previous </button>
+                    <button class="button next">Next &nbsp; &raquo;</button>
+                </div>
+         </fieldset>
+    </div>
+</div>
+<!--end of row-->
+<div class="large-12 columns text-right">
+ <input type="button" class="button decline" value="Decline"/>
+  <input type="button" class="button authorise" value="Authorise Administrator Creation"/>
+ </div>
+
+<input type="hidden" class="code" th:value="${code}">
+<input type="hidden" th:value="@{/}" id="destination"/>
+
+<script th:src="@{/scripts/vendor/jquery.js}"></script>
+<script th:src="@{/scripts/vendor/foundation.min.js}"></script>
+<script th:src="@{/scripts/vendor/angular.min.js}"></script>
+<script  th:src="@{/scripts/vendor/foundation-datepicker.js}"></script>
+<script th:src="@{/scripts/utility.js}"></script>
+<script>
+$(document).foundation();
+</script>   
+
+<script th:inline="javascript">
+var Administrator = angular.module("Administrator",[]);
+Administrator.controller("AdministratorController",function($scope){
+
+	JSONArray = $.parseJSON(JSON.stringify(/*[[${model.administrators}]]*/));
+	$scope.administratorList=[];
+	angular.forEach(JSONArray,function(administrator){
+					$scope.administratorJSON={id:JSONArray.length-1 ,administratorName : administrator.firstName+" "+administrator.middleName+" "+ administrator.lastName}
+					$scope.administratorList.push($scope.administratorJSON);
+				})
+
+	$scope.getAdministrator=function(administrator){
+		//console.log(administrator);
+			$scope.id=administrator.id;
+			JSONSelectedIndex=$scope.id;
+			var administratorJSON=JSONArray[$scope.id];
+			//console.log(administratorJSON);
+			$(".firstName").val(administratorJSON.firstName).prop("readonly",true);
+			$(".middleName").val(administratorJSON.middleName).prop("readonly",true)
+			$(".lastName").val(administratorJSON.lastName).prop("readonly",true);
+			$(".dob").val(administratorJSON.dob).prop("readonly",true);
+			//console.log(administratorJSON.dob);
+			if(administratorJSON.residentialAddress!=undefined){
+			$(".residentialAddressLine1").val(administratorJSON.residentialAddress.addressLine1).prop("readonly",true)
+			$(".residentialAddressLine2").val(administratorJSON.residentialAddress.addressLine2).prop("readonly",true)
+			$(".residentialAddressLine3").val(administratorJSON.residentialAddress.addressLine3).prop("readonly",true)
+			$(".residentialAddressLine4").val(administratorJSON.residentialAddress.addressLine4).prop("readonly",true)
+			$(".residentialPostCode").val(administratorJSON.residentialAddress.postCode).prop("readonly",true)
+			$(".residentialCity").val(administratorJSON.residentialAddress.city).prop("readonly",true)
+			$(".residentialState").val(administratorJSON.residentialAddress.state).prop("readonly",true)
+			$(".residentialCountry").val(administratorJSON.residentialAddress.country).prop("readonly",true)
+			}
+			if(administratorJSON.postalAddress!=undefined){
+			$(".postalAddressLine1").val(administratorJSON.postalAddress.addressLine1).prop("readonly",true)
+			$(".postalAddressLine2").val(administratorJSON.postalAddress.addressLine2).prop("readonly",true)
+			$(".postalAddressLine3").val(administratorJSON.postalAddress.addressLine3).prop("readonly",true)
+			$(".postalAddressLine4").val(administratorJSON.postalAddress.addressLine4).prop("readonly",true)
+			$(".postalAddressPostCode").val(administratorJSON.postalAddress.postCode).prop("readonly",true)
+			$(".postalAddressCity").val(administratorJSON.postalAddress.city).prop("readonly",true)
+			$(".postalAddressState").val(administratorJSON.postalAddress.state).prop("readonly",true);
+			$(".postalAddressCountry").val(administratorJSON.postalAddress.country).prop("readonly",true)
+			}
+			$(".emailAddressOne").val(administratorJSON.emailAddresses[0].emailAddress).prop("readonly",true);
+			$(".emailAddressTwo").val(administratorJSON.emailAddresses[1].emailAddress).prop("readonly",true);
+			$(".phoneNumberOneText").val(administratorJSON.phoneNumbers[0].phoneNumber).prop("readonly",true);
+			$(".phoneNumberTwoText").val(administratorJSON.phoneNumbers[1].phoneNumber).prop("readonly",true)
+			$(".removeAdministrator").show();
+			$(".editAdministrator").show();
+		}
+		//console.log($scope.administratorList[0]);
+	$scope.getAdministrator($scope.administratorList[0]);
+	$(".next").click(function(e) {
+	
+    switch(location){
+		case "":
+			
+			$(".administratorAddressSettings").click();
+			location="addressSettings";
+			$(".previous").show();
+			break;
+		case "addressSettings":
+			$(".administratorContactDetailsResidential").click();			
+			location="administratorContactDetailsResidential";
+			
+			break;
+		case "administratorContactDetailsResidential":
+		
+			$(".administratorContactDetailsPostal").click();
+			location="administratorContactDetailsPostal";
+			break;
+		case "administratorContactDetailsPostal":
+			
+			$(".administratorContactDetailsEmail").click();
+			location="administratorContactDetailsEmail";
+			break;
+		case "administratorContactDetailsEmail":			
+			$(".administratorContactDetailsPhone").click();
+			location="administratorContactDetailsPhone";
+			$(".next").hide();
+			break;
+		default:
+			break;
+	}
+
+	
+});
+$(".selectPrimaryAddress").change(function(e) {
+    primaryAddress=$(this).val();
+});
+$(".administratorContactDetailsPersonalDetails").click(function(e) {
+    location="";
+	$(".next").show();
+	$(".previous").hide();
+});
+$(document).on("click",".previous",function(e) {
+	
+    switch(location){
+		case "administratorContactDetailsPhone":
+			$(".administratorContactDetailsEmail").click();
+			location="administratorContactDetailsEmail";
+			$(".next").show();
+			break;		
+		case "administratorContactDetailsEmail":
+			$(".administratorContactDetailsPostal").click();
+			location="administratorContactDetailsPostal";
+			break;
+		case "administratorContactDetailsPostal":
+			$(".administratorContactDetailsResidential").click();
+			location="administratorContactDetailsResidential";
+			break;
+		case "administratorContactDetailsResidential":
+			$(".administratorAddressSettings").click();
+			location="addressSettings";
+			break;
+		case "addressSettings":
+			$(".administratorContactDetailsPersonalDetails").click();
+			location="";
+			$(".previous").hide();
+			break;
+		default:
+			break;
+	}
+});
+
+$(".decline").click(function(e) {
+            
+        });
+		
+		$(".authorise").click(function(e) {
+			$url = $("#destination").val()+"authorisation/holder/createAdministrator/authorise?code="+$(".code").val();
+			console.log($(".code").val());
+			console.log($url);
+            window.location.assign($url);
+        });
+		
+});
+</script>      
+</body>
+</html>

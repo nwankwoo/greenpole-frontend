@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html ng-app = "QueryShareholderAccountApp">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Africa Prudential Registrars Plc :: Print Shareholders</title>
+<link rel="icon" th:href="@{/images/lg.png}"/>
+<link rel="stylesheet" th:href="@{/styles/vendor/pace-dataurl.css}"/> 
+<link rel="stylesheet" th:href="@{/styles/mainstyle.css}"/> 
+<link rel="stylesheet" th:href="@{/styles/vendor/foundation-datepicker.css}"/> 
+
+<script th:src="@{/scripts/vendor/modernizr.js}"></script>
+<style>
+@media all {
+	.page-break	{ display: block; }
+}
+
+@media print {
+	.page-break	{ display: block; page-break-before: always; }
+}
+@page{size:A4 landscape}
+body{background:#fff}
+</style>
+</head>
+
+<body ng-controller="queryShareholderAccountCtrl">
+<div class="row full-width">
+    	<div class="large-12 small-12 columns page-break" style="page-break-after:always">
+        	<div class="row">
+            	<div class="large-12 columns" >
+                	<h1 class="c_name" style="padding:0;margin:0">
+                        <img src="resources/images/lg.png"/> <span style="color:#d52e36">Africa Prudential Registrars Plc</span>
+                    </h1>
+                </div>
+                <div class="large-12 columns" >
+                	<h3 class="c_name">Shareholders Report</h3>
+                    <h5 style="font-family:gothic;color:#d52e36;font-weight:bold" th:text="'Date: '+${#dates.format(#calendars.createToday(), 'dd-MMMM-yyyy')}">Date: 13-May-2015</h5>
+                </div>
+            </div>
+        </div>
+</div>
+        
+         <div ng-repeat="holders in subholders(10)"  class="large-12 columns text-center" style="padding:0px;padding-top:10px;padding-right:10px; ">
+                <table cellpadding="0" cellspacing="0" border="1" class="full-width" width="99%" style="border-spacing:0px;border-color:#000;margin-left:5px;margin-right:10px;page-break-after:always" >
+                    <tr style="line-height:1em;background:#ccc">
+                        <td width="2%" align="center" style="font-weight:bold;font-size:10px;">SN</td>
+                        <td width="20%" align="center" style="font-weight:bold;font-size:10px;">SHAREHOLDER NAME</td>
+                        <td width="15%" align="center" style="font-weight:bold;font-size:10px;">CHN NUMBER</td>                        
+                        <td align="center" style="font-weight:bold;font-size:10px;">ADDRESS</td>
+                        <td align="center" style="font-weight:bold;font-size:10px;">PHONE NUMBER(S)</td>
+                        <td align="center" style="font-weight:bold;font-size:10px;">TOTAL HOLDINGS</td>
+                        <td align="center" style="font-weight:bold;font-size:10px;">SHAREHOLDER TYPE</td>                        
+                    </tr>
+                   
+                   <tr ng-repeat="shareholder in holders">
+                       
+                   		<td  width="3%" align="center" style="font-weight:normal;font-size:10px">{{$index+1}}</td>
+                        <td width="20%" align="center" style="font-weight:normal;font-size:10px">{{shareholder.firstName}} {{shareholder.middleName}} {{shareholder.lastName}}
+                        </td>
+                        <td width="15%" align="center" style="font-weight:normal;font-size:10px;text-transform:uppercase">{{shareholder.chn}}</td>
+                        <td>{{shareholder.addressPrimary.addressLine1}}
+                            {{shareholder.addressPrimary.addressLine2}}
+                            {{shareholder.addressPrimary.addressLine3}}
+                            {{shareholder.addressPrimary.addressLine4}}.
+                            {{shareholder.addressPrimary.postCode}}, &nbsp; .
+                            {{shareholder.addressPrimary.city}}, &nbsp; .
+                            {{shareholder.addressPrimary.state}}, &nbsp; .
+                            {{shareholder.addressPrimary.country}}&nbsp; .</td>
+                        <td align="center" style="font-weight:normal;font-size:10px">{{shareholder.phoneNumbers[0].phoneNumber}}<br/> {{shareholder.phoneNumbers[1].phoneNumber}}</td>
+                        <td align="center" style="font-weight:normal;font-size:10px">{{holder.holdings(shareholder) | number}}</td>
+                        <td align="center" style="font-weight:normal;font-size:10px">{{shareholder.type}}</td>
+                    </tr>
+                </table>
+            </div>
+        
+ <script th:src="@{/scripts/vendor/jquery.js}"></script>
+<script th:src="@{/scripts/vendor/foundation.min.js}"></script>
+<script th:src="@{/scripts/vendor/foundation.dropdown.js}"></script>
+<script th:src="@{/scripts/vendor/angular.min.js}"></script>
+<script th:src="@{/scripts/vendor/numberToWords.js}"></script>
+<script th:src="@{/scripts/vendor/jquery.form.min.js}"></script>
+<script th:src="@{/scripts/utility.js}"></script>
+<script th:src="@{/scripts/Holder/printShareholderAccount.js}"></script>
+<script>
+$(document).foundation();
+$(document).ready(function(e) {
+  //  window.print();
+});
+</script>      
+</body>
+</html>

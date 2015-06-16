@@ -1,0 +1,200 @@
+<!doctype html >
+<html ng-app="setupBondOfferApp">
+<head>
+<meta charset="utf-8">
+<title>Afica Prudential Registrars Plc :: Create New Client Company</title>
+<link rel="icon" href="../resources/images/lg.png" th:href="@{/images/lg.png}"/>
+<link rel="stylesheet" href="../resources/styles/vendor/pace-dataurl.css" th:href="@{/styles/vendor/pace-dataurl.css}"/> 
+<link rel="stylesheet" href="../resources/styles/mainstyle.css" th:href="@{/styles/mainstyle.css}"/> 
+<link rel="stylesheet" href="../resources/styles/vendor/foundation-datepicker.css" th:href="@{/styles/vendor/foundation-datepicker.css}"/> 
+
+<script th:src="@{/dmz/scripts/vendor/modernizr.js}"></script>
+</head>
+
+<body ng-controller="setupBondOfferController">
+<div class="row full-width">
+	<div class="large-12 small-12 columns text-center title">
+       <span id="title">Setup Bond Offer</span>
+    </div>
+    
+    <div class="row setupBondOffer">
+    	<div class="row error-alert"  style="padding-bottom:5px;padding-left:15px;width:60%;display:none;margin:5px;margin-top:5%">
+                        	<div data-alert class="large-12 columns large-centered alert-box alert" style="padding-bottom:7px;padding-top:7px">Please fill out all entries marked * to continue and make sure they contain the right entries</div>
+        </div>
+    	<form th:action = "'../' +${formAction}" th:object="  ${setupBondOffer}" method="post" data-abide class="setupBondOfferForm">
+    	<div class="large-7 large-push-1 columns" style="margin-top:1%;font-size:13px">
+        	<div class="row">
+            
+            	<div class="large-12 columns text-center" style="font-size:20px;font-weight:bold;padding-bottom:20px">                	
+                    Company Name:
+                
+                	<span th:text="${clientCompany.name}"></span>
+                </div>
+                
+            	<div class="large-4 columns" style="padding-top:10px">
+                	<small id="required" style="color:red">*</small>
+                    Bond Title
+                </div>
+                <div class="large-8 columns">
+                	<input type="text" required th:field="*{title}" ng-model="title"/>
+                    <small class="error">Please enter bond title</small>
+                </div>
+                
+                <div class="large-4 columns" style="padding-top:10px">
+                	<small id="required" style="color:red">*</small>
+                    Bond Unit Price
+                </div>
+                <div class="large-8 columns">
+                	<input type="number" th:field="*{unitPrice}" required ng-model="unitPrice"/>
+                    <small class="error">Please enter unit price</small>
+                </div>
+                
+                 <div class="large-4 columns" style="padding-top:10px">
+                	<small id="required" style="color:red">*</small>
+                    Bond Maturity Date
+                </div>
+                <div class="large-8 columns">
+                	<input type="text" class="bondMaturityDate"  data-date-format="dd/mm/yyyy" readonly required th:field="*{bondMaturity}" ng-model="bondMaturity"/>
+                    <small class="error">Please enter maturity date</small>
+                </div>
+                
+                 <div class="large-4 columns" style="padding-top:10px">
+                	<small id="required" style="color:red">*</small>
+                    Bond Type
+                </div>
+                <div class="large-8 columns" style="padding-bottom:10px">
+                	<select ng-options="bondType.type for bondType in bondTypes" ng-model="bondType" ng-init="bondType=bondTypes[0]" ng-change="bondTypeChange(bondType)" required>
+                    	
+                    </select>
+                    <input type="hidden" class="selectedBondType" th:field="*{bondTypeId}"/>
+                    <input type="hidden" class="selectedBondTypeName" th:field="*{bondType}"/>
+                    <small class="error">Please enter bond type</small>
+                </div>
+                
+                 <div class="large-4 columns" style="padding-top:10px">
+                	<small id="required" style="color:red">*</small>
+                    Interest Rate
+                </div>
+                <div class="large-8 columns">
+                	<input type="number" required th:field="*{interestRate}" ng-model="interestRate"/>
+                    <small class="error">Please enter interest rate</small>
+                </div>
+                
+                 <div class="large-4 columns" style="padding-top:10px">
+                	<small id="required" style="color:red">*</small>
+                    Payment Plan
+                </div>
+                <div class="large-8 columns" style="padding-bottom:10px">
+                	<input type="hidden" th:field="*{clientCompanyId}"/>
+                    <input type="hidden" class="selectedPaymentPlan" th:field="*{paymentPlanId}" />
+                    <input type="hidden" class="selectedPaymentPlanName" th:field="*{paymentPlan}" />
+                	<select ng-options="paymentPlan.plan for paymentPlan in paymentPlans" ng-model="paymentPlan" ng-init="paymentPlan=paymentPlans[0]" disabled class="paymentPlan" ng-change="paymentPlanChange(paymentPlan)">
+                    	
+                    </select>
+                </div>
+                
+                <div class="large-12 columns text-right">
+                	<input type="button" class="button setupBondOfferResetButton" value="Reset Form"/>
+                    <input type="button" class="button setupBondOfferButton" value="Setup Bond Offer"/>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+    
+    <!--confirm field-->
+    <div class="row confirm-field" style="display:none">
+    	<div class="large-7 large-push-1 columns" style="margin-top:2%;font-size:13px">
+        	<div class="row">
+            
+            	<div class="large-12 columns text-center" style="font-size:20px;font-weight:bold;padding-bottom:20px">                	
+                    Company Name:
+                
+                	Africa Prudential Registrars Plc.
+                </div>
+                
+                <div class="row">
+                    <div class="large-4 columns" style="padding-top:10px;font-weight:bold" id="confirm-details">
+                        Bond Title
+                    </div>
+                    <div class="large-8 columns" style="padding-top:10px" id="confirm-details">
+                        {{ title }}
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="large-4 columns" style="padding-top:10px;font-weight:bold" id="confirm-details" >
+                        Bond Unit Price
+                    </div>
+                    <div class="large-8 columns" style="padding-top:10px" id="confirm-details">
+                         {{unitPrice}}
+                    </div>
+                </div>
+                
+                <div class="row">
+                     <div class="large-4 columns" style="padding-top:10px;font-weight:bold" id="confirm-details" >
+                        Bond Maturity Date
+                    </div>
+                    <div class="large-8 columns" style="padding-top:10px" id="confirm-details">
+                         {{bondMaturity}}
+                    </div>
+                </div>
+                
+                <div class="row">
+                     <div class="large-4 columns" style="padding-top:10px;font-weight:bold" id="confirm-details">
+                        Bond Type
+                    </div>
+                    <div class="large-8 columns" style="padding-top:10px" id="confirm-details" >
+                        {{bondType.id!=0 ? bondType.type:""}}
+                    </div>
+                </div>
+                
+                <div class="row">
+                     <div class="large-4 columns" style="padding-top:10px;font-weight:bold" id="confirm-details">
+                        Interest Rate
+                    </div>
+                    <div class="large-8 columns" style="padding-top:10px" id="confirm-details">
+                        {{interestRate}}
+                    </div>
+                </div>
+                
+                <div class="row">
+                     <div class="large-4 columns" style="padding-top:10px;font-weight:bold" id="confirm-details">
+                        Payment Plan
+                    </div>
+                    <div class="large-8 columns" style="padding-top:10px" id="confirm-details">
+                        {{paymentPlan.id!=0 ? paymentPlan.plan:""}}
+                    </div>
+                </div>
+                
+                <div class="large-12 columns text-right" style="margin-top:20px">
+                	<input type="button" class="button setupBondOfferBackButton" value="&laquo; Back"/>
+                    <input type="button" class="button confirmSetupBondOfferButton" value="Confirm & Setup Bond Offer"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script  th:src="@{/scripts/vendor/jquery.js}"></script>
+<script  th:src="@{/scripts/vendor/foundation.min.js}"></script>
+<script  th:src="@{/scripts/vendor/angular.min.js}"></script>
+<script  th:src="@{/scripts/vendor/foundation.abide.js}"></script>
+<script  th:src="@{/scripts/vendor/jquery.form.min.js}"></script>
+<script  th:src="@{/scripts/vendor/foundation-datepicker.js}"></script>
+<script  th:src="@{/scripts/utility.js}"></script>
+<script th:src="@{/scripts/client_company/setupBondOffer.js}"></script>
+
+<script>
+		$(document).foundation();
+		var nowTemp = new Date();
+		var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+		var bondMaturityDate = $('.bondMaturityDate').fdatepicker({
+					onRender: function (date) {
+						return date.valueOf() < now.valueOf() ? 'disabled' : '';
+					}
+				});
+       
+	</script>
+</body>
+</html>

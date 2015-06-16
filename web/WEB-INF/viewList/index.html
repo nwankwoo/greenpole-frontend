@@ -1,0 +1,143 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8"/>
+<title>Africa Prudential Registrars :: Home Page</title>
+<link rel="icon" type="image/png" href="resources/images/lg.png" th:href="@{/images/lg.png}"/>
+<link rel="stylesheet" href="resources/styles/vendor/pace-dataurl.css" th:href="@{/styles/vendor/pace-dataurl.css}"/> 
+<link rel="stylesheet"  href="resources/styles/mainstyle.css" th:href="@{/styles/mainstyle.css}"/>
+</head>
+
+<body style="overflow:hidden">
+    <div class="sticky">
+        <nav class="top-bar hide-for-small" data-topbar="" role="navigation" data-options="is_hover: false" id="nav">
+            <ul class="title-area">
+                <li class="name" style="background:#fff;">
+                    
+                    <h1 class="c_name">
+                        <img src="resources/images/lg.png"/> <span th:text="${company_name}"></span>
+                    </h1>
+                </li>
+                
+            </ul>
+            
+            <section class="top-bar-section" style="background-color:#fff">
+            	<ul class="right">
+                <li style="margin-top:-5px;backgrond-color:#d52e36" class="has-dropdown"><a href="#" id="notification"><i class="fi-web"></i><span class="notification-count">10</span></a> 
+                
+                <ul class="dropdown user-settings" >
+                      <li th:each="note : ${notification}">
+                      		<a href="#" id="notelist" th:text="${note.messageTag}" th:attr="from=${note.from} , to=${note.to}, code=${note.code}" class="notification"></a>
+                      </li>
+                </ul>
+                
+                </li>
+                  <li class="has-dropdown" >
+                    <a href="#" id="settings" th:text="${userprofile.firstname}+' '+ ${userprofile.middlename}+' '+ ${userprofile.lastname}">Jude Temitope Babangida</a>
+                    <ul class="dropdown user-settings" >
+                      <li>
+                      	<div class="row" style="background-color:#fff;margin:0;padding:0">
+                        	<div class="large-12 columns" align="right"><!--th:text="${userprofile.firstname}+' '+ ${userprofile.middlename}+' '+ ${userprofile.lastname}"-->
+                            	<span class="username" >Admin</span>
+                            </div>
+                            <div class="large-12 columns" align="right">
+                            	<span class="email" th:text="${username}">jude.temitope@africaprudentialregistrars.com</span>
+                            </div>
+                            <div class="large-12 columns"  align="right">
+                            	<span class="last-login">Last Login : 19th February 2015 From 192.168.1.5</span>
+                            </div>
+                            <div class="large-6 columns">
+                            	<a  href="#" id="user-settings-a">Account Settings</a>
+                            </div>
+                            <div class="large-6 columns" >
+                                <form id="logout_form" method="post" action="#"  th:action="@{/j_spring_security_logout}">
+                                     
+                                </form>
+                            	<a href="#" class="logout" id="user-settings-a" style="margin-left:15px">Log Out</a>
+                            </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </li>
+                  
+                </ul>
+            </section>
+        </nav>
+    </div>
+    
+    <section>
+    <div class="row" style="margin:0;padding:0;width:100%;max-width:100%">
+    
+    	<div class="large-2 medium-4 columns" style="margin:0;padding:0;">
+        <nav id="nav">
+        <div class="menu">.:: Application Menu ::.</div>
+        <ul class="sb-menu gothic full-height" style="background:#fff" >
+              <li th:each="views : ${viewList}"> 
+                    <a class="sb-toggle-submenu"  th:each="viewGroup : ${views}">
+                        <span class="name" th:text="${viewGroup.value.groupName}"></span><span class="sb-caret"></span>
+                    
+                    </a>
+                 <ul class="sb-submenu" style="color:#000">
+                	<li th:each="viewList : ${views.value.viewList}">
+                            <a  th:attr="hole=${views.key} , key=${viewList.key}" class="viewRequest" th:text="${viewList.value.viewTitle}"></a>
+                        </li>
+                    </ul>   
+               </li>
+               <small style="">&copy; Africa Prudential Registrars Plc.</small>
+        </ul>
+            
+            
+	</nav>
+        </div>
+        
+        <div class="large-10 medium-8 columns sub-window" >
+        	<div class="row">
+            	<div class="large-12 columns viewName"><span class="viewTitle">Dashboard</span></div>
+                <span th:text="@{/}" id="destination" style="display: none"></span>
+                <iframe class="large-12 columns" style="border: none;display:block;margin:0;padding:0;border-left:1px solid #fff" src="" frameborder="0" seamless></iframe>
+                
+            </div>
+        </div>
+    </div>
+    </section>
+    
+    <div class="row">
+    	<div class="large-12 columns"></div>
+    </div>
+
+<div id="myModal" class="reveal-modal pole-modal" data-options="close_on_background_click:false;close_on_esc:false" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog" style="">
+  <div class="row full-width">
+  	<div class="large-12 columns c_name" style="background:#d52e36;padding-left:0px;">
+    	<div style="background-color:#fff;height:100%;display:inline-block;padding-right:10px;padding-left:5px">
+    	 	<img src="resources/images/lg.png"/> <span th:text="${company_name}"></span>
+        </div>
+        <a class="close-reveal-modal" aria-label="Close" style="display:none;color:#fff;margin-top:-10px">&#215;</a>
+    </div>
+  </div>
+  <div class="row full-width" style="background:#efeeee">
+  	<div class="large-12 columns" style="padding:10px;">
+    	<img  th:src="@{/dmz/images/white_indicator.gif}" class="indicator"/> 
+        <span style="font-size:13px;font-weight:bold;color:#d52e36" class="note">Performing operation please wait...</span>
+    </div>
+  </div>
+   
+  
+</div>
+
+<a href="#" data-reveal-id="myModal" class="reveal-link" style="display:none"></a>
+
+<script src="resources/scripts/vendor/vendor/modernizr.js" th:src="@{/scripts/vendor/modernizr.js}"></script>
+<script src="resources/scripts/vendor/vendor/jquery.js" th:src="@{/scripts/vendor/jquery.js}"></script>
+<script src="resources/scripts/vendor/foundation/foundation.min.js" th:src="@{/scripts/vendor/foundation.min.js}"></script>
+<script src="resources/scripts/vendor/vendor/slidebars.js" th:src="@{/scripts/vendor/slidebars.js}"></script>
+<script src="resources/scripts/vendor/foundation/foundation.dropdown.js" th:src="@{/scripts/vendor/foundation.dropdown.js}"></script>
+<script src="resources/scripts/vendor/vendor/persist.min.js" th:src="@{/scripts/vendor/persist.min.js}"></script>
+<script src="resources/scripts/vendor/foundation.reveal.js" th:src="@{/scripts/vendor/foundation.reveal.js}"></script>
+<script src="resources/scripts/vendor/pace.min.js" th:src="@{/scripts/vendor/pace.min.js}"></script>
+<script src="resources/scripts/mainscript.js" th:src="@{/scripts/mainscript.js}"></script>
+<script src="resources/scripts/utility.js" th:src="@{/scripts/utility.js}"></script>
+<script>
+	
+</script>
+</body>
+</html>

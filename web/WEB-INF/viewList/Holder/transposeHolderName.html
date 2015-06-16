@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html ng-app = "uploadPowerofAttorneyApp">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Africa Prudential Registrars Plc :: Transpose Holder's Name</title>
+<link rel="icon" href="../resources/images/lg.png" th:href="@{/images/lg.png}"/>
+<link rel="stylesheet" href="../resources/styles/vendor/pace-dataurl.css" th:href="@{/styles/vendor/pace-dataurl.css}"/> 
+<link rel="stylesheet" href="../resources/styles/mainstyle.css" th:href="@{/styles/mainstyle.css}"/> 
+<link rel="stylesheet" th:href="@{/styles/vendor/foundation-datepicker.css}"/> 
+
+<script src="../resources/scripts/vendor/modernizr.js" th:src="@{/scripts/vendor/modernizr.js}"></script>
+
+<style>
+ul.holdersName > li { cursor:move}
+</style>
+</head>
+
+<body ng-controller="uploadPowerofAttorneyController">
+<div class="row full-width">
+    	<div class="large-12 small-12 columns text-center title">
+        	<span id="title">Transpose Holder's Name</span>
+        </div>
+        
+        <div class="large-12 columns" style="font-size:13px;padding-top:10px">
+        	<form th:action="'../'+${formAction} + '&' + ${_csrf.parameterName}  + '='+ ${_csrf.token}" data-abide method="post" class="transposeHolderName"  th:object="${holder}">
+	<div class="large-8 columns">
+    	<div class="row">
+        	<div class="large-4 columns" id="confirm-details">Holder's Name</div>
+            <div class="large-8 columns" id="confirm-entries">
+            	<span th:text="${holder.firstName}+' '+${holder.middleName}+' '+${holder.lastName}"></span>
+            </div>
+        </div>
+        
+        <div class="row">
+        	<div class="large-4 columns" id="confirm-details">Holder's Address</div>
+            <div class="large-8 columns" id="confirm-entries" style="height:auto">
+            	<div class="row">
+                	<div class="large-12 columns">
+                    	<span th:text="${holder.residentialAddresses[0].addressLine1}"></span>
+                    </div>
+                    <div class="large-12 columns">
+                    	<span th:text="${holder.residentialAddresses[0].addressLine2}"></span>
+                    </div>
+                    <div class="large-12 columns">
+                    	<span th:text="${holder.residentialAddresses[0].addressLine3}"></span>
+                    </div>
+                    <div class="large-12 columns">
+                    	<span th:text="${holder.residentialAddresses[0].addressLine4}"></span>
+                    </div>
+                    <div class="large-12 columns">
+                    	<span th:text="${holder.residentialAddresses[0].postCode}"></span>
+                    </div>
+                    <div class="large-12 columns">
+                    	<span th:text="${holder.residentialAddresses[0].city}"></span>
+                    </div>
+                    <div class="large-12 columns">
+                    	<span th:text="${holder.residentialAddresses[0].state}"></span>
+                    </div>
+                    <div class="large-12 columns">
+                    	<span th:text="${holder.residentialAddresses[0].country}"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+            	<div class="large-12 columns" style="margin-top:20px">
+                	<fieldset>
+                		<legend style="width:100%;background:#d52e36;color:#fff;padding-top:10px;padding-bottom:10px;padding-left:5px;padding-right:5px">Holder's Name Details</legend>
+                        <div class="row" style="font-size:13px">
+                        
+                        	<div class="large-4 columns">
+                            	<ul style="list-style:none;font-size:13px;font-weight:bold" class="namelist">
+                                	<li data-value="firstName">First Name</li>
+                                    <li data-value="middleName">Middle Name</li>
+                                    <li data-value="lastName">Last Name</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="large-6 columns" style="float:left">
+                            	<ul id="sortable" class="holdersName" style="list-style:none;font-size:13px">
+                                	<li>First Name</li>
+                                    <li>Middle Name</li>
+                                    <li>Last Name</li>
+                                </ul>
+                            </div>
+                            
+                        </div>
+                </fieldset>
+                </div>
+                
+                <div class="row">
+                	<div class="large-12 columns text-right" style="padding-top:10px">
+                    	<input type="button" class="button transposeResetButton" value="Reset Form"/>
+                        <input type="button" class="button transposeNameButton" value="Transpose Name"/>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    </form>
+        </div>
+</div>
+
+<script  th:src="@{/scripts/vendor/jquery.js}"></script>
+<script  th:src="@{/scripts/vendor/jquery-ui.js}"></script>
+<script  th:src="@{/scripts/vendor/foundation.min.js}"></script>
+<script  th:src="@{/scripts/vendor/jquery.form.min.js}"></script>
+<script  th:src="@{/scripts/utility.js}"></script>
+<script  th:src="@{/scripts/Holder/transposeHolderName.js}"></script>
+
+<script>
+		$(document).foundation();
+</script>
+
+<script th:inline="javascript">
+
+	var basenamearray=[ [[${holder.firstName}]],[[${holder.middleName}]],[[${holder.lastName}]]];
+</script>
+</body>
+</html>

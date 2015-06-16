@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html ng-app="mergeShareholderAccountApp">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Africa Prudential Registrars Plc :: Query Bondholder Account Details</title>
+<link rel="icon" th:href="@{/images/lg.png}"/>
+<link rel="stylesheet" th:href="@{/styles/vendor/pace-dataurl.css}"/> 
+<link rel="stylesheet" th:href="@{/styles/mainstyle.css}"/> 
+<link rel="stylesheet" th:href="@{/styles/vendor/foundation-datepicker.css}"/> 
+
+<script th:src="@{/scripts/vendor/modernizr.js}"></script>
+<style>
+	.useraccountdiv:nth-of-type(even){
+		  background: #efeeee;
+	}
+</style>
+</head>
+
+<body ng-controller="mergeShareholderCtrl">
+<div class="row full-width">
+    	<div class="large-12 small-12 columns text-center title">
+        	<span id="title">Merge Shareholder Accounts</span>
+        </div>
+        
+                        
+                       
+                        	<div class="row confirmAccountList" style="margin-left:50px">
+                            	<div class="large-12 columns" style="font-weight:bold;padding:5px">
+                                	Primary Account
+                                </div>
+                                <div class="large-8 columns primaryAccount" style="padding:5px">
+                                	<div class='row'>
+                                    	<div class='large-2 columns text-left' th:text="${model.primaryHolder.holderAcctNumber}"></div>
+                                    	<div class='large-5 columns' style='padding:0px' th:text="${model.primaryHolder.firstName}+ ' '+${model.primaryHolder.middleName}+ ' '+${model.primaryHolder.lastName}"></div>
+                                    	<div class='large-3 columns primaryHoldings' style='float:left' ></div>
+                                    </div>
+                                </div>
+                                <div class="large-12 columns" style="font-weight:bold;padding:5px">
+                                	Seconday Account
+                                </div>
+                                <div class="large-8 columns secondaryAccounts" style="padding:5px;padding:5px">
+                                	<div class='row' th:each="secondaryAccounts : ${model.secondaryHolders}">
+                                    	<div class='large-2 columns text-left' th:text="${secondaryAccounts.holderAcctNumber}"></div>
+                                    	<div class='large-5 columns' style='padding:0px' th:text="${secondaryAccounts.firstName}+ ' '+${secondaryAccounts.middleName}+ ' '+${secondaryAccounts.lastName}"></div>
+                                    	<div class='large-3 columns secondaryHoldings' style='float:left' ></div>
+                                    </div>
+                                </div>
+                                <div class="large-12 columns" style="font-weight:bold;padding:5px">
+                                	Primary Account New Balance
+                                </div>
+                                <div class="large-8 columns balance" style="padding:5px;float:left">
+                                	New Balance &nbsp; <span class="total"></span>
+                                </div>
+                                
+                                 <div class="large-12 columns" style="font-weight:bold;padding:5px">
+                                <input type="button" class="button decline" value="Decline"/>
+                        <input type="button" class="button authorise" value="Authorise Creation"/>
+                                </div>
+                            </div>
+                        </div>
+                       
+                   </div>
+                   
+                   
+            </div>
+       <!--</form>-->
+</div>
+<input type="hidden" class="code" th:value="${code}">
+<input type="hidden" th:value="@{/}" id="destination"/>
+<script  th:src="@{/scripts/vendor/jquery.js}"></script>
+<script  th:src="@{/scripts/vendor/foundation.min.js}"></script>
+<script>
+		$(document).foundation();
+		$(".decline").click(function(e) {
+            
+        });
+		
+		$(".authorise").click(function(e) {
+			$url = $("#destination").val()+"authorisation/holder/mergeAccounts/authorise?code="+$(".code").val();
+			console.log($(".code").val());
+			console.log($url);
+            window.location.assign($url);
+        });
+	</script>
+<script th:inline="javascript">
+	var primaryAccountCompanyAccounts =$.parseJSON( JSON.stringify(/*[[${model.primaryHolder.companyAccounts}]]*/) );
+	var primaryAccountHoldings = 0;
+	$.each(primaryAccountCompanyAccounts,function(index,obj){
+		primaryAccountHoldings += obj.shareUnits
+	});
+	$(".primaryHoldings").text(primaryAccountHoldings);
+	
+	var secondaryAccountsCompanyAccounts = $.parseJSON( JSON.stringify(/*[[${model.secondaryHolders}]]*/) );
+	
+	var secondaryAccountHoldings = 0;
+	$.each(secondaryAccountsCompanyAccounts,function(index,obj){
+		var subholding = 0;
+		$.each(obj.companyAccounts,function(i,o){
+			subholding += o.shareUnits
+		});
+		$(".secondaryHoldings").eq(index).text(subholding);
+		secondaryAccountHoldings+=subholding;
+	});
+	
+	$(".total").text(secondaryAccountHoldings+primaryAccountHoldings);
+	
+</script>
+    
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en-us" >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+   
+    <meta charset="utf-8"/>
+    <title>Session Expired</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/> 	
+    <link rel="stylesheet" type="text/css" href="resources/styles/vendor/bootstrap.min.css" th:href="@{/dmz/styles/vendor/bootstrap.min.css}"/>       
+    <link rel="stylesheet" type="text/css" href="resources/styles/vendor/style.css" th:href="@{/dmz/styles/vendor/style.css}"/>
+    <link rel="stylesheet" type="text/css" href="resources/styles/vendor/animate.css" th:href="@{/dmz/styles/vendor/animate.css}"/>  
+    <link rel="icon" type="image/png" href="resources/images/lg.png" th:href="@{/dmz/images/lg.png}"/>
+    <link rel="stylesheet" href="resources/styles/calvary.css" th:href="@{/dmz/styles/calvary.css}" />        
+    <style>
+	.full-width{
+background-color: #fff;
+width:100%;
+margin:0;padding:0;
+}
+.desc h3{
+	color: #d52e36;
+}
+.desc h3 a {
+		color: #d52e36;
+}
+.desc h3 a:hover {
+		color: #d52e36;
+}
+	</style>
+  </head>
+  
+  <body style="margin:0;padding:0" class="gothic">     
+    <div class="full-width">  
+    <div class="container content-inner">
+      <div class="row content">        
+        <div class="col-md-12">       
+          <section class="main">
+            <h2 class="text404 animated In bounceIn" style="margin-top:7%">					
+              <span class="text404-cut">
+                    <span class="word1">Oops! Your Session as expired</span> 
+                    <span class="word2"></span> 
+                    <span class="word3"></span> 
+                    <span class="word4"></span> 
+                    <span class="word5"></span> 
+                    <span class="word6"></span> 
+                    <span class="word7"></span> 
+                    <span class="word8"></span> 
+                    <span class="word9"></span> 
+                    <span class="word10"></span> 
+                    <span class="word11"></span> 
+                    <span class="word12"></span> 
+                    <span class="word13"></span> 
+                    <span class="word14"></span> 
+                    <span class="word15"></span> 
+               </span>					
+              <span class="text404-mid">Session Expired!</span>					
+              <span class="text404-cut">
+                  <span class="word1">Oops!</span> 
+                  <span class="word2"></span> 
+                  <span class="word3"></span> 
+                  <span class="word4"></span> 
+                  <span class="word5"></span> 
+                  <span class="word6"></span> 
+                  <span class="word7"></span> 
+                  <span class="word8"></span> 
+                  <span class="word9"></span> 
+                  <span class="word10"></span> 
+                  <span class="word11"></span> 
+                  <span class="word12"></span> 
+                  <span class="word13"></span> 
+                  <span class="word14"></span> 
+                  <span class="word15"></span> 
+              </span>				
+            </h2>        
+          </section> 
+               
+          <section class="desc animated In fadeInDown" style="width:100%">    
+              <h3>It Looks like your session has expired or your are currently logged on on another system.Please click <a href="#" id="login" style="font-size:1em;text-shadow:1px 1px 1px #000;font-weight:bold">here</a> to re-login</h3>
+          </section>
+         
+          
+        </div> 
+      </div> 
+    </div> 
+        <div class="small-12 large-12 columns footer" style="height:59px;padding-top:20px">
+            	<span >&copy; 2015, Africa Prudential Registrars Plc. All Rights Reserved.</span>
+            </div>
+    </div>                        
+    
+   
+    
+    <script type="text/javascript" src="resources/scripts/vendor/vendor/modernizr.js" th:src="@{/dmz/scripts/vendor/modernizr.js}"></script>
+    <script type="text/javascript" src="resources/scripts/vendor/vendor/jquery.js" th:src="@{/dmz/scripts/vendor/jquery.js}"></script>     
+    <script type="text/javascript" src="resources/scripts/vendor/vendor/jquery.lettering.js" th:src="@{/dmz/scripts/vendor/jquery.lettering.js}"></script> 	  
+    <script type="text/javascript" src="resources/scripts/vendor/vendor/bootstrap.min.js" th:src="@{/dmz/scripts/vendor/bootstrap.min.js}"></script>     
+    <script>
+	
+      function startPage() {
+    setTimeout ( function () {
+		setTimeout ( function () {
+			$(".desc").removeClass("Out").addClass("In fadeInDown");
+		},50 );
+		$(".search").removeClass("Out").addClass("In fadeInUp");
+		},100 );
+    setTimeout ( function () {
+			$(".text404").removeClass("Out").addClass("In bounceIn");
+		},100 );
+	} 
+  
+  
+  $(window).load(function(){
+    $("body").removeClass("preload");	      
+    $(".text404-cut").lettering('words');
+    startPage();
+  });	
+  
+  $("#login").click(function(){
+      window.parent.document.location="login";
+  })
+
+    </script>
+       
+  
+</body></html>

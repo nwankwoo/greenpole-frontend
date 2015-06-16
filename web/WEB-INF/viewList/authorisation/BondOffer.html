@@ -1,0 +1,115 @@
+<!doctype html >
+<html>
+<head>
+<meta charset="utf-8">
+<title>Afica Prudential Registrars Plc :: Create New Client Company</title>
+<link rel="icon" href="../resources/images/lg.png" th:href="@{/images/lg.png}"/>
+<link rel="stylesheet" href="../resources/styles/vendor/pace-dataurl.css" th:href="@{/styles/vendor/pace-dataurl.css}"/> 
+<link rel="stylesheet" href="../resources/styles/mainstyle.css" th:href="@{/styles/mainstyle.css}"/> 
+<link rel="stylesheet" href="../resources/styles/vendor/foundation-datepicker.css" th:href="@{/styles/vendor/foundation-datepicker.css}"/> 
+
+<script th:src="@{/dmz/scripts/vendor/modernizr.js}"></script>
+</head>
+
+<body >
+<div class="row full-width">
+	<div class="large-12 small-12 columns text-center title">
+       <span id="title">Authorise Bond Offer Creation</span>
+    </div>
+    
+    <div class="row setupBondOffer">
+    	
+    
+    <!--confirm field-->
+    <div class="row confirm-field" style="display:block">
+    	<div class="large-7 large-push-1 columns" style="margin-top:2%;font-size:13px">
+        	<div class="row">
+            
+            	<div class="large-12 columns text-center" style="font-size:20px;font-weight:bold;padding-bottom:20px" th:text="'Company Name:'+${model.clientCompanyName}">                	
+                    Company Name:
+                
+                	Africa Prudential Registrars Plc.
+                </div>
+                
+                <div class="row">
+                    <div class="large-4 columns" style="padding-top:10px;font-weight:bold" id="confirm-details">
+                        Bond Title
+                    </div>
+                    <div class="large-8 columns" style="padding-top:10px" id="confirm-details">
+                        <span th:text="${model.title}"></span>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="large-4 columns" style="padding-top:10px;font-weight:bold" id="confirm-details" >
+                        Bond Unit Price
+                    </div>
+                    <div class="large-8 columns" style="padding-top:10px" id="confirm-details">
+                         <span th:text="${model.unitPrice}"></span>
+                    </div>
+                </div>
+                
+                <div class="row">
+                     <div class="large-4 columns" style="padding-top:10px;font-weight:bold" id="confirm-details" >
+                        Bond Maturity Date
+                    </div>
+                    <div class="large-8 columns" style="padding-top:10px" id="confirm-details">
+                         <span th:text="${model.bondMaturity}"></span>
+                    </div>
+                </div>
+                
+                <div class="row">
+                     <div class="large-4 columns" style="padding-top:10px;font-weight:bold" id="confirm-details">
+                        Bond Type
+                    </div>
+                    <div class="large-8 columns" style="padding-top:10px" id="confirm-details" >
+                        <span th:text="${model.bondType}"></span>
+                    </div>
+                </div>
+                
+                <div class="row">
+                     <div class="large-4 columns" style="padding-top:10px;font-weight:bold" id="confirm-details">
+                        Interest Rate
+                    </div>
+                    <div class="large-8 columns" style="padding-top:10px" id="confirm-details">
+                        <span th:text="${model.interestRate}"></span>
+                    </div>
+                </div>
+                
+                <div class="row">
+                     <div class="large-4 columns" style="padding-top:10px;font-weight:bold" id="confirm-details">
+                        Payment Plan
+                    </div>
+                    <div class="large-8 columns" style="padding-top:10px" id="confirm-details">
+                        <span th:text="${model.paymentPlan}"></span>
+                    </div>
+                </div>
+                
+                <div class="large-12 columns text-right" style="margin-top:20px;margin-bottom:10px">
+                	<input type="button" class="button decline" value="Decline"/>
+                        <input type="button" class="button authorise" value="Authorise Creation"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" class="code" th:value="${code}">
+<input type="hidden" th:value="@{/}" id="destination"/>
+
+<script  th:src="@{/scripts/vendor/jquery.js}"></script>
+<script  th:src="@{/scripts/vendor/foundation.min.js}"></script>
+<script>
+		$(document).foundation();
+		$(".decline").click(function(e) {
+            
+        });
+		
+		$(".authorise").click(function(e) {
+			$url = $("#destination").val()+"authorisation/clientcompany/bondoffer/authorise?code="+$(".code").val();
+			console.log($(".code").val());
+			console.log($url);
+            window.location.assign($url);
+        });
+	</script>
+</body>
+</html>

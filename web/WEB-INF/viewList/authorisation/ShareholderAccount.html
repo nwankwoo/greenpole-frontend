@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html ng-app = "createShareholderApp">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Africa Prudential Registrars Plc :: Create Shareholder Account</title>
+<link rel="icon" href="../resources/images/lg.png" th:href="@{/images/lg.png}"/>
+<link rel="stylesheet" href="../resources/styles/vendor/pace-dataurl.css" th:href="@{/styles/vendor/pace-dataurl.css}"/> 
+<link rel="stylesheet" href="../resources/styles/mainstyle.css" th:href="@{/styles/mainstyle.css}"/> 
+<link rel="stylesheet" th:href="@{/styles/vendor/foundation-datepicker.css}"/> 
+
+<script src="../resources/scripts/vendor/modernizr.js" th:src="@{/scripts/vendor/modernizr.js}"></script>
+
+
+</head>
+
+<body ng-controller="createShareholderController">
+<div class="row full-width">
+    	<div class="large-12 small-12 columns text-center title">
+        	<span id="title">Authorise Shareholder Account Creation</span>
+        </div>
+        
+        <div class="row error-alert"  style="padding-bottom:5px;padding-left:15px;width:60%;display:none;margin:5px;margin-top:5%">
+        
+        
+        <!--confirm Details-->
+         <div class="row confirm-details" style="margin-top:3%;padding-top:3%;font-size:13px;display:block">
+        	<div class="large-8 large-offset-2 columns">
+            	
+                	
+                	<div class="row">
+                    <fieldset>
+                    <legend style="width:100%;background:#d52e36;color:#fff;padding-top:10px;padding-bottom:10px;padding-left:5px;padding-right:5px">Shareholder Name</legend>
+                    	<div class="large-4 columns" id="confirm-details">
+                        	First Name
+                        </div>
+                        <div class="large-8 columns" id="confirm-entries">
+                        	{{ shareholderFirstName }}
+                        </div>
+                        
+                        <div class="large-4 columns" id="confirm-details">
+                        	Middle Name
+                        </div>
+                        <div class="large-8 columns" id="confirm-entries">
+                        	{{ shareholderMiddleName }}
+                        </div>
+                        
+                        <div class="large-4 columns" id="confirm-details">
+                        	Last Name
+                        </div>
+                        <div class="large-8 columns" id="confirm-entries">
+                        	{{ shareholderLastName }}
+                        </div>
+                       </fieldset> 
+                    </div>
+                    
+                    <div class="row" style="padding-top:10px;margin-left:0px;margin-right:0px">
+                    	<div class="large-4 columns" id="confirm-details">
+                        	Shareholder Type
+                        </div>
+                        <div class="large-8 columns" id="confirm-entries">
+                        	{{ shareholderType.type }}
+                        </div>
+                        
+                        <div class="large-4 columns" id="confirm-details">
+                        	Shareholder Gender
+                        </div>
+                        <div class="large-8 columns" id="confirm-entries">
+                        	{{ gender || 'Female'}}
+                        </div>
+                        
+                        <div class="large-4 columns" id="confirm-details">
+                        	Date of Birth
+                        </div>
+                        <div class="large-8 columns" id="confirm-entries">
+                        	{{ shareholderDateOfBirth }}
+                        </div>
+                        
+                         <div class="large-4 columns" id="confirm-details">
+                        	Share Unit
+                        </div>
+                        <div class="large-8 columns" id="confirm-entries" style="float:left" style="padding-top:10px">
+                        	{{ shareUnit }}
+                        </div>
+                        
+                        <div class="large-4 columns" id="confirm-details">
+                        	Select Stockbroker
+                        </div>
+                        <div class="large-8 columns" id="confirm-entries">
+                        	{{ stockbroker.name }}
+                        </div>
+                        
+                    </div>
+                    
+                    
+                    <div class="row" style="padding-top:10px">
+                     <fieldset class="addressFieldSet">
+                                <legend style="width:100%;background:#d52e36;color:#fff;padding-top:10px;padding-bottom:10px;padding-left:5px;padding-right:5px">Contact Details</legend>
+                                <div class="row addressDetails" style="background:#fff;margin:5px;padding:10px">
+                                <div class="large-12 columns" style="background:#d52e36;color:#fff;">
+                                
+                                	<div class="row" style="padding:0;margin:0">
+                                    	<div class="large-4 columns addressLabelNumber" style="padding-top:10px;font-size:14px;font-weight:bold;padding-left:20px">Residential Address</div>
+                                       
+                                        <div class="large-4 columns addressLabel" style="padding-top:10px;float:right">
+                                        	Make Primary
+                                            <span style="margin-left:15px;padding-top:40px"> 
+                                            	<input type="radio" name="addresses[0].primaryAddress" class="confirmMakePrimary" disabled checked/>&nbsp;
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="large-4 columns" id="confirm-details"  style="box-shadow:none">
+                                    Address
+                                </div>
+                                <div class="large-8 columns" id="confirm-entries" style="height:auto">
+                                    <div class="row">
+                                    	<div class="large-12 columns" style="padding-bottom:5px">
+                                        	<small >Line One</small>
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	{{ residentialAddressLineOne }}
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	<small >Line Two</small>
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	{{ residentialAddressLineTwo }}
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	<small >Line Three</small>
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	{{ residentialAddressLineThree }}
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	<small>Line Four</small>
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	{{ residentialAddressLineFour }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="large-4 columns" id="confirm-details">
+                                    Post Code
+                                </div>
+                                <div class="large-8 columns" id="confirm-entries">
+                                    {{ residentialAddressPostCode }}
+                                </div>
+                                <div class="large-4 columns" id="confirm-details">
+                                    City
+                                </div>
+                                <div class="large-8 columns" id="confirm-entries">
+                                    {{ residentialAddressCity }}
+                                </div>
+                                 <div class="large-4 columns" id="confirm-details">
+                                    State
+                                </div>
+                                <div class="large-8 columns" id="confirm-entries">
+                               	 	{{ residentialAddressState }}
+                                </div>
+                                 <div class="large-4 columns" id="confirm-details">
+                                    Country
+                                </div>
+                                <div class="large-8 columns" id="confirm-entries">
+                                   {{ residentialAddressCountry }}                                     
+                                </div>
+                                </div>
+                                
+                                
+                                <!--Postal Address-->
+                               <!-- 	<div class="row addressDetails" style="background:#fff;margin:5px;padding:10px;margin-top:20px">
+                                <div class="large-12 columns" style="background:#d52e36;color:#fff;">
+                                
+                                	<div class="row" style="padding:0;margin:0">
+                                    	<div class="large-4 columns addressLabelNumber" style="padding-top:10px;font-size:14px;font-weight:bold;padding-left:20px" >Postal Address</div>
+                                       
+                                        <div class="large-4 columns addressLabel" style="padding-top:10px;float:right">
+                                        	Make Primary
+                                            <span style="margin-left:15px;padding-top:40px"> 
+                                            	<input type="radio" name="addresses[0].primaryAddress"  disabled class="confirmMakePrimary"/>&nbsp;
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="large-4 columns" id="confirm-details" style="box-shadow:none">
+                                    Address
+                                </div>
+                                <div class="large-8 columns" id="confirm-entries" style="height:auto">
+                                    <div class="row">
+                                    	<div class="large-12 columns" style="padding-bottom:5px">
+                                        	<small >Line One</small>
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	{{ postalAddressLineOne }}
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	<small >Line Two</small>
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	{{ postalAddressLineTwo }}
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	<small >Line Three</small>
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	{{ postalAddressLineThree }}
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	<small>Line Four</small>
+                                        </div>
+                                        <div class="large-12 columns" style="padding-bottom:5px">
+                                        	{{ postalAddressLineFour }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="large-4 columns" id="confirm-details">
+                                    Post Code
+                                </div>
+                                <div class="large-8 columns" id="confirm-entries">
+                                    {{ postalAddressPostCode }}                                   
+                                </div>
+                                <div class="large-4 columns" id="confirm-details">
+                                   City
+                                </div>
+                                <div class="large-8 columns" id="confirm-entries">                                   
+                                   {{ postalAddressCity }}
+                                </div>
+                                 <div class="large-4 columns" id="confirm-details">
+                                  State
+                                </div>
+                                <div class="large-8 columns" id="confirm-entries">
+                                    {{ postalAddressState }}
+                                </div>
+                                 <div class="large-4 columns" id="confirm-details">
+                                    Country
+                                </div>
+                                <div class="large-8 columns" id="confirm-entries">
+                                    {{ postalAddressCountry }}
+                                </div>
+                                </div>-->
+                                <!--Postal Address-->
+                                
+                       <div class="row" style="padding:20px">         
+                	<div class="large-4 columns" id="confirm-details" style="box-shadow:none">
+                    	Email Address
+                    </div>
+                    <div class="large-8 columns">
+                    	<div class="row">
+                            <div class="large-12 columns"   id="confirm-details">
+                            	<small>Email Address One</small> 
+                               <small style="color:red;float:right" >Primary Email Address:&nbsp;<input type="radio"  class="confirmmakePrimaryEmail" disabled checked/>&nbsp;</small><br/>
+                            	<span style="font-size:13px">{{ holderEmailAddressOne }}</span>
+                            </div>
+                            <!-- <div class="large-12 columns"  id="confirm-details">
+                             	<small>Email Address Two</small>
+                                <small style="color:red;float:right" >Primary Email Address:&nbsp;<input type="radio"  class="confirmmakePrimaryEmail" disabled/>&nbsp;</small><br/>
+                               <span style="font-size:13px">{{ holderEmailAddressTwo }}</span>
+                            </div>-->
+                        </div>
+                    </div>
+               </div>
+               
+               
+                <div class="row" style="padding:20px">         
+                	<div class="large-4 columns" id="confirm-details" style="box-shadow:none">
+                    	Phone Number
+                    </div>
+                    <div class="large-8 columns">
+                    	<div class="row">
+                            <div class="large-12 columns"   id="confirm-details">
+                            	<small>Phone Number One</small> 
+                               <small style="color:red;float:right" >Primary Number:&nbsp;<input type="radio"  class="confirmmakePrimaryNumber" disabled checked/>&nbsp;</small><br/>
+                            	<span style="font-size:13px">{{ holderPhoneNumberOne }}</span>
+                            </div>
+                            <!-- <div class="large-12 columns"  id="confirm-details">
+                             	<small>Phone Number Two</small>
+                                <small style="color:red;float:right" >Primary Number:&nbsp;<input type="radio"  class="confirmmakePrimaryNumber" disabled/>&nbsp;</small><br/>
+                               <span style="font-size:13px">{{ holderPhoneNumberTwo }}</span>
+                            </div>-->
+                        </div>
+                    </div>
+               </div>
+               
+                            </fieldset>
+                    </div>
+                    
+                     <div class="row" style="padding-top:10px;margin-left:8px;margin-right:8px">
+                    	<div class="large-4 columns" id="confirm-details">
+                        	Tax Exempted
+                        </div>
+                        <div class="large-8 columns" id="confirm-entries">
+                        	<input type="checkbox" ng-checked="taxExempted" disabled>&nbsp;Tax Exempted
+                        </div>
+                        
+                        <div class="large-4 columns" id="confirm-details">
+                        	Client Company
+                        </div>
+                        <div class="large-8 columns" id="confirm-entries">
+                        	{{ clientCompany.name }}
+                        </div>
+                        
+                         <div class="large-4 columns" id="confirm-details">
+                        	CHN Number
+                        </div>
+                        <div class="large-8 columns" id="confirm-entries">
+                        	{{ CHNNumber }}
+                        </div>
+                        
+                        <div class="large-4 columns" id="confirm-details">
+                        	ESOP Status
+                        </div>
+                        <div class="large-8 columns" id="confirm-entries">
+                        	<input type="checkbox" ng-checked="esop" disabled>&nbsp;ESOP
+                        </div>
+                        
+                    </div>
+                    <div class="row" style="margin-top:20px">
+                       <div class="large-12 columns text-right">
+                           <input type="button" class="button decline" value="Decline"/>
+                        <input type="button" class="button authorise" value="Authorise Creation"/>
+                       </div>
+                   </div>
+            </div>
+        </div>
+        <!--confirm Details-->
+</div>
+
+</body>
+<input type="text" class="code" th:value="${code}">
+<input type="hidden" th:value="@{/}" id="destination"/>
+
+<script  th:src="@{/scripts/vendor/jquery.js}"></script>
+<script  th:src="@{/scripts/vendor/foundation.min.js}"></script>
+<script>
+		$(document).foundation();
+		$(".decline").click(function(e) {
+            
+        });
+		
+		$(".authorise").click(function(e) {
+			$url = $("#destination").val()+"authorisation/holder/shareholder/authorise?code="+$(".code").val();
+			console.log($(".code").val());
+			console.log($url);
+            window.location.assign($url);
+        });
+	</script>
+</html>

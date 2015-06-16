@@ -1,0 +1,146 @@
+<!doctype html >
+<html ng-app="setupInitialPublicOffer">
+<head><!---->
+<meta charset="utf-8">
+<title>Afica Prudential Registrars Plc :: Setup Initial Public Offer</title>
+<link rel="icon" href="../resources/images/lg.png" th:href="@{/images/lg.png}"/>
+<link rel="stylesheet" href="../resources/styles/vendor/pace-dataurl.css" th:href="@{/styles/vendor/pace-dataurl.css}"/> 
+<link rel="stylesheet" href="../resources/styles/mainstyle.css" th:href="@{/styles/mainstyle.css}"/> 
+<link rel="stylesheet" href="../resources/styles/vendor/foundation-datepicker.css" th:href="@{/styles/vendor/foundation-datepicker.css}"/> 
+
+<script th:src="@{/dmz/scripts/vendor/modernizr.js}"></script>
+</head>
+<!---->
+<body ng-controller="setupInitialPublicOfferController">
+<div class="row full-width">
+	<div class="large-12 small-12 columns text-center title">
+       <span id="title">Authorise Initial Public Offer</span>
+    </div>
+    
+    <div class="row setupInitialPublicOffer">
+    	
+    
+    <!--confirm field-->
+    <div class="row confirm-field" style="display:block">
+    	<div class="large-7 large-push-1 columns" style="margin-top:1%;font-size:13px">
+        	<div class="row" >
+            
+            	<div class="large-12 columns text-center" style="font-size:20px;font-weight:bold;padding-bottom:20px">                	
+                    Company Name:
+                
+                	Africa Prudential Registrars Plc.
+                </div>
+                <div class="row" >
+                    <div class="large-4 columns" id="confirm-details">
+                        Total Shares on Offer
+                    </div>
+                    <div class="large-8 columns" id="confirm-entries" style="margin-top:10px">
+                         <span th:text="${model.totalSharesOnOffer}"></span>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="large-4 columns" style="margin:0;font-weight:bold;padding-left:10px;padding-right:0;background:#fff;margin-top:10px" id="confirm-details">
+                        Method of Offer
+                    </div>
+                    <div class="large-8 columns" id="confirm-entries">
+                       <span th:text="${model.methodOfOffer}"></span>
+                    </div>
+                </div>
+                
+                <div class="row">
+                <div class="large-4 columns" style="margin:0;font-weight:bold;padding-left:10px;padding-right:0;background:#fff;margin-top:10px" id="confirm-details">
+                    Starting Minimum Subscription
+                </div>
+                <div class="large-8 columns" id="confirm-entries">
+                	<span th:text="${model.startingMinimumSubscription}"></span>
+                </div>
+                </div>
+                
+                <div class="row">
+                <div class="large-4 columns" style="margin:0;font-weight:bold;padding-left:10px;padding-right:0;background:#fff;margin-top:10px" id="confirm-details">
+                   Continuing Minimum Subscription <small style="float:right;padding-right:10px"><strong>(Multiples)</strong></small>
+                </div>
+                <div class="large-8 columns" id="confirm-entries" style="height:52px">
+                	<span th:text="${model.continuingMinimumSubscription}"></span>
+                </div>
+                </div>
+                
+                <div class="row">
+                <div class="large-4 columns" style="margin:0;font-weight:bold;padding-left:10px;padding-right:0;background:#fff;margin-top:10px" id="confirm-details">
+                    Offer Price
+                </div>
+                <div class="large-8 columns" id="confirm-entries">
+                	<span th:text="${model.offerPrice}"></span>
+                </div>
+                </div>
+                
+                <div class="row">
+                     <div class="large-4 columns" style="margin:0;font-weight:bold;padding-left:10px;padding-right:0;background:#fff;margin-top:10px" id="confirm-details">
+                        Offer Size
+                    </div>
+                    <div class="large-8 columns" id="confirm-entries">
+                        <span th:text="${model.offerSize}"></span>
+                    </div>
+                </div>
+                
+                <div class="row">
+                     <div class="large-4 columns" style="margin:0;font-weight:bold;padding-left:10px;padding-right:0;background:#fff;margin-top:10px" id="confirm-details">
+                        Opening Date
+                    </div>
+                    <div class="large-8 columns" id="confirm-entries">
+                        <span th:text="${model.openingDate}"></span>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="large-4 columns" style="margin:0;font-weight:bold;padding-left:10px;padding-right:0;background:#fff;margin-top:10px" id="confirm-details">
+                        Closing Date
+                    </div>
+                    <div class="large-8 columns" id="confirm-entries">
+                        <span th:text="${model.closingDate}"></span>
+                    </div>
+                </div>
+                
+               <!-- <div class="row">
+                    <div class="large-4 columns" style="margin:0;font-weight:bold;padding-left:10px;padding-right:0;background:#fff;margin-top:10px;height:43px" id="confirm-details">
+                        Offer Duration
+                    </div>
+                    <div class="large-8 columns" id="confirm-entries">
+                        {{ offerDuration }}
+                    </div>
+                </div>	-->
+                    
+                
+                <div class="large-12 columns text-right" style="margin-top:10px;margin-bottom:10px">
+                    	<input type="button" class="button decline" value="Decline"/>
+                        <input type="button" class="button authorise" value="Authorise Creation"/>
+                </div>
+            </div>
+        </div>
+        
+        
+    </div>
+</div>
+<input type="hidden" class="code" th:value="${code}">
+<input type="hidden" th:value="@{/}" id="destination"/>
+
+<script  th:src="@{/scripts/vendor/jquery.js}"></script>
+<script  th:src="@{/scripts/vendor/foundation.min.js}"></script>
+
+<script>
+		$(document).foundation();
+		$(".decline").click(function(e) {
+            
+        });
+		
+		$(".authorise").click(function(e) {
+			$url = $("#destination").val()+"authorisation/clientcompany/initialpublicoffer/authorise?code="+$(".code").val();
+			console.log($(".code").val());
+			console.log($url);
+            window.location.assign($url);
+        });
+       
+	</script>
+</body>
+</html>
