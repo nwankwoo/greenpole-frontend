@@ -18,8 +18,8 @@ a{font-size:0.7em}
 .menu{font-weight:bold;width:100%;text-align:center;color:#fff;padding-top:10px;padding-bottom:10px;border-bottom:1px solid #fff}
 small{color:#000;font-weight:bold;font-size:0.7em;padding-left:2px}
 .viewName{color:#fff;font-weight:bold;font-size:2em;padding-top:5px;padding-bottom:10px;text-shadow:1px 1px 1px #000}
-#notification i {font-size:20px;padding-top:10px}
-.notification-count{background:#333;display:inline;top:15px;position:absolute;line-height:10px;left:25px;border:1px solid #fff;color:#fff;font-weight:bold;font-family:gothic;font-size:0.8em;padding:2px}
+#notification i {font-size:27px;margin-top:50px}
+.notification-count{background:#d52e36;display:inline;top:15px;position:absolute;line-height:10px;left:25px;border:1px solid #fff;color:#fff;font-weight:bold;font-family:gothic;font-size:0.8em;padding:2px;padding-right:5px;padding-left:5px}
 #settings{font-weight:bold;font-size:0.6em;font-family:gothic}
 span.last-login{font-weight:bold;font-size:0.54em;color:#d52e36;}
 span.username{font-weight:bold;font-size:0.6em}
@@ -39,3 +39,5 @@ input{margin:0}
 .arrows{font-size: 30px;color:rgba(213,46,54,0.8);text-shadow: 1px 4px 6px #FFF,0 0 0 #000,1px 4px 6px #FFF; cursor:pointer}
 .arrows:hover{font-size: 30px;color:rgba(213,46,54,1)}
 .bar{width:24px;height:4px;background:#fff;margin-bottom:3px;border-radius:3px}
+.style5{font-size:70px;color:rgba(0,0,0,0.25);text-shadow:1px 1px 1px #000}
+.style4{text-shadow:0 1px 3px rgba(0,0,0,0.25);color:#fff;}

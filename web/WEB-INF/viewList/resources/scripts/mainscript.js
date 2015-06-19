@@ -4,7 +4,7 @@
     $(".full-height").css("height",$(document).height()); 
     $(".sub-window").css("height",$(document).height()); 
     $("iframe").css("height",$(document).height()); 
-    $("iframe").css("height",$(document).height()-100); 
+    $("iframe").css("height",$(window).height()); 
     $(document).ready(function() {
         store.get('src', function(ok, val) {
             if (ok)

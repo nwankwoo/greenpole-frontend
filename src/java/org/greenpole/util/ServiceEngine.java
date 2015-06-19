@@ -119,7 +119,7 @@ public class ServiceEngine {
         Object serviceURL = httpSession.getAttribute(localpart);
         
         if(serviceURL == null){
-            httpSession.setAttribute(localpart, "http://100.100.100.139:7001/greenpole-engine/"+localpart+"?wsdl");
+            httpSession.setAttribute(localpart, "http://192.168.1.121:7001/greenpole-engine/"+localpart+"?wsdl");
             serviceURL = httpSession.getAttribute(localpart);
         }        
         return serviceURL.toString();

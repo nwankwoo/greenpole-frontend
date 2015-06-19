@@ -23,11 +23,11 @@
             
             <section class="top-bar-section" style="background-color:#fff">
             	<ul class="right">
-                <li style="margin-top:-5px;backgrond-color:#d52e36" class="has-dropdown"><a href="#" id="notification"><i class="fi-web"></i><span class="notification-count">10</span></a> 
+                <li style="margin-top:-5px;backgrond-color:#d52e36" class="has-dropdown"><a href="#" id="notification"><i class="fi-clipboard-notes style4"></i><span class="notification-count" th:text="${notification.size()}">10</span></a> 
                 
                 <ul class="dropdown user-settings" >
                       <li th:each="note : ${notification}">
-                      		<a href="#" id="notelist" th:text="${note.messageTag}" th:attr="from=${note.from} , to=${note.to}, code=${note.code}" class="notification"></a>
+                      		<a href="#" id="notelist" th:text="${note.description}" th:attr="from=${note.from} , to=${note.to}, code=${note.code}" class="notification"></a>
                       </li>
                 </ul>
                 
@@ -136,7 +136,13 @@
 <script src="resources/scripts/vendor/pace.min.js" th:src="@{/scripts/vendor/playsound.js}"></script>
 <script src="resources/scripts/mainscript.js" th:src="@{/scripts/mainscript.js}"></script>
 <script src="resources/scripts/utility.js" th:src="@{/scripts/utility.js}"></script>
-<script>
+<script th:inline="javascript">
+var notificationList = [[${notification}]]
+var codeList = [];
+$.each(notificationList,function(i,v){
+	codeList.push(v.code);
+});
+
 	var $applicationMenuList = $(".applicationMenuList"),
 		$applicationMenuListLi = $applicationMenuList.children("li");
 		$applicationMenuListLi.sort(function(a,b){
@@ -152,8 +158,8 @@
 	return 0;
 });
 $applicationMenuListLi.detach().appendTo($applicationMenuList);
-
-$(".viewgroupmenu").each(function(index, element) {
+$(function(){
+	$(".viewgroupmenu").each(function(index, element) {
     var $viewgroupmenu = $(".viewgroupmenu").eq(index),
 		$viewgroupmenuLi = $viewgroupmenu.children("li");
 		
@@ -182,7 +188,7 @@ function getNotifications(){
 			url : 'getNotification',
 		})
 		.done(function(data){
-			$.playSound($("#notificationsound").text());
+			
 			processNotification(data);
 			
 		});
@@ -190,8 +196,32 @@ function getNotifications(){
 }
 
 function processNotification(data){
-	console.log(data)
+	var newCode = [];
+	var alienCode = [];
+	$.each(data,function(i,v){
+		newCode.push(v.code);
+	});
+	
+	$.each(newCode,function(i,v){
+		if($.inArray(v,codeList)==-1){
+			alienCode.push(v);
+			codeList.push(v);
+		}
+	});
+	
+	console.log("codeList");
+	console.log(codeList);
+	console.log("newCode");
+	console.log(newCode);
+	console.log("alienCode");
+	console.log(alienCode);
+	if(alienCode.length>0){
+		$("#notification-count").text(alienCode.length);
+		$.playSound($("#notificationsound").text());
+	}
 }
+});
+
 </script>
 </body>
 </html>
