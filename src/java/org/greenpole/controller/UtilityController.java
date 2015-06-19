@@ -2,9 +2,12 @@ package org.greenpole.controller;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import org.greenpole.util.DataStore;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
 import org.greenpole.entity.model.clientcompany.UnitTransfer;
 import org.greenpole.entity.model.holder.Holder;
@@ -12,6 +15,7 @@ import org.greenpole.entity.model.holder.HolderMerger;
 import org.greenpole.entity.model.holder.HolderSignature;
 import org.greenpole.entity.model.holder.PowerOfAttorney;
 import org.greenpole.entity.notification.NotificationWrapper;
+import org.greenpole.entity.response.Response;
 import org.greenpole.util.CastorOil;
 import org.greenpole.util.ServiceEngine;
 import org.greenpole.util.Utility;
@@ -199,5 +203,33 @@ public class UtilityController {
         }
         //System.out.println("viewName =".concat(viewName));
         return mv;
+    }
+    
+    @RequestMapping(value = {"getNotification"}, method = RequestMethod.GET)
+    public @ResponseBody List getNotifications(ServiceEngine serviceEngine,DataStore dataStore,HttpSession session,
+            Utility util){
+        Response response = null;
+        List<NotificationWrapper> notifications = new ArrayList();
+        try {
+            response = serviceEngine.sendGeneralRequest(session, null, ServiceEngine.GET_NOTIFICATIONS);
+        
+            if(response!=null){
+                 notifications = (List<NotificationWrapper>) response.getBody();
+                if(notifications == null){
+                    notifications = new ArrayList();                
+                    dataStore.saveObject("notifications", notifications, session);
+                    for(NotificationWrapper notification : notifications){
+                        if(notification.getMessageTag().contains("Authorisation")){
+                            notification.setMessageTag("Authorisation Request From "+notification.getFrom());
+                        }
+                        System.out.println(util.convertObjectToJSONString(notification));
+                    }
+                }
+                
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return notifications;
     }
 }

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html ng-app="createAdministrator">
+<head>
+<meta name="_csrf" th:content="${_csrf.token}"/>
+<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Afica Prudential Registrars Plc :: Apply for Initial Public Offer</title>
+<link rel="icon" th:href="@{/images/lg.png}"/>
+<link rel="stylesheet" th:href="@{/styles/vendor/pace-dataurl.css}"/> 
+<link rel="stylesheet" th:href="@{/styles/mainstyle.css}"/> 
+<link rel="stylesheet" th:href="@{/styles/vendor/foundation-datepicker.css}"/> 
+
+<script th:src="@{/scripts/vendor/modernizr.js}"></script>
+
+</head>
+
+<body ng-controller="createAdministratorController">
+<div class="row full-width">
+    	<div class="large-12 small-12 columns text-center title">
+        	<span id="title">Apply for Initial Public Offer</span>
+        </div>
+</div>
+<form th:action= "'../'+${formAction} + '&' + ${_csrf.parameterName}  + '='+ ${_csrf.token}" data-abide method="post" class="createAdministratorForm full-width" th:object="${uploadHolderSignature}" style="padding-left:10px;padding-right:10px">
+
+<div class="row full-width upload-signature" style="font-size:13px;padding-top:10px;margin-left:10px;margin-right:20px">
+	<!--large-8-->
+    <div class="large-8 columns">
+    	<input type="hidden" value="1" name="holderId" />
+        
+    	<div class="row">
+        	<div class="large-4 columns" id="confirm-details">Holder's Name</div>
+            <div class="large-8 columns" id="confirm-entries">
+            	<span th:text="${holder.firstName}+' '+${holder.middleName}+' '+${holder.lastName}"></span>
+            </div>
+        </div>
+        
+        <!--row-->
+        <div class="row">
+        	<div class="large-4 columns" id="confirm-details">Holder's Address</div>
+            
+            <!--large-8-->
+            <div class="large-8 columns" id="confirm-entries" style="height:auto">
+            	
+                <!--row-->
+                <div class="row">
+                	<div class="large-12 columns">
+                    	<span th:text="${holder.residentialAddresses[0].addressLine1}"></span>
+                    </div>
+                    <div class="large-12 columns">
+                    	<span th:text="${holder.residentialAddresses[0].addressLine2}"></span>
+                    </div>
+                    <div class="large-12 columns">
+                    	<span th:text="${holder.residentialAddresses[0].addressLine3}"></span>
+                    </div>
+                    <div class="large-12 columns">
+                    	<span th:text="${holder.residentialAddresses[0].addressLine4}"></span>
+                    </div>
+                    <div class="large-12 columns">
+                    	<span th:text="${holder.residentialAddresses[0].postCode}"></span>
+                    </div>
+                    <div class="large-12 columns">
+                    	<span th:text="${holder.residentialAddresses[0].city}"></span>
+                    </div>
+                    <div class="large-12 columns">
+                    	<span th:text="${holder.residentialAddresses[0].state}"></span>
+                    </div>
+                    <div class="large-12 columns">
+                    	<span th:text="${holder.residentialAddresses[0].country}"></span>
+                    </div>
+                </div>
+                <!--end of row-->
+                
+            </div>
+            <!--end of large-8-->
+            
+        </div>
+        <!--row-->
+        <div class="large-12 columns" style="margin-top:30px">
+            <div class="row">
+            	<div class="large-3 columns" style="padding-top:10px">
+                	<span class="required" style="color:red">*</span>&nbsp;Issuer
+                </div>
+                <div class="large-8 columns">
+                	<select>
+                    	<option value="0">Select Issuer</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="row" style="margin-top:10px">
+            	<div class="large-3 columns" style="padding-top:10px">
+                	<span class="required" style="color:red">*</span>&nbsp;Share Units Subscribe
+                </div>
+                <div class="large-8 columns">
+                	<input type="text"/>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <!--end of large-8-->
+    
+</div>
+</form>
+</body>
+</html>

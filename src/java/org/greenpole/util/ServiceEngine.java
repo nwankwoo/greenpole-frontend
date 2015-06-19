@@ -22,6 +22,7 @@ import org.greenpole.entity.model.holder.HolderMerger;
 import org.greenpole.entity.model.holder.HolderSignature;
 import org.greenpole.entity.model.holder.PowerOfAttorney;
 import org.greenpole.entity.model.holder.QueryHolder;
+import org.greenpole.entity.model.holder.QueryHolderConsolidation;
 import org.greenpole.entity.response.Response;
 import org.greenpole.entity.security.Login;
 import org.greenpole.service.ClientCompanyComponentService;
@@ -50,6 +51,10 @@ public class ServiceEngine {
     public static final int EDIT_CLIENT_COMPANY = 8;
     public static final int GET_SHARE_QUOTATION = 9;
     
+    /**
+     * Holder Basic Request Constants
+     */
+    public static final int QUERY_SINGLE_HOLDER = 0;
     public static final int CREATE_SHAREHOLDER_ACCOUNT = 1;
     public static final int CREATE_BONDHOLDER_ACCOUNT = 2;
     public static final int UPLOAD_HOLDER_SIGNATURE = 3;
@@ -62,10 +67,17 @@ public class ServiceEngine {
     public static final int TRANSFER_BOND_UNIT = 10;
     public static final int QUERY_BOND_HOLDER = 11;
     public static final int DEMERGE_SHAREHOLDER_ACCOUNT = 12;
-    public static final int QUERY_ALL_SHARE_HOLDER_ACCOUNT = 13;
+    public static final int QUERY_ALL_SHARE_HOLDER_ACCOUNT = 13;    
+    public static final int VIEW_REPORT_ON_ACCOUNT_CONSOLIDATION = 14;
     
+    /**
+     * General Request Notification
+     */
     public static final int GET_NOTIFICATIONS = 1;
     
+    /**
+     * Client Company Authorise/Decline Constant
+     */
     public static final int AUTHORISE_CLIENT_COMPANY_CREATION = 1;
     public static final int DECLINE_CLIENT_COMPANY_CREATION = 2;
     public static final int AUTHORISE_SETUP_BOND_OFFER = 3;
@@ -79,8 +91,9 @@ public class ServiceEngine {
     public static final int AUTHORISE_CLIENT_COMPANY_DETAILS_EDIT = 11;
     public static final int DECLINE_CLIENT_COMPANY_DETAILS_EDIT = 12;
     
-    
-    public static final int QUERY_SINGLE_HOLDER = 0;
+    /**
+     * Holder Authorise/Decline Value Constants
+     */    
     public static final int AUTHORISE_SHAREHOLDER_ACCOUNT_CREATION = 1;
     public static final int DECLINE_SHAREHOLDER_ACCOUNT_CREATION = 2;
     public static final int AUTHORISE_BONDHOLDER_ACCOUNT_CREATION = 3;
@@ -196,48 +209,67 @@ public class ServiceEngine {
         Response response;
         response = null;
         Login login = this.retriveLoginDetails();
+       
         switch(requestMethod){
+            //QUERY_SINGLE_HOLDER
             case 0:
                 response = port.queryHolder_Single_Request(login, (int) requestObject);
                 break;
+            //CREATE_SHAREHOLDER_ACCOUNT    
             case 1:
                 response = port.createShareHolder_Request(login, "akinwale.agbaje@africaprudentialregistrars.com", (Holder) requestObject);
                 break;
+            //CREATE_BONDHOLDER_ACCOUNT    
             case 2:
                 response = port.createBondHolderAccount_Request(login, "akinwale.agbaje@africaprudentialregistrars.com", (Holder) requestObject);
                 break;
+            //UPLOAD_HOLDER_SIGNATURE
             case 3:
                 response = port.uploadHolderSignature_Request(login, "akinwale.agbaje@africaprudentialregistrars.com", (HolderSignature) requestObject);
                 break;
+            //CREATE_ADMINISTRATOR
             case 4:
                 response = port.createAdministrator_Request(login, "akinwale.agbaje@africaprudentialregistrars.com", (Holder) requestObject);
                 break;
+            //UPLOAD_POWER_OF_ATTORNEY
             case 5:
                 response = port.uploadPowerOfAttorney_Request(login, "akinwale.agbaje@africaprudentialregistrars.com", (PowerOfAttorney) requestObject);
                 break;
+            //TRANSPOSE_HOLDER_NAME    
             case 6:
                 response = port.transposeHolderName_Request(login, "akinwale.agbaje@africaprudentialregistrars.com", (Holder) requestObject);
                 break;
+            //QUERY_SHAREHOLDER_ACCOUNT    
             case 7:
                 response = port.queryHolder_Request(login, (QueryHolder) requestObject);
                 break;
+            //MERGE_SHAREHOLDER_ACCOUNT    
             case 8:
                 response = port.mergeHolderAccounts_Request(login, "akinwale.agbaje@africaprudentialregistrars.com", (HolderMerger) requestObject);
                 break;
+            //TRANSFER_SHARE_UNIT    
             case 9:
                 response = port.transferShareUnitManual_Request(login, "akinwale.agbaje@africaprudentialregistrars.com", (UnitTransfer) requestObject);
                 break;
+            //TRANSFER_BOND_UNIT    
             case 10:
                 response = port.transferBondUnitManual_Request(login, "akinwale.agbaje@africaprudentialregistrars.com", (UnitTransfer) requestObject);
                 break;
+            //QUERY_BOND_HOLDER    
             case 11:
                 response = port.queryHolder_Request(login, (QueryHolder) requestObject);
                 break;
+            //DEMERGE_SHAREHOLDER_ACCOUNT    
             case 12:
                 response = port.demergeHolderAccounts_Request(login, "akinwale.agbaje@africaprudentialregistrars.com", (HolderMerger) requestObject);
                 break;
+            //QUERY_ALL_SHARE_HOLDER_ACCOUNT    
             case 13:
                 response = port.queryHolder_Request(login, (QueryHolder) requestObject);
+                break;
+            //VIEW_REPORT_ON_ACCOUNT_CONSOLIDATION    
+            case 14:
+                response = port.viewAccountConsolidation_request(login, (QueryHolderConsolidation) requestObject);
                 break;
             default:
                 break;

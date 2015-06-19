@@ -37,8 +37,8 @@
                                             Logout successfull.
                                             <a href="#" class="close">&times;</a>
                                         </div>
-                                        <div data-alert="" th:case="'session_expire'" class="alert-box info radius" style="margin-top:5px;color:white;text-shadow: 1px 1px 1px #000">
-                                            Your session has expired due to inactivity or your account is currently logged in somewhere else. Please log in again to continue.
+                                        <div data-alert="" th:case="'max-exceeded'" class="alert-box info radius" style="margin-top:5px;color:white;text-shadow: 1px 1px 1px #000">
+                                            Your  account is currently logged in somewhere else. Please log in again to continue.
                                             <a href="#" class="close">&times;</a>
                                         </div>
                                     </div>
@@ -48,7 +48,7 @@
                                         </div>
                                         <div class="small-12 medium-12 large-8 columns email-field" style="margin-left:0;padding-left:0">
                                         	<label for="email">                                            
-                                                   <input type="email" id="email" name="username" placeholder="E-mail Address" required=""/>
+                                                   <input type="email" id="email" name="username" placeholder="E-mail Address" required/>
                                             </label>
                                             <small class="error">Valid email required</small>
                                         </div>
@@ -60,7 +60,7 @@
                                         </div>
                                         <div class="small-12 medium-12 large-8 columns" style="margin-left:0;padding-left:0">
                                             <label for="password">
-                                            <input type="password" id="password" name="password" placeholder="Password" required=""/>
+                                            <input type="password" id="password" name="password" placeholder="Password" required/>
                                             </label>
                                             <small class="error">Password required</small>
                                         </div>
@@ -90,14 +90,14 @@
             	<span >&copy; 2015, Africa Prudential Registrars Plc. All Rights Reserved.</span>
             </div>
         </div>
-        <script src="resources/scripts/vendor/vendor/jquery.js" th:src="@{/dmz/scripts/vendor/jquery.js}"></script>
-        <script src="resources/scripts/vendor/foundation/foundation.min.js" th:src="@{/dmz/scripts/vendor/foundation.min.js}"></script>
-        <script src="resources/scripts/vendor/foundation/foundation.abide.js" th:src="@{/dmz/scripts/vendor/foundation.abide.js}"></script>
+        <script th:src="@{/dmz/scripts/vendor/jquery.js}"></script>
+        <script th:src="@{/dmz/scripts/vendor/foundation.min.js}"></script>
+        <script th:src="@{/dmz/scripts/vendor/foundation.abide.js}"></script>
         <script>
 				$(document).foundation();
 		</script>
-        <script src="resources/scripts/calvary.js" th:src="@{/dmz/scripts/calvary.js}"></script>
-		
+        <script th:src="@{/dmz/scripts/calvary.js}"></script>
+		<script th:src="@{/dmz/scripts/utility.js}"></script>
         
     </body>
 </html>

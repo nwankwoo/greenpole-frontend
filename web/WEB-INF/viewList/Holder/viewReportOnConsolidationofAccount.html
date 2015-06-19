@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="viewReportonAccountConsolidation">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Africa Prudential Registrars Plc :: Demerge Shareholder Accounts</title>
@@ -11,7 +11,7 @@
 <script th:src="@{/scripts/vendor/modernizr.js}"></script>
 </head>
 
-<body>
+<body ng-controller="viewReportonAccountConsolidationCtrl">
 <div class="row full-width">
     	<div class="large-12 small-12 columns text-center title">
         	<span id="title">View Report on Consolidation of Account</span>
@@ -20,14 +20,16 @@
 
 <div class="row" style="font-size:13px;margin:20px;padding-top:5%">
 	<div class="large-8 columns">
-    	
+     <input th:value="${formAction} + '&' + ${_csrf.parameterName}  + '='+ ${_csrf.token}" class="action" type="hidden"/>
+    	<form class="viewReportOnConsolidation" th:object = "${viewReportOnConsolidationofAccount}" ng-submit="queryAccountConsolidation()">
+        <input type="hidden" th:field="*{descriptor}" class="descriptor"/>
         <div class="row" style="padding-bottom:20px">
         	<div class="large-4 columns" style="padding-top:10px">
             	<small class="required" style="color:red">*</small>&nbsp;Date Criteria
             </div>
             <div class="large-8 columns">
             	<select class="dateSelector">
-                	<option>Select Date Criteria</option>
+                	<option value="0">Select Date Criteria</option>
                     <option value="all_account_merged_on_date">All Account Merged on Date</option>
                     <option value="all_account_merged_between_date">All Account Merged Between Date</option>
                     <option value="all_account_merged_before_date">All Account Merged Before Date</option>
@@ -43,7 +45,7 @@
             <div class="large-8 columns date_container">
             	<div class="row fixed_">
                 	<div class="large-12 columns">
-                	<input type="text" class="date" data-date-format="dd-mm-yyyy"/>
+                	<input type="text" th:field="*{startDate}" class="date" data-date-format="dd/mm/yyyy"/>
                     </div>
                 </div>
             	
@@ -51,12 +53,10 @@
                 <div class="row between" style="display:none">
                 	<div class="large-12 columns">
                 		<div class="large-6 columns" style="padding:0;padding-right:10px">
-                        	<small>From</small>
-                            <input type="text" class="dateFrom" name="date[\'from\']">
+                            <input type="text" class="dateFrom" data-date-format="dd/mm/yyyy" th:field="*{startDate}"/>
                         </div>
                         <div class="large-6 columns" style="padding:0;padding-left:10px">
-                        	<small>To</small>
-                            <input type="text" class="dateTo" name="date[\'to\']">
+                            <input type="text" class="dateTo" data-date-format="dd/mm/yyyy" th:field="*{endDate}"/>
                         </div>
                       </div>
                 </div>
@@ -66,16 +66,126 @@
         
         <div class="row">
         	<div class="large-12 columns text-right">
-            	<input type="button" class="button resetForm" value="Reset Form"/>&nbsp;&nbsp;
-                <input type="button" class="button viewReport" value="View Report"/>
+            	<!--<input type="button" class="button resetForm" value="Reset Form"/>&nbsp;&nbsp;-->
+                <input type="submit" class="button viewReport" value="View Report"/>
             </div>
+        </div>
+        </form>
+    </div>
+</div>
+
+<div class="row full-width">
+	<div class="large-12 colums">
+    	<div class="large-12 small-12 columns text-left title" style="height:30px;font-size:15px;font-weight:bold;padding-top:7px">
+        	<span id="title" style="padding-left:10px">:: Account Consolidation Query Result</span>
         </div>
     </div>
 </div>
 
+<div >
+ <div class="row full-width" style="padding-bottom:10px"  >
+        	
+        	<div class="large-1 columns large-offset-8" style="padding:0;margin:0;padding-top:10px;width:100px" >
+            	<a href="#" class="printReportOnConsolidationofAccount" style="font-size:11px;font-weight:bold;color:#000"> <img th:src="@{/images/print.png}"/> &nbsp;Print Report</a>
+            </div>
+            <div class="large-1 columns" style="margin:0;padding:0;float:left;margin-left:15px;width:250px;padding-top:10px">
+            	<a data-dropdown="drop1" aria-controls="drop1" aria-expanded="false" style="font-size:11px;font-weight:bold;color:#000"> 
+                	<img th:src="@{/images/export.png}"/> &nbsp;Export Report
+                </a>
+                    <ul id="drop1" class="f-dropdown" data-dropdown-content aria-hidden="true" tabindex="-1">
+                      <li><a href="#" style="font-weight:bolder;font-size:11px" class="exportToPdf">Export to pdf</a></li>
+                      <li><a href="#" style="font-weight:bolder;font-size:11px" class="exportToExcel">Export to MS Excel</a></li>
+                      <li><a href="#" style="font-weight:bolder;font-size:11px" class="exportToCSV">Export to CSV (Comma Separated List)</a></li>
+                    </ul>
+            </div>
+        </div>
+        <div class="row full-width" style="background:#fff;">
+        <div class="large-1 columns" style="font-size:11px;padding:0;margin:0;padding-left:25px;font-weight:bold;padding-top:23px;width:130px">
+        Number of records:  
+        </div>
+        <div class="large-1 columns" style="padding-top:10px">
+        	<input type="text" style="width:53%" class="pageSize" ng-init="pageSize" ng-model="pageSize" ng-keyup="key($event)" ng-keypress="filter($event)"/>
+        </div>
+        <div class="large-1 columns text-right" style="font-size:11px;padding:0;margin:0;padding-left:25px;font-weight:bold;padding-top:23px;width:130px;">
+        Filter Results: 
+        </div>
+        <div class="large-3 columns" style="margin:0;padding-top:10px;">
+            	<input type="text" placeholder="Search" ng-model="searchText"/>
+        </div>
+         
+        	<div class="large-5 columns" style="float:left;background:#fff;padding-top:12px;padding-bottom:10px;" align="center">
+            <div class="row full-width">
+            	<div class="large-1" style="font-size:11px;font-weight:bold;float:left;width:80px;padding-top:10px">
+                	Result Pages:
+                </div>
+                
+                <div class="large-7" style="float:left;width:200px">
+                     <ul class="pagination">
+                        <li style="padding-top:3px" ng-class="previousPage <= 0 ? 'arrow unavailable' : 'arrow'">
+                        	
+                            <span ng-if="previousPage > 0">
+                            	<a ng-click="getPage(previousPage)" >&laquo;</a>
+                            </span>
+                            <span ng-if="previousPage <= 0">
+                            	
+                            </span>
+                        </li>
+                        
+                        <li ng-repeat="page in numberOfPages | limitTo:5" ng-class="page == currentPage ? 'current' : ''">
+                            <a style="padding:5px" ng-click="getPage(page)">{{ page }}</a>
+                        </li>
+                        
+                        <li  style="padding-top:3px"  ng-class="currentPage < totalPages ? 'arrow' : 'arrow unavailable'">
+                        	<span ng-if="nextPage > totalPages">
+                            </span>
+                            <span ng-if="nextPage <= totalPages">
+                            	<a ng-click="getPage(nextPage)">&raquo;</a>
+                            </span>
+                            
+                        </li>
+                    </ul>
+                </div>
+                <div class="large-4 text-left" style="font-size:11px;font-weight:bold;float:left;width:180px;padding-top:10px">
+                	Total Records Found : {{ totalRecord }}
+                </div>
+            </div>
+          
+                
+               
+            </div>
+        </div>
+        <div class="row full-width">
+            <div class="large-12 columns" style="padding-top:10px;padding-left:25px;padding-right:25px">
+                <table cellpadding="0" cellspacing="0" border="1" class="full-width" width="100%" style="border-spacing:0px" >
+                    <tr style="line-height:1em">
+                        <td width="2%" align="center" style="font-weight:bold;font-size:11px">SN</td>
+                        <td width="20%" align="center" style="font-weight:bold;font-size:11px">Holder Name</td>
+                        <td width="20%" align="center" style="font-weight:bold;font-size:11px">Merged To</td>
+                        <td width="15%" align="center" style="font-weight:bold;font-size:11px">Merged On</td>                        
+                                           
+                    </tr>
+                   <tr ng-repeat="consolidation in consolidations | filter:searchText | orderBy : ''"><!--"-->
+                       
+                   		<td  width="3%" align="center" style="font-weight:bold;font-size:11px">{{$index+1}}</td>
+                        <td width="20%" align="center" style="font-weight:bold;font-size:11px">
+                        {{consolidation.holderName}}
+                        </td>
+                        <td width="15%" align="center" style="font-weight:bold;font-size:11px" class="chn">{{consolidation.mergedToHolderName}}</td>
+                        
+                        <td align="center" style="font-weight:bold;font-size:11px">{{consolidation.mergeDate}}</td>
+                       
+                          </tr>
+                </table>
+            </div>
+            <div class="large-12 columns">
+            	
+            </div>
+        </div>
+</div>
 <script th:src="@{/scripts/vendor/jquery.js}"></script>
 <script th:src="@{/scripts/vendor/foundation.min.js}"></script>
 <script th:src="@{/scripts/vendor/foundation-datepicker.js}"></script>
+<script th:src="@{/scripts/vendor/angular.min.js}"></script>
 <script th:src="@{/scripts/utility.js}"></script>
 <script th:src="@{/scripts/Holder/viewReportOnConsolidationofAccount.js}"></script>
 <script>

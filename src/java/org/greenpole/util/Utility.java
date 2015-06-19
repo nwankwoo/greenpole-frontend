@@ -23,6 +23,7 @@ import javax.servlet.http.HttpSession;
 import org.greenpole.entity.model.clientcompany.ClientCompany;
 import org.greenpole.entity.model.clientcompany.ShareQuotation;
 import org.greenpole.entity.model.holder.Holder;
+import org.greenpole.entity.model.holder.merge.AccountConsolidation;
 import org.greenpole.entity.response.Response;
 import org.greenpole.model.profiler.RelatedTask;
 import org.greenpole.model.profiler.UserProfile;
@@ -526,5 +527,43 @@ public class Utility {
             clientCompanyData.add(header);
             clientCompanyData.add(content);
             return clientCompanyData;
+    }
+    
+    
+    public List extractAccountConsolidationData(HttpSession httpSession) throws IOException{
+        List consolidationData = new ArrayList(2);
+        DataStore dataStore = new DataStore();
+        Object ConsolidationObject = dataStore.getObject("consolidationList",httpSession);
+        List consolidationList =(List<AccountConsolidation>) ConsolidationObject;
+        consolidationList = dataStore.getDataSegment("ALL", "ALL", consolidationList);
+        String list = this.convertObjectToJSONString(consolidationList);
+        System.out.println(list);
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode root = mapper.convertValue(consolidationList, JsonNode.class);
+        Map<String, Object[]> header = new TreeMap();
+        Map<String, Object[]> content = new TreeMap();
+        int node = 2;
+        String holderName;
+        String mergedTo;
+        String mergedOn;
+        String shareholders;
+        String bondholders;
+        String shareUnitPrice;
+        double holdings;
+        String depository;
+        root=root.get(1);
+        header.put("1", new Object[]{"Holder Name","Merged To","Merged On"});
+       
+            for(final JsonNode consolidationNode : root ){
+            holderName = consolidationNode.get("holderName").asText();
+            mergedTo = consolidationNode.get("mergedToHolderName").asText();
+            mergedOn = consolidationNode.get("mergeDate").asText();
+            
+            content.put(node+"", new Object[]{holderName,mergedTo,mergedOn});
+            node++;
+            }
+            consolidationData.add(header);
+            consolidationData.add(content);
+            return consolidationData;
     }
 }

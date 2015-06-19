@@ -89,7 +89,7 @@ public class MainController  {
         if(notifications == null){
             notifications = new ArrayList();
         }
-        dataStore.saveObject("notifications", notifications, session);
+        
         mv.addObject("notification", notifications);
         for(NotificationWrapper notification : notifications){
             if(notification.getMessageTag().contains("Authorisation")){
@@ -97,7 +97,7 @@ public class MainController  {
             }
             System.out.println(util.convertObjectToJSONString(notification));
         }
-        
+        dataStore.saveObject("notifications", notifications, session);
         mv.addObject("company_name", "Africa Prudential Registrars Plc.");
         UserProfile userprofile=null;
         mv.addObject("username",auth.getName());

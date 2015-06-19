@@ -31,6 +31,9 @@ import org.greenpole.entity.model.holder.HolderMerger;
 import org.greenpole.entity.model.holder.PowerOfAttorney;
 import org.greenpole.entity.model.holder.QueryHolder;
 import org.greenpole.entity.model.holder.HolderSignature;
+import org.greenpole.entity.model.holder.QueryHolderConsolidation;
+import org.greenpole.entity.model.holder.merge.AccountConsolidation;
+import org.greenpole.entity.model.taguser.TagUser;
 import org.greenpole.entity.response.Response;
 import org.greenpole.model.profiler.RelatedTask;
 import org.greenpole.util.DataStore;
@@ -701,5 +704,97 @@ public class HolderController {
              HttpSession httpSession,Utility util) throws MalformedURLException, URISyntaxException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException{
          ModelAndView mv = util.getRelatedTaskView(httpSession, hole, key, context, "holder", "editHolder");
          return mv;
+     }
+     
+     @RequestMapping(value = {"viewReportOnConsolidationofAccount"}, method = RequestMethod.POST)
+     public @ResponseBody String viewReportOnConsolidationofAccount(@RequestParam (value="key",required=true ) String key,
+            @RequestParam (value="hole",required=true ) String hole,Utility util, HttpSession session,
+            ServiceEngine serviceEngine,QueryHolderConsolidation queryConsolidation,DataStore dataStore){
+         String serverResponse = "";
+         if(util.validateViewMapping(key, hole, "viewReportOnConsolidationofAccount", session)){
+             try {
+                 String enddate = queryConsolidation.getEndDate();
+                 enddate = enddate.replace(",", "");
+                 String startdate = queryConsolidation.getStartDate();
+                 startdate = startdate.replace(",", "");
+                 queryConsolidation.setEndDate(enddate);
+                 queryConsolidation.setStartDate(startdate);
+                 System.out.println(util.convertObjectToJSONString(queryConsolidation));
+                 Response response = serviceEngine.sendHolderRequest(session, queryConsolidation, ServiceEngine.VIEW_REPORT_ON_ACCOUNT_CONSOLIDATION);
+                 List<TagUser> responseBody = new ArrayList();
+                 responseBody = (List<TagUser>) response.getBody();
+                 List <AccountConsolidation> consolidatedAccount = new ArrayList();
+                 consolidatedAccount  = (List<AccountConsolidation>) responseBody.get(0).getResult();
+                 dataStore.saveObject("consolidationList", consolidatedAccount, session);
+                 System.out.println(util.convertObjectToJSONString(consolidatedAccount));
+                 if(consolidatedAccount.size()>0){
+                     serverResponse = "1";
+                 }
+                 else{
+                     serverResponse = "0";
+                 }
+             } catch (Exception ex) {
+                 ex.printStackTrace();
+             }
+         }
+         return serverResponse;
+         
+     }
+     
+     
+     @RequestMapping(value={"getConsolidation"},method=RequestMethod.GET)
+    public @ResponseBody List getConsolidation(@RequestParam (value="pageSize",required=true ) Object pageSize,
+           @RequestParam (value="page",required=false ) Object page,  HttpSession httpSession){
+        DataStore dataStore = new DataStore();       
+        List <AccountConsolidation> holderObject = (List <AccountConsolidation>) dataStore.getObject("consolidationList",httpSession);
+        return dataStore.getDataSegment(pageSize, page, holderObject);
+    }
+    
+    @RequestMapping(value={"/exportConsolidatedAccount"},method=RequestMethod.GET)
+     public ModelAndView exportConsolidatedAccount(@RequestParam (value="mode",required=true ) String mode,
+             HttpSession httpSession,Utility util,HttpServletResponse serverResponse,HttpServletRequest request) throws IOException{
+        List consolidationData = util.extractAccountConsolidationData(httpSession);
+        Map <String,String> header = new HashMap();
+        header.put("1", "SN");
+        header.put("2", "Holder Name");
+        header.put("3", "Merged To");
+        header.put("4", "Merged On");
+        Map <String,Object[]> content = (Map <String,Object[]>) consolidationData.get(1);
+        byte [] exportedData = null;
+        try {
+           if(mode.equalsIgnoreCase("MSExcel")){
+               exportedData = new FileConverter().exportData(header,content,"Account Consolidation Report", FileConverter.MS_EXCEL);
+                serverResponse.setContentType("application/vnd.ms-excel");
+        serverResponse.setHeader("Content-Disposition","inline; filename=Account Consolidation Report.xlsx");
+        serverResponse.getOutputStream().write(exportedData, 0, exportedData.length);
+        serverResponse.getOutputStream().flush();
+           }
+           if(mode.equalsIgnoreCase("PDF")){
+               exportedData = new FileConverter().exportData(header,content,"Account Consolidation Report", FileConverter.PDF);
+                serverResponse.setContentType("application/pdf");
+                serverResponse.setHeader("Content-Disposition","inline; filename=Account Consolidation Report.pdf");
+                serverResponse.getOutputStream().write(exportedData, 0, exportedData.length);
+        serverResponse.getOutputStream().flush();
+           }
+           if(mode.equalsIgnoreCase("CSV")){
+               exportedData = new FileConverter().exportData(header,content,"Account Consolidation Report", FileConverter.CSV);
+                serverResponse.setContentType("text/csv");
+                serverResponse.setHeader("Content-Disposition","inline; filename=Account Consolidation Report.csv");
+                serverResponse.getOutputStream().write(exportedData, 0, exportedData.length);
+        serverResponse.getOutputStream().flush();
+           }
+            
+        } catch (Exception ex) {
+            Logger.getLogger(HolderController.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+       
+        
+        System.out.println("exporting");
+        return null;
+     }
+     
+     @RequestMapping(value={"/printReportOnConsolidationofAccount"},method=RequestMethod.GET)
+     public String printReportOnConsolidationofAccount(){
+         return "Holder/printReportOnConsolidationofAccount";
      }
 }

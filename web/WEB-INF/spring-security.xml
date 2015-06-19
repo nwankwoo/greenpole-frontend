@@ -13,10 +13,10 @@
                 <intercept-url pattern="/dmz/**" access="ROLE_ANONYMOUS,ROLE_USER,ROLE_ADMIN"/>                
                 <intercept-url pattern="/**" access="ROLE_USER,ROLE_ADMIN" />
                 <form-login login-page="/login" default-target-url="/index"  authentication-failure-url="/login?error" username-parameter="username" password-parameter="password" />
-                <logout  logout-success-url="/login?logout" invalidate-session="true" delete-cookies="JSESSIONID"/>
+                <logout  logout-success-url="/login?logout" invalidate-session="false" delete-cookies="JSESSIONID"/>
                 <csrf/>
                 <session-management   invalid-session-url="/session-expired" session-fixation-protection="migrateSession">
-                    <concurrency-control error-if-maximum-exceeded="true" max-sessions="1" expired-url="/session-expired"/>
+                    <concurrency-control error-if-maximum-exceeded="true" max-sessions="1" expired-url="/logout?max-exceeded"/>
                 </session-management>
         </http>
         
