@@ -5,6 +5,8 @@
  */
 package org.greenpole.controller;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
@@ -26,12 +28,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class Authorisation {
     
     @RequestMapping(value="authorisation/{component}/{source}/{status}",method=RequestMethod.GET)
-    public @ResponseBody String authorise(@PathVariable ("status") String status, @RequestParam("code") String code,
+    public @ResponseBody Map authorise(@PathVariable ("status") String status, @RequestParam("code") String code,
             @PathVariable ("source") String source,@PathVariable ("component") String component,
             HttpSession httpSession,CastorOil castoroil,ServiceEngine serviceEngine){
         int status_code = 0;
         Response response = null ;
-        String message = "" ;
+        Map serverResponse= new HashMap();
+        String message = "";
         try {  
             System.out.println("cipheredcode="+code);
             //code = castoroil.decrypt(code, httpSession);
@@ -115,8 +118,10 @@ public class Authorisation {
         } catch (Exception ex) {
             Logger.getLogger(Authorisation.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if(message==null || message.isEmpty())
-            message = "Invalid Request";
-        return message;
+        serverResponse.put("responseCode", response.getRetn());
+        serverResponse.put("description", response.getDesc());
+        //if(message==null || message.isEmpty())
+          //  message = "Invalid Request";
+        return serverResponse;
     }
 }

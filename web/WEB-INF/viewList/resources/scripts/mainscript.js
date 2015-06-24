@@ -3,8 +3,8 @@
     $(document).foundation().foundation('joyride', 'start');
     $(".full-height").css("height",$(document).height()); 
     $(".sub-window").css("height",$(document).height()); 
-    $("iframe").css("height",$(document).height()); 
-    $("iframe").css("height",$(window).height()); 
+   // $("iframe").css("height",$(document).height()); 
+    $("iframe").css("height",$(window).height()-100); 
     $(document).ready(function() {
         store.get('src', function(ok, val) {
             if (ok)
@@ -56,7 +56,6 @@
 		$code=$(this).attr("code");
         $src=$("#destination").html();
         $src=$src+'index/'+$from+'/'+$to+'/'+$code;
-		console.log($src);
         store.set("src",$src);
         $("iframe").attr("src",$src);
 		$(".viewTitle").text($(this).text());

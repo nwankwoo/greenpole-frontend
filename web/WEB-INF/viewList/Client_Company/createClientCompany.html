@@ -6,6 +6,7 @@
 <link rel="icon" href="../resources/images/lg.png" th:href="@{/images/lg.png}"/>
 <link rel="stylesheet" href="../resources/styles/vendor/pace-dataurl.css" th:href="@{/styles/vendor/pace-dataurl.css}"/> 
 <link rel="stylesheet" href="../resources/styles/mainstyle.css" th:href="@{/styles/mainstyle.css}"/> 
+<link rel="stylesheet" th:href="@{/styles/vendor/foundation-datepicker.css}"/> 
 <script th:src="@{/dmz/scripts/vendor/modernizr.js}"></script>
 </head>
 
@@ -64,7 +65,18 @@
                 
                     <div class="large-8 columns" style="padding-top:10px">
                     	<input type="text" required ng-model="companySecretary" th:field="*{secretary}"/>
-                        <small class="error">Please enter phone number</small>
+                        <small class="error">Please enter secretary name</small>
+                    </div>
+                </div>
+                
+                <div class="row">
+                	<div class="large-4 columns" style="font-size:13px;padding-top:10px">
+                    	<small class="required" style="color:red">*</small> &nbsp;Date of Incorporation
+                    </div>
+                
+                    <div class="large-8 columns" style="padding-top:10px">
+                    	<input type="text" required ng-model="dateOfIncorporation"  data-date-format="dd/mm/yyyy" class="dateofincorporation" readonly/>
+                        <small class="error">Please enter date of incorporation</small>
                     </div>
                 </div>
                 
@@ -112,17 +124,17 @@
                     <div class="large-8 columns" style="padding-top:10px">
                     	<div class="row">
                             <div class="large-12 columns">
-                            	<small>Phone Number One</small>
+                            	<small>Enter Phone Number One</small>
                                 <small style="color:red;float:right" >Primary Number:&nbsp;<input type="radio" name="phoneNumbers[0].primaryPhoneNumber" class="makePrimaryNumber" checked/>&nbsp;</small>
                                 <input type="text" required ng-model="companyPhoneNumberOne" class="phoneNumber" th:field="*{phoneNumbers[0].phoneNumber}"/>
                         		<small class="error">Please enter phone number</small>
                             </div>
-                             <!--<div class="large-12 columns">
-                             	<small>Phone Number Two</small>
+                             <div class="large-12 columns">
+                             	<small>Enter Phone Number Two</small>
                                 <small style="color:red;float:right" >Primary Number:&nbsp;<input type="radio" name="phoneNumbers[1].primaryPhoneNumber" class="makePrimaryNumber"/>&nbsp;</small>
                                 <input type="text" ng-model= "companyPhoneNumberTwo" class="phoneNumber" th:field="*{phoneNumbers[1].phoneNumber}"/>
                         		<small class="error">Please enter phone number</small>
-                            </div>-->
+                            </div>
                         </div>
                     </div>
                </div>
@@ -135,7 +147,7 @@
                     <div class="row">
                     	<div class="large-12 columns">
                         	 <fieldset class="addressFieldSet">
-                                <legend style="width:100%;background:#d52e36;color:#fff;padding-top:10px;padding-bottom:10px;padding-left:5px;padding-right:5px">Address Details <span style="float:right;cursor:pointer	" class="addAddress">Add</span></legend>
+                                <legend style="width:100%;background:#d52e36;color:#fff;padding-top:10px;padding-bottom:10px;padding-left:5px;padding-right:5px">Address Details <span style="float:right;cursor:pointer	" class="addAddress">Add More Address</span></legend>
                                 <div class="row addressDetails" style="background:#fff;margin:5px;padding:10px">
                                 <div class="large-12 columns" style="background:#d52e36;color:#fff;">
                                 	<div class="row" style="padding:0;margin:0">
@@ -159,20 +171,20 @@
                                 <div class="large-8 columns" style="padding-top:10px">
                                     <div class="row">
                                     	<div class="large-12">
-                                        	<small style="padding-bottom:3px">Line One</small>
+                                        	<small style="padding-bottom:3px">Enter Address Line One</small>
                                         	<input type="text" class="addressLineOne" th:field="*{addresses[0].addressLine1}" required/>
                                     		<small class="error">Please enter company address line one</small>
                                         </div>
                                         <div class="large-12" style="padding-bottom:10px">
-                                        	<small style="padding-bottom:3px">Line Two</small>
+                                        	<small style="padding-bottom:3px">Enter Address Line Two</small>
                                         	<input type="text" class="addressLineTwo" th:field="*{addresses[0].addressLine2}" />
                                         </div>
                                         <div class="large-12" style="padding-bottom:10px">
-                                        	<small style="padding-bottom:3px">Line Three</small>
+                                        	<small style="padding-bottom:3px">Enter Address Line Three</small>
                                         	<input type="text" class="addressLineThree" th:field="*{addresses[0].addressLine3}" />
                                         </div>
                                         <div class="large-12" style="padding-bottom:10px">
-                                        	<small style="padding-bottom:3px">Line Four</small>
+                                        	<small style="padding-bottom:3px">Enter Address Line Four</small>
                                         	<input type="text" class="addressLineFour"  th:field="*{addresses[0].addressLine4}"/>
                                         </div>
                                     </div>
@@ -188,36 +200,42 @@
                                         </div>
                                      </div>
                                 </div>
-                                <div class="large-4 columns" style="font-size:13px;padding-top:15px">
-                                    <small class="required" style="color:red">*</small> &nbsp;City
+                               
+                                 <div class="large-4 columns" style="font-size:13px;padding-top:15px">
+                                    <small class="required" style="color:red">*</small> &nbsp;Country
                                 </div>
-                                <div class="large-8 columns">
-                                    <div class="row">
-                                    	<div class="large-12">
-                                        	<input type="text" class="city" th:field="*{addresses[0].city}" required/>
-                                    		<small class="error">Please enter company city</small>
+                                <div class="large-8 columns" style="margin:0px;padding:0px">
+                                    <div class="row" style="margin-bottom:10px">
+                                    	<div class="large-12 columns">
+                                        	<span class="countrySpan">
+                                            	<input type="text" class="country" required th:field="*{addresses[0].country}" />
+                                            </span>
+                                        	
+                                    		<small class="error">Please enter company country</small>
                                         </div>
                                      </div>
                                 </div>
                                  <div class="large-4 columns" style="font-size:13px;padding-top:15px">
                                     <small class="required" style="color:red">*</small> &nbsp;State
                                 </div>
-                                <div class="large-8 columns">
+                                <div class="large-8 columns"  style="margin:0px;padding:0px">
                                     <div class="row">
-                                    	<div class="large-12">
-                                        	<input type="text" class="state" required th:field="*{addresses[0].state}" />
+                                    	<div class="large-12 columns">
+                                        	<span class="stateSpan">
+                                            	<input type="text" class="state" required th:field="*{addresses[0].state}" />
+                                            </span>
                                     		<small class="error">Please enter company state</small>
                                         </div>
                                      </div>
                                 </div>
                                  <div class="large-4 columns" style="font-size:13px;padding-top:15px">
-                                    <small class="required" style="color:red">*</small> &nbsp;Country
+                                    <small class="required" style="color:red">*</small> &nbsp;City
                                 </div>
-                                <div class="large-8 columns">
+                                <div class="large-8 columns" style="margin-top:10px">
                                     <div class="row">
                                     	<div class="large-12">
-                                        	<input type="text" class="country" required th:field="*{addresses[0].country}" />
-                                    		<small class="error">Please enter company country</small>
+                                        	<input type="text" class="city" th:field="*{addresses[0].city}" required/>
+                                    		<small class="error">Please enter company city</small>
                                         </div>
                                      </div>
                                 </div>
@@ -283,6 +301,16 @@
                     </div>
                 </div>
                 
+                <div class="row">
+                	<div class="large-4 columns" style="font-size:13px;padding-top:10px;font-weight:bold">
+                    	Date of Incorporation
+                    </div>
+                
+                    <div class="large-8 columns" style="padding-top:10px;font-size:13px"   id="confirm-details">
+                    	{{ dateOfIncorporation }}
+                    </div>
+                </div>
+                
                  <div class="row">
                 	<div class="large-4 columns" style="font-size:13px;padding-top:10px;font-weight:bold">
                     	Depository
@@ -322,11 +350,11 @@
                                <small style="color:red;float:right" >Primary Number:&nbsp;<input type="radio"  class="confirmmakePrimaryNumber" disabled checked/>&nbsp;</small><br/>
                             	<span style="font-size:13px">{{ companyPhoneNumberOne }}</span>
                             </div>
-                            <!-- <div class="large-12 columns"  id="confirm-details">
+                             <div class="large-12 columns"  id="confirm-details">
                              	<small>Phone Number Two</small>
                                 <small style="color:red;float:right" >Primary Number:&nbsp;<input type="radio"  class="confirmmakePrimaryNumber" disabled/>&nbsp;</small><br/>
                                <span style="font-size:13px">{{ companyPhoneNumberTwo }}</span>
-                            </div>-->
+                            </div>
                         </div>
                     </div>
                </div>
@@ -362,19 +390,19 @@
                                 <div class="large-8 columns" style="padding-top:10px">
                                     <div class="row">
                                     	<div class="large-12" style="padding-bottom:20px">
-                                        	<small style="padding-bottom:3px">Line One</small><br/>
+                                        	<small style="padding-bottom:3px">Enter Address Line One</small><br/>
                                         	<span class="confirmAddressLineOne confirm" style="font-size:13px"></span>                                    		
                                         </div>
                                         <div class="large-12" style="padding-bottom:20px">
-                                        	<small style="padding-bottom:3px">Line Two</small><br/>
+                                        	<small style="padding-bottom:3px">Enter Address Line Two</small><br/>
                                         	<span class="confirmAddressLineTwo confirm" style="font-size:13px"></span>
                                         </div>
                                         <div class="large-12" style="padding-bottom:20px">
-                                        	<small style="padding-bottom:3px">Line Three</small><br/>
+                                        	<small style="padding-bottom:3px">Enter Address Line Three</small><br/>
                                         	<span class="confirmAddressLineThree confirm" style="font-size:13px"></span>
                                         </div>
                                         <div class="large-12" style="padding-bottom:20px">
-                                        	<small style="padding-bottom:3px">Line Four</small><br/>
+                                        	<small style="padding-bottom:3px">Enter Address Line Four</small><br/>
                                         	<span class="confirmAddressLineFour confirm" style="font-size:13px"></span>
                                         </div>
                                     </div>
@@ -388,6 +416,31 @@
                                             <div class="row">
                                                 <div class="large-12">
                                                     <span class="confirmPostCode confirm" style="font-size:13px;">&nbsp;</span>                                  		
+                                                </div>
+                                            </div>
+                                        </div>
+                                </div>
+                                                                
+                                <div class="row">
+                                	  <div class="large-4 columns" style="font-size:13px;padding-top:13px;font-weight:bold">
+                                           Country
+                                        </div>
+                                        <div class="large-8 columns" style="padding-top:10px">
+                                            <div class="row">
+                                                <div class="large-12">
+                                                    <span class="confirmCountry confirm" style="font-size:13px;">&nbsp;</span>                                  		
+                                                </div>
+                                            </div>
+                                        </div>
+                                </div>
+                                <div class="row">
+                                	  <div class="large-4 columns" style="font-size:13px;padding-top:13px;font-weight:bold">
+                                           State
+                                        </div>
+                                        <div class="large-8 columns" style="padding-top:10px">
+                                            <div class="row">
+                                                <div class="large-12">
+                                                    <span class="confirmState confirm" style="font-size:13px;">&nbsp;</span>                                  		
                                                 </div>
                                             </div>
                                         </div>
@@ -406,32 +459,6 @@
                                         </div>
                                 </div>
                                 
-                                <div class="row">
-                                	  <div class="large-4 columns" style="font-size:13px;padding-top:13px;font-weight:bold">
-                                           State
-                                        </div>
-                                        <div class="large-8 columns" style="padding-top:10px">
-                                            <div class="row">
-                                                <div class="large-12">
-                                                    <span class="confirmState confirm" style="font-size:13px;">&nbsp;</span>                                  		
-                                                </div>
-                                            </div>
-                                        </div>
-                                </div>
-                                
-                                <div class="row">
-                                	  <div class="large-4 columns" style="font-size:13px;padding-top:13px;font-weight:bold">
-                                           Country
-                                        </div>
-                                        <div class="large-8 columns" style="padding-top:10px">
-                                            <div class="row">
-                                                <div class="large-12">
-                                                    <span class="confirmCountry confirm" style="font-size:13px;">&nbsp;</span>                                  		
-                                                </div>
-                                            </div>
-                                        </div>
-                                </div>
-                                
                                 </div>
                             </fieldset>
                         </div>
@@ -439,7 +466,7 @@
                      <div class="row">
                 	<div class="large-12 columns text-right" style="padding-top:20px;font-size:15px;padding-right:60px">
                     	<input type="button" class="button back" value="&laquo; Back"/>
-                        <input type="button" class="button createNewClientCompanyButton" value="Confirm &amp; Create Client Company"/>
+                        <input type="button" class="button createNewClientCompanyButton" value="Save &amp; Continue"/>
                     </div>
                 </div>
             </div>
@@ -454,6 +481,7 @@
 <script  th:src="@{/scripts/vendor/foundation.min.js}"></script>
 <script  th:src="@{/scripts/vendor/angular.min.js}"></script>
 <script  th:src="@{/scripts/vendor/foundation.abide.js}"></script>
+<script  th:src="@{/scripts/vendor/foundation-datepicker.js}"></script>
 <script  th:src="@{/scripts/vendor/jquery.form.min.js}"></script>
 <script  th:src="@{/scripts/utility.js}"></script>
 <script  th:src="@{/scripts/client_company/createClientCompany.js}"></script>

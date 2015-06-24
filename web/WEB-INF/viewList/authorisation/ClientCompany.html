@@ -60,6 +60,16 @@
                     </div>
                 </div>
                 
+                <div class="row">
+                	<div class="large-4 columns" style="font-size:13px;padding-top:10px;font-weight:bold">
+                    	Date of Incorporation
+                    </div>
+                
+                    <div class="large-8 columns" style="padding-top:10px;font-size:13px"   id="confirm-details">
+                    	<span th:text="${model.secretary}"></span>
+                    </div>
+                </div>
+                
                  <div class="row">
                 	<div class="large-4 columns" style="font-size:13px;padding-top:10px;font-weight:bold">
                     	Depository
@@ -230,18 +240,53 @@
 <input type="hidden" th:value="@{/}" id="destination"/>
 <script  th:src="@{/scripts/vendor/jquery.js}"></script>
 <script  th:src="@{/scripts/vendor/foundation.min.js}"></script>
+<script  th:src="@{/scripts/utility.js}"></script>
 <script>
 		$(document).foundation();
 		
 		$(".decline").click(function(e) {
-            
+            reveal("Declining creation of client company please wait...");
+    
+			$url = $("#destination").val()+"authorisation/clientcompany/clientcompany/decline?code="+$(".code").val();
+			$.ajax({
+			method : 'GET',
+			url : $url
+			})
+			.done(function(data){
+				console.log(data);
+				window.parent.$(".close-reveal-modal").show();
+  				window.parent.$(".indicator").hide();
+				if(data.responseCode===0){
+					  window.parent.$(".note").text("Decline of client company creation successful.");
+					  $(document).html("");
+				  }
+				  else{
+					  window.parent.$(".note").text(data.description);
+				  }
+			});
         });
 		
 		$(".authorise").click(function(e) {
+			reveal("Authorising creation of client company please wait...");
+    
 			$url = $("#destination").val()+"authorisation/clientcompany/clientcompany/authorise?code="+$(".code").val();
-			console.log($(".code").val());
-			console.log($url);
-            window.location.assign($url);
+			$.ajax({
+			method : 'GET',
+			url : $url
+			})
+			.done(function(data){
+				console.log(data);
+				window.parent.$(".close-reveal-modal").show();
+  				window.parent.$(".indicator").hide();
+				if(data.responseCode===0){
+					  window.parent.$(".note").text("Authorisation of client company creation successful.");
+					  $(document).html("");
+				  }
+				  else{
+					  window.parent.$(".note").text(data.description);
+				  }
+			});
+			
         });
 </script>
 </body>

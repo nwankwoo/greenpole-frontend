@@ -77,23 +77,21 @@ public class ClientCompanyController {
      * @return 
      */
      @RequestMapping(value={"createClientCompany"},method=RequestMethod.POST)
-    public @ResponseBody String createNewClientCompany(@ModelAttribute ClientCompany clientCompany,
+    public @ResponseBody Map createNewClientCompany(@ModelAttribute ClientCompany clientCompany,
             @RequestParam (value="key",required=true ) String key,
             @RequestParam (value="hole",required=true ) String hole,Utility util, HttpSession session,
             ServiceEngine serviceEngine){
-        String serverResponse="";
+        Map serverResponse= new HashMap();
         try{
            if(util.validateViewMapping(key, hole, "createClientCompany", session))  {
-                
-                System.out.println(util.convertObjectToJSONString(clientCompany));
+               System.out.println(util.convertObjectToJSONString(clientCompany));
                 Response response = serviceEngine.sendClientCompanyRequests(session, clientCompany, ServiceEngine.CREATE_CLIENT_COMPANY);
-                //serverResponse="New client company created successfully.";
-                serverResponse = response.getDesc();
-                System.out.println(response.getDesc());
+                serverResponse.put("responseCode", response.getRetn());
+                serverResponse.put("description", response.getDesc());
             } 
         }catch(IOException ex){
             ex.printStackTrace();
-            serverResponse="Encountered error while trying to create client company.";
+            
         }
         
         return serverResponse;
@@ -418,9 +416,9 @@ public class ClientCompanyController {
      public ModelAndView exportClientCompany(@RequestParam (value="mode",required=true ) String mode,
              HttpSession httpSession,Utility util,HttpServletResponse serverResponse,HttpServletRequest request) throws IOException{
          System.out.println("mode="+mode);
-        List shareholderData = util.extractClientCompanyData(httpSession);
+        List clientCompanyData = util.extractClientCompanyData(httpSession);
         Map <String,String> header = new HashMap();
-        header.put("1", "SN");
+        header.put("1", "Company Code");
         header.put("2", "Company Name");
         header.put("3", "Address");
         header.put("4", "Depository");
@@ -428,7 +426,7 @@ public class ClientCompanyController {
         header.put("6", "No. of Shareholders");
         header.put("7", "No. of Bondholders");
         header.put("8", "Share Unit Price");
-        Map <String,Object[]> content = (Map <String,Object[]>) shareholderData.get(1);
+        Map <String,Object[]> content = (Map <String,Object[]>) clientCompanyData.get(1);
         byte [] exportedData = null;
         try {
            if(mode.equalsIgnoreCase("MSExcel")){

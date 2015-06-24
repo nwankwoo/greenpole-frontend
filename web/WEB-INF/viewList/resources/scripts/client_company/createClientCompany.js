@@ -3,18 +3,7 @@
 angular.module("createNewClientCompany",[],function($compileProvider){
 	$compileProvider.directive('addAddress', function($compile){
 		return function(scope, element, attrs){
-			/*element.find('.addAddress').bind('click', function () {
-				element='<div class="large-12 columns">Address '+index+'</div<div class="large-12 columns" id="confirm-details"><div class="row"><div class="large-4 columns" id="confirm-details">Street Address</div><div class="large-8 columns">{{streetAddress['+ index +']}} </div></div></div>'
-			}),
-			scope.$watch(
-				function(scope){
-					return scope.$eval(attrs.compile);
-				},
-				function(value){
-					element.html(value);
-					$compile(element.contents())(scope);
-				}
-			);*/
+			
 		};
 	});
 }).controller("createNewClientCompanyController",['$scope' ,function($scope){
@@ -51,6 +40,63 @@ angular.module("createNewClientCompany",[],function($compileProvider){
 
 
 $(function(){
+	var regionalSettings;
+	var state;
+	$.ajax({
+			method : 'GET',
+			url : 'getRegionalSettings'
+		})
+		.done(function(data){
+			regionalSettings = data;
+			loadUpCountries(data);
+			//console.log(data);
+		});
+		
+		function loadUpCountries(data){
+			var countrySelect = '<select name="addresses[0].country" class="countryList">';
+			$.each(data,function(i,v){
+				countrySelect+='<option value="'+v.name+'">'+v.name+'</option>';
+			});
+			countrySelect+='</select>';
+			$(".countrySpan").html(countrySelect);
+		}
+	
+	var nowTemp = new Date();
+var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+$('.dateofincorporation').fdatepicker({
+					onRender: function (date) {
+						return date.valueOf() < now.valueOf() ? '' : 'disabled';
+					}
+				})
+				
+	$(document).on("change",".countryList",function(){
+		$(".confirmCountry").eq($(".countryList").index($(this))).html($(this).val());
+		$name = $(this).val();
+		$.each(regionalSettings,function(i,v){
+			if(v.name === $name){
+				state = v.state;
+			}
+		});
+		//state = regionalSettings[$(this).val()].state;
+		if(state.length<=1){
+			$(".confirmState").eq($(".stateList").index($(this))).html(state[0].name);
+		}
+		loadUpState(state);
+	});
+	
+	function loadUpState(data){
+		var stateSelect = '<select name="addresses[0].state" class="stateList">';
+			$.each(data,function(i,v){
+				stateSelect+='<option value="'+v.name+'">'+v.name+'</option>';
+			});
+			stateSelect+='</select>';
+			$(".stateSpan").html(stateSelect);
+	}
+	
+	$(document).on("change",".stateList",function(){
+		$(".confirmState").eq($(".stateList").index($(this))).html($(this).val());
+	});
+		
 	$(".addAddress").click(function(e) {
 		$html=$(".addressDetails").clone().first();
 		$index=$(".addressDetails").clone().length+1;
@@ -264,8 +310,14 @@ function showRequest(formData, jqForm, options) {
 function showResponse(responseText, statusText, xhr, $form)  { 
   window.parent.$(".close-reveal-modal").show();
   window.parent.$(".indicator").hide();
-  window.parent.$(".note").text(responseText);
-  $(".clearform").click();
+  if(responseText.responseCode===0){
+	  window.parent.$(".note").text("Your request as been submitted for authorisation.");
+	  $(".clearform").click();
+  }
+  else{
+	  window.parent.$(".note").text(responseText.description);
+  }
+  
   $(".back").click();
   
 } 

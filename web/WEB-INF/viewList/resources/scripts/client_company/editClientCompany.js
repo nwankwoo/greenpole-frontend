@@ -47,6 +47,63 @@ angular.module("createNewClientCompany",[],function($compileProvider){
 
 
 $(function(){
+	var regionalSettings;
+	var state;
+	$.ajax({
+			method : 'GET',
+			url : '../getRegionalSettings'
+		})
+		.done(function(data){
+			regionalSettings = data;
+			loadUpCountries(data);
+			//console.log(data);
+		});
+		
+		function loadUpCountries(data){
+			var countrySelect = '<select name="addresses[0].country" class="countryList">';
+			$.each(data,function(i,v){
+				countrySelect+='<option value="'+v.name+'">'+v.name+'</option>';
+			});
+			countrySelect+='</select>';
+			$(".countrySpan").html(countrySelect);
+		}
+	
+	var nowTemp = new Date();
+var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+$('.dateofincorporation').fdatepicker({
+					onRender: function (date) {
+						return date.valueOf() < now.valueOf() ? '' : 'disabled';
+					}
+				})
+				
+	$(document).on("change",".countryList",function(){
+		$(".confirmCountry").eq($(".countryList").index($(this))).html($(this).val());
+		$name = $(this).val();
+		$.each(regionalSettings,function(i,v){
+			if(v.name === $name){
+				state = v.state;
+			}
+		});
+		//state = regionalSettings[$(this).val()].state;
+		if(state.length<=1){
+			$(".confirmState").eq($(".stateList").index($(this))).html(state[0].name);
+		}
+		loadUpState(state);
+	});
+	
+	function loadUpState(data){
+		var stateSelect = '<select name="addresses[0].state" class="stateList">';
+			$.each(data,function(i,v){
+				stateSelect+='<option value="'+v.name+'">'+v.name+'</option>';
+			});
+			stateSelect+='</select>';
+			$(".stateSpan").html(stateSelect);
+	}
+	
+	$(document).on("change",".stateList",function(){
+		$(".confirmState").eq($(".stateList").index($(this))).html($(this).val());
+	});
+	
 	$(document).ready(function(e) {
         $(".companyName").val($(".cName").val());
 		$(".companyCode").val($(".cCode").val());

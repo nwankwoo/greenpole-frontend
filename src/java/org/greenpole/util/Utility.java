@@ -1,5 +1,7 @@
 package org.greenpole.util;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,6 +20,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import org.greenpole.entity.model.clientcompany.ClientCompany;
@@ -190,14 +194,58 @@ public class Utility {
         String address = "";
         for(final JsonNode addressNode : addressListNode){
             String subAddress = "";
-            address += address.concat(addressNode.get("addressLine1").asText()).concat(",").concat("\n")
+            String addressLine1 = "";
+            String addressLine2 = "";
+            String addressLine3 = "";
+            String addressLine4 = "";
+            String postCode = "";
+            String city = "";
+            String state = "";
+            String country = "";
+            
+            if (!addressNode.get("addressLine1").asText().equals("null")){
+                addressLine1 = addressNode.get("addressLine1").asText();
+            }
+            if (!addressNode.get("addressLine2").asText().equals("null")){
+                addressLine2 = addressNode.get("addressLine2").asText();
+            }
+            if (!addressNode.get("addressLine3").asText().equals("null")){
+                addressLine3 = addressNode.get("addressLine3").asText();
+            }
+            if (!addressNode.get("addressLine4").asText().equals("null")){
+                addressLine4 = addressNode.get("addressLine4").asText();
+            }
+            if (!addressNode.get("postCode").asText().equals("null")){
+                postCode = addressNode.get("postCode").asText();
+            }
+            if (!addressNode.get("city").asText().equals("null")){
+                city = addressNode.get("city").asText();
+            }
+            if (!addressNode.get("state").asText().equals("null")){
+                state = addressNode.get("state").asText();
+            }
+            if (!addressNode.get("country").asText().equals("null")){
+                country = addressNode.get("country").asText();
+            }
+            subAddress = "";
+            subAddress = subAddress.concat(addressLine1).concat(",")
+                    .concat(addressLine2).concat(",")
+                    .concat(addressLine3).concat(",")
+                    .concat(addressLine4).concat(",")
+                    .concat(postCode).concat(",")
+                    .concat(city).concat(",")
+                    .concat(state).concat(",")
+                    .concat(country).concat(",");
+                    
+            /*address += address.concat(addressNode.get("addressLine1").asText()).concat(",").concat("\n")
                     .concat(addressNode.get("addressLine2").asText()).concat(",").concat("\n")
                     .concat(addressNode.get("addressLine3").asText()).concat(",").concat("\n")
                     .concat(addressNode.get("addressLine4").asText()).concat(",").concat("\n")
                     .concat(addressNode.get("postCode").asText()).concat(",").concat("\n")
                     .concat(addressNode.get("city").asText()).concat(",").concat("\n")
                     .concat(addressNode.get("state").asText()).concat(",").concat("\n")
-                    .concat(addressNode.get("country").asText()).concat("\n");
+                    .concat(addressNode.get("country").asText()).concat("\n");*/
+            address+=subAddress;
         }
         return address;
     }
@@ -496,6 +544,7 @@ public class Utility {
         Map<String, Object[]> header = new TreeMap();
         Map<String, Object[]> content = new TreeMap();
         int node = 2;
+        String ccCode;
         String ccName;
         String address;
         String email;
@@ -505,9 +554,10 @@ public class Utility {
         double holdings;
         String depository;
         root=root.get(1);
-        header.put("1", new Object[]{"Company Name","Address","Depository","Email Address","No. of Shareholders","No. of Bondholders","Share Unit Price"});
+        header.put("1", new Object[]{"Company Code","Company Name","Address","Depository","Email Address","No. of Shareholders","No. of Bondholders","Share Unit Price"});
        
             for(final JsonNode ccNode : root ){
+            ccCode = ccNode.get("code").asText();
             ccName = ccNode.get("name").asText();
             JsonNode residentialAddresses = ccNode.get("addresses");
             address = this.getHolderAddress(residentialAddresses);
@@ -521,7 +571,7 @@ public class Utility {
             bondholders = ccNode.get("noBondholders").asText();
             shareUnitPrice = ccNode.get("shareUnitPrice").asText();
             depository = ccNode.get("depositoryName").asText();
-            content.put(node+"", new Object[]{ccName,address,depository,email,shareholders,bondholders,shareUnitPrice});
+            content.put(node+"", new Object[]{ccCode,ccName,address,depository,email,shareholders,bondholders,shareUnitPrice});
             node++;
             }
             clientCompanyData.add(header);
@@ -565,5 +615,71 @@ public class Utility {
             consolidationData.add(header);
             consolidationData.add(content);
             return consolidationData;
+    }
+    
+    public List loadRegionalSetting(){
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(classLoader.getResource("/org/greenpole/countries/countries.json").getFile());
+        List <Country> countriesList = new ArrayList();
+        try{
+            JsonFactory factory = new JsonFactory();
+            
+            JsonParser countriesParser = factory.createParser(file);
+            ObjectMapper mapper = new ObjectMapper(factory);
+            JsonNode rootNode = mapper.readTree(file);
+            
+            String country;
+            String code;
+            String stateJsonFile;
+            String continent;
+            List stateList = null;
+            int i = 1;
+            countriesList.add(new Country(0,"Select Country","","",stateList));
+            for(JsonNode countryNode : rootNode){
+                if(countryNode.get("filename") == null){
+                    List<State> states = new ArrayList();
+                    states.add(new State(1,"Others","N/A"));
+                    stateList = states ;
+                }
+                else{
+                    stateJsonFile = countryNode.get("filename").asText();
+                    File stateFile = new File(classLoader.getResource("/org/greenpole/countries/"+stateJsonFile+".json").getFile());
+                    stateList = processStateList(stateFile);
+                }
+                
+                country = countryNode.get("name").asText();
+                code = countryNode.get("code").asText();
+                continent = countryNode.get("continent").asText();
+                countriesList.add(new Country(i,country,code,continent,stateList));
+                i++;
+            }
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        
+        
+        return countriesList;
+    }
+    
+    public List processStateList(File stateFile){
+        JsonFactory factory = new JsonFactory();
+        ObjectMapper mapper = new ObjectMapper(factory);
+        List<State> stateList = new ArrayList();
+        int i = 1;
+        try {
+            JsonNode rootNode = mapper.readTree(stateFile);
+            String name;
+            String code;
+            stateList.add(new State(1,"Select State",""));
+            for(JsonNode stateNode : rootNode){
+                name = stateNode.get("name").asText();
+                code = stateNode.get("code").asText();
+                stateList.add(new State(i,name,code));
+                i++;
+            }
+        } catch (Exception ex) {
+            
+        }
+        return stateList;
     }
 }

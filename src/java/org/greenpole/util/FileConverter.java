@@ -7,6 +7,7 @@ package org.greenpole.util;
 
 import com.lowagie.text.DocumentException;
 import java.io.ByteArrayOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Map;
@@ -16,6 +17,8 @@ import javax.servlet.http.HttpServlet;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFRichTextString;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,16 +57,23 @@ public class FileConverter extends HttpServlet {
     
      private byte[] exportToCSV (Map <String,String> header,Map <String,Object[]> data,String title) throws IOException{
          Set<String> keySet = data.keySet();
-         StringBuilder stringBuilder = new StringBuilder();
+         Set<String> headerKeySet = header.keySet();
+         String output = "";
+          for(String headerKey :headerKeySet){
+            output+=header.get(headerKey)+",";
+            
+        }
          for(String key: keySet){
             
             Object[] objArr = data.get(key);
             for(Object obj : objArr){
-                stringBuilder.append(obj).append(",");
+                output+=obj.toString()+",";
             }
-            stringBuilder.append("\n");
-        }
-         return String.valueOf(stringBuilder).getBytes();
+           
+        } 
+         output+="\n";
+         System.out.println(output);
+         return output.getBytes();
     }
      
     private byte[] exportToMSEXCEL(Map <String,String> header,Map <String,Object[]> data,String title) throws IOException{
@@ -72,20 +82,22 @@ public class FileConverter extends HttpServlet {
         XSSFSheet sheet = workbook.createSheet(title);
         int rownumber = 0;
         Set<String> headerKeySet = header.keySet();
-        
+        Utility util = new Utility();
         Set<String> keySet = data.keySet();
         int c_num=0;
+        Row row = sheet.createRow(rownumber);
+        XSSFFont font = workbook.createFont();
+        font.setBold(true);
         for(String headerKey :headerKeySet){
-            Row row = sheet.createRow(rownumber);
+            XSSFRichTextString string = new XSSFRichTextString(header.get(headerKey));
+            string.applyFont(font);
             Cell cell = row.createCell(c_num);
-            cell.setCellValue(headerKey);
+            cell.setCellValue(string);
             c_num++;
-            //setRowValues(headerKey, row);
-            
         }
         rownumber++;
         for(String key: keySet){
-            Row row = sheet.createRow(rownumber);
+            row = sheet.createRow(rownumber);
             rownumber++;
             Object[] objArr = data.get(key);
             setRowValues(objArr, row);
@@ -164,6 +176,7 @@ public class FileConverter extends HttpServlet {
                     tableStringBuilder.append("</td>");
                  }
                  else{*/
+                
                      tableStringBuilder.append("<td style=\"").append(style).append("\">");
                     tableStringBuilder.append(obj.toString());
                     tableStringBuilder.append("</td>");

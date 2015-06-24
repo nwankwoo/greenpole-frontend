@@ -81,7 +81,6 @@ public class MainController  {
     @RequestMapping(value={"/","index"},method=RequestMethod.GET)
     public ModelAndView getIndex(Profiler profiler,HttpSession session,ModelMap loginModelMap,ServiceEngine serviceEngine,Utility util,
             DataStore dataStore) throws Exception{
-        System.out.println("path="+context.getResource("/WEB-INF/viewList/"));
         ModelAndView mv=new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Response response = serviceEngine.sendGeneralRequest(session, null, ServiceEngine.GET_NOTIFICATIONS);
@@ -89,13 +88,13 @@ public class MainController  {
         if(notifications == null){
             notifications = new ArrayList();
         }
-        
+        System.out.println(util.convertObjectToJSONString(notifications));
         mv.addObject("notification", notifications);
         for(NotificationWrapper notification : notifications){
             if(notification.getMessageTag().contains("Authorisation")){
                 notification.setMessageTag("Authorisation Request From "+notification.getFrom());
             }
-            System.out.println(util.convertObjectToJSONString(notification));
+            
         }
         dataStore.saveObject("notifications", notifications, session);
         mv.addObject("company_name", "Africa Prudential Registrars Plc.");

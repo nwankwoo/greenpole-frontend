@@ -296,6 +296,10 @@ public class ServiceEngine {
     public Response sendClientCompanyAuthorisation (HttpSession httpSession,Object requestObject, int requestMethod) throws MalformedURLException{
         Service service = this.getService(httpSession, "clientcompanyservice");
         ClientCompanyComponentService port = service.getPort(ClientCompanyComponentService.class);
+        
+        Service generalService = this.getService(httpSession, "generalservice");
+        GeneralComponentService generalServicePort = service.getPort(GeneralComponentService.class);
+        
        Response response;
        response = null;
        Login login = this.retriveLoginDetails();
@@ -303,7 +307,10 @@ public class ServiceEngine {
            case 1:               
                response = port.createClientCompany_Authorise(login, (String) requestObject);
                break;
-           case 3:
+           case 2:
+               response = generalServicePort.rejectNotification(login, (String) requestObject);
+               break;
+            case 3:
                response = port.setupBondOffer_Authorise(login, (String) requestObject);
                break;
            case 5:

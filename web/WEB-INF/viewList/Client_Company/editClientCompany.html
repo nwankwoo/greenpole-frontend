@@ -6,6 +6,7 @@
 <link rel="icon" href="../resources/images/lg.png" th:href="@{/images/lg.png}"/>
 <link rel="stylesheet" href="../resources/styles/vendor/pace-dataurl.css" th:href="@{/styles/vendor/pace-dataurl.css}"/> 
 <link rel="stylesheet" href="../resources/styles/mainstyle.css" th:href="@{/styles/mainstyle.css}"/> 
+<link rel="stylesheet" th:href="@{/styles/vendor/foundation-datepicker.css}"/> 
 <script th:src="@{/dmz/scripts/vendor/modernizr.js}"></script>
 </head>
 
@@ -68,7 +69,18 @@
                     <div class="large-8 columns" style="padding-top:10px">
                     	<input type="text" required ng-model="companySecretary" th:field="*{secretary}" class="secretary"/>
                         <input type="hidden" th:value="*{secretary}" class="csecretary"/>
-                        <small class="error">Please enter phone number</small>
+                        <small class="error">Please enter secretary name</small>
+                    </div>
+                </div>
+                
+                  <div class="row">
+                	<div class="large-4 columns" style="font-size:13px;padding-top:10px">
+                    	<small class="required" style="color:red">*</small> &nbsp;Date of Incorporation
+                    </div>
+                
+                    <div class="large-8 columns" style="padding-top:10px">
+                    	<input type="text" required ng-model="dateOfIncorporation"  data-date-format="dd/mm/yyyy" class="dateofincorporation" readonly/>
+                        <small class="error">Please enter date of incorporation</small>
                     </div>
                 </div>
                 
@@ -196,35 +208,40 @@
                                      </div>
                                 </div>
                                 <div class="large-4 columns" style="font-size:13px;padding-top:15px">
-                                    <small class="required" style="color:red">*</small> &nbsp;City
+                                    <small class="required" style="color:red">*</small> &nbsp;Country
                                 </div>
-                                <div class="large-8 columns">
-                                    <div class="row">
-                                    	<div class="large-12">
-                                        	<input type="text" class="city" th:field="*{addresses[0].city}" required/>
-                                    		<small class="error">Please enter company city</small>
+                                <div class="large-8 columns" style="margin:0px;padding:0px">
+                                    <div class="row" style="margin-bottom:10px">
+                                    	<div class="large-12 columns">
+                                        	<span class="countrySpan">
+                                            	<input type="text" class="country" required th:field="*{addresses[0].country}" />
+                                            </span>
+                                        	
+                                    		<small class="error">Please enter company country</small>
                                         </div>
                                      </div>
                                 </div>
                                  <div class="large-4 columns" style="font-size:13px;padding-top:15px">
                                     <small class="required" style="color:red">*</small> &nbsp;State
                                 </div>
-                                <div class="large-8 columns">
+                                <div class="large-8 columns"  style="margin:0px;padding:0px">
                                     <div class="row">
-                                    	<div class="large-12">
-                                        	<input type="text" class="state" required th:field="*{addresses[0].state}" />
+                                    	<div class="large-12 columns">
+                                        	<span class="stateSpan">
+                                            	<input type="text" class="state" required th:field="*{addresses[0].state}" />
+                                            </span>
                                     		<small class="error">Please enter company state</small>
                                         </div>
                                      </div>
                                 </div>
                                  <div class="large-4 columns" style="font-size:13px;padding-top:15px">
-                                    <small class="required" style="color:red">*</small> &nbsp;Country
+                                    <small class="required" style="color:red">*</small> &nbsp;City
                                 </div>
-                                <div class="large-8 columns">
+                                <div class="large-8 columns" style="margin-top:10px">
                                     <div class="row">
                                     	<div class="large-12">
-                                        	<input type="text" class="country" required th:field="*{addresses[0].country}" />
-                                    		<small class="error">Please enter company country</small>
+                                        	<input type="text" class="city" th:field="*{addresses[0].city}" required/>
+                                    		<small class="error">Please enter company city</small>
                                         </div>
                                      </div>
                                 </div>
@@ -459,6 +476,7 @@
 <script  th:src="@{/scripts/vendor/foundation.min.js}"></script>
 <script  th:src="@{/scripts/vendor/angular.min.js}"></script>
 <script  th:src="@{/scripts/vendor/foundation.abide.js}"></script>
+<script  th:src="@{/scripts/vendor/foundation-datepicker.js}"></script>
 <script  th:src="@{/scripts/vendor/jquery.form.min.js}"></script>
 <script  th:src="@{/scripts/utility.js}"></script>
 <script  th:src="@{/scripts/client_company/editClientCompany.js}"></script>
