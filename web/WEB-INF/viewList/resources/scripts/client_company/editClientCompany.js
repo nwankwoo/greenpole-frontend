@@ -51,7 +51,7 @@ $(function(){
 	var state;
 	$.ajax({
 			method : 'GET',
-			url : '../getRegionalSettings'
+			url : 'getRegionalSettings'
 		})
 		.done(function(data){
 			regionalSettings = data;
@@ -60,11 +60,24 @@ $(function(){
 		});
 		
 		function loadUpCountries(data){
+			$setName = $(".ecountry").val();
 			var countrySelect = '<select name="addresses[0].country" class="countryList">';
 			$.each(data,function(i,v){
-				countrySelect+='<option value="'+v.name+'">'+v.name+'</option>';
+				if(v.name===$setName){
+					state = v.state;
+					countrySelect+='<option value="'+v.name+'" selected>'+v.name+'</option>';
+				}
+				else{
+					countrySelect+='<option value="'+v.name+'">'+v.name+'</option>';
+				}
+				
 			});
 			countrySelect+='</select>';
+			if(state!==""){
+				
+				loadUpState(state);
+			}
+			
 			$(".countrySpan").html(countrySelect);
 		}
 	
@@ -92,9 +105,16 @@ $('.dateofincorporation').fdatepicker({
 	});
 	
 	function loadUpState(data){
+		$estate = $(".estate").val();
 		var stateSelect = '<select name="addresses[0].state" class="stateList">';
 			$.each(data,function(i,v){
-				stateSelect+='<option value="'+v.name+'">'+v.name+'</option>';
+				if(v.name === $estate){
+					stateSelect+='<option value="'+v.name+'" selected>'+v.name+'</option>';
+				}
+				else{
+					stateSelect+='<option value="'+v.name+'">'+v.name+'</option>';
+				}
+				
 			});
 			stateSelect+='</select>';
 			$(".stateSpan").html(stateSelect);
@@ -383,13 +403,17 @@ function showRequest(formData, jqForm, options) {
 function showResponse(responseText, statusText, xhr, $form)  { 
   window.parent.$(".close-reveal-modal").show();
   window.parent.$(".indicator").hide();
-  window.parent.$(".note").text(responseText);
-  window.location.reload();
-  $(".clearform").click();
+  if(responseText.responseCode===0){
+	  window.parent.$(".note").text("Your request as been submitted for authorisation.");
+	  $(".clearform").click();
+  }
+  else{
+	  window.parent.$(".note").text(responseText.description);
+  }
+  
   $(".back").click();
   
 } 
-
 function paint($destination,$content){
 	$destination.html($content);
 }

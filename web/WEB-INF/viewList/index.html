@@ -208,13 +208,6 @@ function processNotification(data){
 			codeList.push(v);
 		}
 	});
-	
-	console.log("codeList");
-	console.log(codeList);
-	console.log("newCode");
-	console.log(newCode);
-	console.log("alienCode");
-	console.log(alienCode);
 	if(alienCode.length>0){
 		$("#notification-count").text(alienCode.length);
 		$.playSound($("#notificationsound").text());

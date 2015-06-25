@@ -112,10 +112,29 @@ ul.holdersName > li { cursor:move}
         });
 		
 		$(".authorise").click(function(e) {
-			$url = $("#destination").val()+"authorisation/holder/transpose/authorise?code="+$(".code").val();
+			/*$url = $("#destination").val()+"authorisation/holder/transpose/authorise?code="+$(".code").val();
 			console.log($(".code").val());
 			console.log($url);
-            window.location.assign($url);
+            window.location.assign($url);*/
+			
+			reveal("Authorising of Holders transpose please wait...");
+    
+			$url = $("#destination").val()+"authorisation/holder/transpose/authorise?code="+$(".code").val();
+			$.ajax({
+			method : 'GET',
+			url : $url
+			})
+			.done(function(data){
+				window.parent.$(".close-reveal-modal").show();
+  				window.parent.$(".indicator").hide();
+				if(data.responseCode===0){
+					  window.parent.$(".note").text("Authorisation of holder name successful.");
+					  $(document).html("");
+				  }
+				  else{
+					  window.parent.$(".note").text(data.description);
+				  }
+			});
         });
 	</script>
 

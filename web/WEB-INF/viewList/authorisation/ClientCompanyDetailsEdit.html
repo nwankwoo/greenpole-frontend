@@ -233,10 +233,29 @@
         });
 		
 		$(".authorise").click(function(e) {
-			$url = $("#destination").val()+"authorisation/clientcompany/editclientcompany/authorise?code="+$(".code").val();
+			/*$url = $("#destination").val()+"authorisation/clientcompany/editclientcompany/authorise?code="+$(".code").val();
 			console.log($(".code").val());
 			console.log($url);
-            window.location.assign($url);
+            window.location.assign($url);*/
+			
+			reveal("Authorising of client company details edit please wait...");
+    
+			$url = $("#destination").val()+"authorisation/clientcompany/editclientcompany/authorise?code="+$(".code").val();
+			$.ajax({
+			method : 'GET',
+			url : $url
+			})
+			.done(function(data){
+				window.parent.$(".close-reveal-modal").show();
+  				window.parent.$(".indicator").hide();
+				if(data.responseCode===0){
+					  window.parent.$(".note").text("Authorisation of client company details edit successful.");
+					  $(document).html("");
+				  }
+				  else{
+					  window.parent.$(".note").text(data.description);
+				  }
+			});
         });
 </script>
 

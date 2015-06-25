@@ -98,24 +98,25 @@ public class ClientCompanyController {
     }
     
     @RequestMapping(value={"editClientCompany"},method=RequestMethod.POST)
-    public @ResponseBody String editClientCompany(@ModelAttribute ClientCompany clientCompany,
+    public @ResponseBody Map editClientCompany(@ModelAttribute ClientCompany clientCompany,
             @RequestParam (value="key",required=true ) String key,
             @RequestParam (value="hole",required=true ) String hole,Utility util, HttpSession session,
             ServiceEngine serviceEngine,DataStore dataStore){
-        String serverResponse="";
+        Map serverResponse= new HashMap();
         try{
            //if(util.validateViewMapping(key, hole, "createClientCompany", session))  {
+            System.out.println(util.convertObjectToJSONString(clientCompany));
                 ClientCompany cc = (ClientCompany) dataStore.getObject("clientCompany", session);
                 clientCompany.setId(cc.getId());
                 System.out.println(util.convertObjectToJSONString(clientCompany));
                 Response response = serviceEngine.sendClientCompanyRequests(session, clientCompany, ServiceEngine.EDIT_CLIENT_COMPANY);
                 //serverResponse="New client company created successfully.";
-                serverResponse = response.getDesc();
-                System.out.println(response.getDesc());
+                serverResponse.put("responseCode", response.getRetn());
+                serverResponse.put("description", response.getDesc());
            // } 
         }catch(IOException ex){
             ex.printStackTrace();
-            serverResponse="Encountered error while trying to edit client company.";
+            //serverResponse="Encountered error while trying to edit client company.";
         }
         
         return serverResponse;
@@ -197,27 +198,30 @@ public class ClientCompanyController {
     }
     
     @RequestMapping(value={"setupBondOffer"},method=RequestMethod.POST)
-    public @ResponseBody String setupBondOffer(@ModelAttribute BondOffer bondOffer,
+    public @ResponseBody Map setupBondOffer(@ModelAttribute BondOffer bondOffer,
             @RequestParam (value="key",required=true ) String key,
             @RequestParam (value="hole",required=true ) String hole,Utility util, HttpSession session,
             ServiceEngine serviceEngine,DataStore dataStore){
-        String serverResponse="";
+        Map serverResponse= new HashMap();
         System.out.println("Setting up Bond Offer");
         try{
            //if(util.validateViewMapping(key, hole, "setupBondOffer", session))  {
                ClientCompany cc = (ClientCompany) dataStore.getObject("clientCompany", session);
-               System.out.println(util.convertObjectToJSONString(cc));
+               
                bondOffer.setClientCompanyId(cc.getId());
                bondOffer.setClientCompanyName(cc.getName());
+               System.out.println(util.convertObjectToJSONString(bondOffer));
                 Response response = serviceEngine.sendClientCompanyRequests(session, bondOffer, ServiceEngine.SETUP_BOND_OFFER);
                 //System.out.println(util.convertObjectToJSONString(bondOffer));
                // System.out.println(response.getDesc());
                // serverResponse="Bond Offer Setup successfully.";
-                serverResponse = response.getDesc();
+               // serverResponse = response.getDesc();
+                serverResponse.put("responseCode", response.getRetn());
+                serverResponse.put("description", response.getDesc());
            // } 
         }catch(IOException ex){
             ex.printStackTrace();
-            serverResponse="Encountered error while trying to setup bond offer.";
+           //serverResponse="Encountered error while trying to setup bond offer.";
         }
         
         return serverResponse;
@@ -227,11 +231,11 @@ public class ClientCompanyController {
     
     
     @RequestMapping(value={"setupInitialPublicOffer"},method=RequestMethod.POST)
-    public @ResponseBody String setupInitialPublicOffer(@ModelAttribute InitialPublicOffer initialPublicOffer,
+    public @ResponseBody Map setupInitialPublicOffer(@ModelAttribute InitialPublicOffer initialPublicOffer,
             @RequestParam (value="key",required=true ) String key,
             @RequestParam (value="hole",required=true ) String hole,Utility util, HttpSession session,
             ServiceEngine serviceEngine,DataStore dataStore){
-        String serverResponse="";
+        Map serverResponse = new HashMap();
         try{
           // if(util.validateViewMapping(key, hole, "setupInitialPublicOffer", session))  {
              ClientCompany cc = (ClientCompany) dataStore.getObject("clientCompany", session);
@@ -241,11 +245,13 @@ public class ClientCompanyController {
                 Response response = serviceEngine.sendClientCompanyRequests(session, initialPublicOffer, ServiceEngine.SETUP_INITIAL_PUBLIC_OFFER);
                 System.out.println(util.convertObjectToJSONString(initialPublicOffer));
                 //serverResponse="Initial Public Offer Setup successfully.";
-                serverResponse = response.getDesc();
+                //serverResponse = response.getDesc();
+                serverResponse.put("responseCode", response.getRetn());
+                serverResponse.put("description", response.getDesc());
            // } 
         }catch(IOException ex){
             ex.printStackTrace();
-            serverResponse="Encountered error while trying to setup Initial Public Offer.";
+            //serverResponse="Encountered error while trying to setup Initial Public Offer.";
         }
         
         return serverResponse;
@@ -254,11 +260,11 @@ public class ClientCompanyController {
     
     
     @RequestMapping(value={"setupPrivatePlacement"},method=RequestMethod.POST)
-    public @ResponseBody String setupPrivatePlacement(@ModelAttribute PrivatePlacement privatePlacement,
+    public @ResponseBody Map setupPrivatePlacement(@ModelAttribute PrivatePlacement privatePlacement,
             @RequestParam (value="key",required=true ) String key,
             @RequestParam (value="hole",required=true ) String hole,Utility util, HttpSession session,
             ServiceEngine serviceEngine,DataStore dataStore){
-        String serverResponse="";
+        Map serverResponse = new HashMap();
         try{
           // if(util.validateViewMapping(key, hole, "setupPrivatePlacement", session))  {
                  ClientCompany cc = (ClientCompany) dataStore.getObject("clientCompany", session);
@@ -267,12 +273,14 @@ public class ClientCompanyController {
                privatePlacement.setClientCompanyName(cc.getName());
                 Response response = serviceEngine.sendClientCompanyRequests(session, privatePlacement, ServiceEngine.SETUP_PRIVATE_PLACEMENT);
                 System.out.println(util.convertObjectToJSONString(privatePlacement));
+                serverResponse.put("responseCode", response.getRetn());
+                serverResponse.put("description", response.getDesc());
                 //serverResponse="Private Placement Setup successfully.";
-                serverResponse = response.getDesc();
+                //serverResponse = response.getDesc();
            // } 
         }catch(IOException ex){
             ex.printStackTrace();
-            serverResponse="Encountered error while trying to setup private placement.";
+            //serverResponse="Encountered error while trying to setup private placement.";
         }
         
         return serverResponse;
@@ -352,10 +360,10 @@ public class ClientCompanyController {
      
      
      @RequestMapping(value={"uploadShareUnitQuotation"},method=RequestMethod.POST)
-     public @ResponseBody String uploadShareUnitQuotation(@RequestParam (value="key",required=true ) String key,
+     public @ResponseBody Map uploadShareUnitQuotation(@RequestParam (value="key",required=true ) String key,
             @RequestParam (value="hole",required=true ) String hole,Utility util, HttpSession session,
             @RequestParam("shareUnitQuotation") MultipartFile shareUnitQuotation,ServiceEngine serviceEngine){
-         String serverResponse="";
+         Map serverResponse = new HashMap();
          List <ShareQuotation> shareQuotationList = new ArrayList();
          try{
            if(util.validateViewMapping(key, hole, "uploadShareUnitQuotation", session))  {
@@ -387,12 +395,14 @@ public class ClientCompanyController {
                     Response response = serviceEngine.sendClientCompanyRequests(session, carrier, ServiceEngine.UPLOAD_SHARE_UNIT_QUOTATION);
                     System.out.println(util.convertObjectToJSONString(shareQuotationList));
                     //serverResponse="File Uploaded";
-                    serverResponse = response.getDesc();
+                    //serverResponse = response.getDesc();
+                    serverResponse.put("responseCode", response.getRetn());
+                serverResponse.put("description", response.getDesc());
                 }
             } 
         }catch(IOException ex){
             ex.printStackTrace();
-            serverResponse="Encountered error while processing file. Please make sure the file is properly formated";
+           // serverResponse="Encountered error while processing file. Please make sure the file is properly formated";
         }
          return serverResponse;
      }

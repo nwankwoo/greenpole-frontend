@@ -156,7 +156,26 @@
 		
 		$(".authorise").click(function(e) {
 			$url = $("#destination").val()+"authorisation/holder/powerOfAttorney/authorise?code="+$(".code").val();
-            window.location.assign($url);
+            //window.location.assign($url);
+			
+			reveal("Authorising of Power of Attorney creation please wait...");
+    
+			
+			$.ajax({
+			method : 'GET',
+			url : $url
+			})
+			.done(function(data){
+				window.parent.$(".close-reveal-modal").show();
+  				window.parent.$(".indicator").hide();
+				if(data.responseCode===0){
+					  window.parent.$(".note").text("Authorisation of power of attorney creation successful.");
+					  $(document).html("");
+				  }
+				  else{
+					  window.parent.$(".note").text(data.description);
+				  }
+			});
         });
 	</script></body>
 </html>

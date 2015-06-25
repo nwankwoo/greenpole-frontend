@@ -28,12 +28,10 @@ App.controller("setupInitialPublicOfferController",function($scope,$http){
 	$scope.totalSharesOnOffer=0;
 	$scope.orig = angular.copy($scope.data);
 	$scope.calculateDateDiff=function(openingDate,closingDate){
-		console.log(openingDate);
 		if( (typeof openingDate!==undefined) && (typeof closingDate!==undefined) ){
 			
 			openingDate=openingDate.split("/");
 			closingDate=closingDate.split("/");
-			console.log(openingDate);
 			var opening = new Date(openingDate[2],openingDate[1],openingDate[0]);
 			var closing = new Date(closingDate[2],closingDate[1],closingDate[0]);
 			
@@ -42,7 +40,6 @@ App.controller("setupInitialPublicOfferController",function($scope,$http){
 		}
 	}
 	$scope.calculateOfferSize=function(offerPrice,totalSharesOnOffer){
-		console.log(offerPrice+" "+totalSharesOnOffer);
 		$scope.offerSize=offerPrice*totalSharesOnOffer;
 	}
 	$scope.reset=function(){
@@ -123,6 +120,16 @@ var options = {
  
     }; 
 	
+	$('.continuingMinimumSubscription').bind('keypress', function (event) {
+		var regex = new RegExp("^[a-zA-Z0-9_.,& ]+$");
+		var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+		if (!regex.test(key)) {
+		   event.preventDefault();
+		   return false;
+		}
+});
+	 
+	
 	$(".setupInitialPublicOfferForm").ajaxForm(options);
 $(".setupInitialPublicOfferConfirmButton").click(function(e) {
 	$(".setupInitialPublicOfferForm :input[format]").each(function(index, element) {
@@ -140,7 +147,26 @@ function showRequest(formData, jqForm, options) {
     reveal("Setting up initial public offer please wait...");
     return true; 
 } 
- 
+
+function showResponse(responseText, statusText, xhr, $form)  {
+  window.parent.$(".close-reveal-modal").show();
+  window.parent.$(".indicator").hide();
+  if(responseText.responseCode===0){
+	  window.parent.$(".note").text("Your request as been submitted for authorisation.");
+	 $(".setupInitialPublicOfferResetButton").click();
+	 $(".startingMinimumSubscription").attr("format","");
+	  $(".continuingMinimumSubscription").attr("format","");
+	  $(".offerPrice").attr("format","");
+	  $(".totalSharesOnOffer").attr("format","");
+  }
+  else{
+	  window.parent.$(".note").text(responseText.description);
+  }
+  
+  $(".setupBondOfferBackButton").click();
+  
+} 
+/* 
 function showResponse(responseText, statusText, xhr, $form)  { 
 $(".offerSize").prop("readonly",true);
   window.parent.$(".close-reveal-modal").show();
@@ -152,6 +178,6 @@ $(".offerSize").prop("readonly",true);
   $(".continuingMinimumSubscription").attr("format","");
   $(".offerPrice").attr("format","");
   $(".totalSharesOnOffer").attr("format","");
-} 
+} */
 
 

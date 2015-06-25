@@ -32,6 +32,12 @@ function showResponse(responseText, statusText, xhr, $form)  {
   window.parent.$(".close-reveal-modal").show();
   window.parent.$(".indicator").hide();
   window.parent.$(".note").text(responseText);
+   if(responseText.responseCode===0){
+	  window.parent.$(".note").text("Your request as been submitted for authorisation.");
+   }
+   else{
+	   window.parent.$(".note").text(responseText.description);
+   }
   $(".resetForm").click();
   
 } 

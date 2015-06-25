@@ -233,7 +233,7 @@ public class UtilityController {
         return notifications;
     }
     
-    @RequestMapping(value = {"relatedTask/getRegionalSettings","getRegionalSettings"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"relatedtask/getRegionalSettings","getRegionalSettings"}, method = RequestMethod.GET)
     public @ResponseBody List getRegionalSettings(Utility util){
         return util.loadRegionalSetting();
     }

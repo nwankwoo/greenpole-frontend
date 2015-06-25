@@ -344,10 +344,29 @@
         });
 		
 		$(".authorise").click(function(e) {
-			$url = $("#destination").val()+"authorisation/holder/bondholder/authorise?code="+$(".code").val();
+			/*$url = $("#destination").val()+"authorisation/holder/bondholder/authorise?code="+$(".code").val();
 			console.log($(".code").val());
 			console.log($url);
-            window.location.assign($url);
+            window.location.assign($url);*/
+			
+			reveal("Authorising creation of bond holder account please wait...");
+    
+			$url = $("#destination").val()+"authorisation/holder/bondholder/authorise?code="+$(".code").val();
+			$.ajax({
+			method : 'GET',
+			url : $url
+			})
+			.done(function(data){
+				window.parent.$(".close-reveal-modal").show();
+  				window.parent.$(".indicator").hide();
+				if(data.responseCode===0){
+					  window.parent.$(".note").text("Authorisation of bond holder account creation successful.");
+					  $(document).html("");
+				  }
+				  else{
+					  window.parent.$(".note").text(data.description);
+				  }
+			});
         });
 	</script>
 </html>

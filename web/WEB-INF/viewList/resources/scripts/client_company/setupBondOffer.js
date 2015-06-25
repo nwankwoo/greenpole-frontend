@@ -89,6 +89,21 @@ function showRequest(formData, jqForm, options) {
     return true; 
 } 
  
+ function showResponse(responseText, statusText, xhr, $form)  { 
+  window.parent.$(".close-reveal-modal").show();
+  window.parent.$(".indicator").hide();
+  if(responseText.responseCode===0){
+	  window.parent.$(".note").text("Your request as been submitted for authorisation.");
+	 $(".setupBondOfferResetButton").click();
+  }
+  else{
+	  window.parent.$(".note").text(responseText.description);
+  }
+  
+  $(".setupBondOfferBackButton").click();
+  
+} 
+/*
 function showResponse(responseText, statusText, xhr, $form)  { 
   window.parent.$(".close-reveal-modal").show();
   window.parent.$(".indicator").hide();
@@ -96,4 +111,4 @@ function showResponse(responseText, statusText, xhr, $form)  {
   $(".setupBondOfferResetButton").click();
   $(".setupBondOfferBackButton").click();
   
-} 
+} */

@@ -5,11 +5,9 @@ $(document).ready(function(e) {
 var createShareholderApp = angular.module("createShareholderApp",[]);
 
 createShareholderApp.controller("createShareholderController",function($scope,$http){
-	$scope.shareholderTypes=[{id:"0",type:"Select Shareholder Type"},{id:"1",type:"Individual"},{id:"2",type:"Corporate"}];
+	$scope.shareholderTypes=[{id:"0",type:"Select Shareholder Type"},{id:"1",type:"Individual"},{id:"2",type:"Corporate"},{id:"3",type:"Joint"}];
 	$scope.stockbrokers=[{id:"0",name:"Select Stockbroker"},{id:"1",name:"Cash Craft Limited"},{id:"2",name:"Mutual Trust"}];
 	$scope.clientCompanies=[{id:"0",name:"Select Client Company"},{id:"2",name:"Africa Prudential Registrars"}];
-	
-	
 	
 });
 

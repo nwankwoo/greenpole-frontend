@@ -45,7 +45,7 @@
                     Bond Unit Price
                 </div>
                 <div class="large-8 columns">
-                	<input type="number" th:field="*{unitPrice}" required ng-model="unitPrice"/>
+                	<input type="number" th:field="*{unitPrice}" required ng-model="unitPrice" min="0"/>
                     <small class="error">Please enter unit price</small>
                 </div>
                 
@@ -76,7 +76,7 @@
                     Interest Rate
                 </div>
                 <div class="large-8 columns">
-                	<input type="number" required th:field="*{interestRate}" ng-model="interestRate"/>
+                	<input type="number" required th:field="*{interestRate}" ng-model="interestRate" min="0"/>
                     <small class="error">Please enter interest rate</small>
                 </div>
                 

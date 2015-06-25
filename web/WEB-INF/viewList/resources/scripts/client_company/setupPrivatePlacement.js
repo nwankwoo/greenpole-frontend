@@ -137,12 +137,19 @@ $(".offerSize").prop("readonly",true);
   window.parent.$(".close-reveal-modal").show();
   window.parent.$(".indicator").hide();
   window.parent.$(".note").text(responseText);
+  if(responseText.responseCode===0){
+	  window.parent.$(".note").text("Your request as been submitted for authorisation.");
   $(".setupPrivatePlacementResetButton").click();
-  $(".setupPrivatePlacementBackButton").click();
+ 
   $(".startingMinimumSubscription").attr("format","");
   $(".continuingMinimumSubscription").attr("format","");
   $(".offerPrice").attr("format","");
   $(".totalSharesOnOffer").attr("format","");
+  }
+   else{
+	  window.parent.$(".note").text(responseText.description);
+  }
+   $(".setupPrivatePlacementBackButton").click();
 } 
 
 
