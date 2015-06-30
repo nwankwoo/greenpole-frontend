@@ -20,8 +20,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import org.greenpole.entity.model.clientcompany.ClientCompany;
@@ -413,18 +411,19 @@ public class Utility {
                                 mv.addObject("viewtitle",viewtitle);
                                 URI startURI=new URI(context.getResource("/WEB-INF/viewList/").toString());
                                 String view=util.lookUpView(viewname,startURI,".html",false);
-                                System.out.println("view="+ view);
                                 if (view!=null && !view.equals("")){
-                                  
                                     Class model;
                                     if(!viewModel.isEmpty()){
                                         model=Class.forName(viewModel);
                                         mv.addObject(viewname,model.newInstance());
-                                        System.out.println("viewnamessss="+viewname);
+                                        System.out.println(this.convertObjectToJSONString(dataStore.getObject(objectName, httpSession)));
                                         mv.addObject(objectName, dataStore.getObject(objectName, httpSession));
                                     }
                                     else if(viewname.equals(conditionalViewName)){
                                         System.out.println(util.convertObjectToJSONString(dataStore.getObject(objectName, httpSession)));
+                                        mv.addObject(objectName, dataStore.getObject(objectName, httpSession));
+                                    }
+                                    else{
                                         mv.addObject(objectName, dataStore.getObject(objectName, httpSession));
                                     }
 

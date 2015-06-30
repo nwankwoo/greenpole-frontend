@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html ng-app="applyForIPO">
+<html ng-app="cautionAccount">
 <head>
 <meta name="_csrf" th:content="${_csrf.token}"/>
 <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Afica Prudential Registrars Plc :: Apply for Initial Public Offer</title>
+<title>Afica Prudential Registrars Plc :: Caution Account</title>
 <link rel="icon" th:href="@{/images/lg.png}"/>
 <link rel="stylesheet" th:href="@{/styles/vendor/pace-dataurl.css}"/> 
 <link rel="stylesheet" th:href="@{/styles/mainstyle.css}"/> 
@@ -13,22 +13,21 @@
 
 </head>
 
-<body ng-controller="applyForIPOController">
+<body ng-controller="cautionAccountController">
 <div class="row full-width">
     	<div class="large-12 small-12 columns text-center title">
-        	<span id="title">Apply for Initial Public Offer</span>
+        	<span id="title">Caution Account</span>
         </div>
-</div>
-<div class="formRow">
-<div class="row notification" style="margin-left:10px;margin-top:10px;padding:0px;display:none">
+  
+  <div class="row notification" style="margin-left:10px;margin-top:5%;padding:0px;display:none">
 	<div class="large-8 columns" style="float:left">
     	<div data-alert class="alert-box alert">
             Please complete all fields marked * to continue
         </div>
     </div>
 </div>
-
-<form th:action= "'../'+${formAction} + '&' + ${_csrf.parameterName}  + '='+ ${_csrf.token}" data-abide method="post" class="applyForIPOForm full-width"  style="padding-left:10px;padding-right:10px" data-abide>
+      
+ <form th:action= "'../'+${formAction} + '&' + ${_csrf.parameterName}  + '='+ ${_csrf.token}" data-abide method="post" class="confirmCautionSetupForm full-width"  style="padding-left:10px;padding-right:10px" data-abide>
 
 <div class="row full-width upload-signature" style="font-size:13px;padding-top:10px;margin-left:10px;margin-right:20px">
 	<!--large-8-->
@@ -83,109 +82,94 @@
         </div>
         <!--row-->
         
-        <div class="large-12 columns ipoDiv" style="margin-top:30px">
-            <div class="row">
+        <div class="large-12 columns cautionDiv" style="margin-top:30px">
+        
+         <div class="row">
             	<div class="large-3 columns" style="padding-top:10px">
-                	<span class="required" style="color:red">*</span>&nbsp;Issuer
+                	<span class="required" style="color:red">*</span>&nbsp;Caution Title
                 </div>
                 <div class="large-8 columns">
-                	<select name = "issuer" ng-model="issuer" ng-options ="issuer.name for issuer in issuers" ng-init="issuer=issuers[0]" required>
-                    </select>
-                    <input type="hidden" value="{{issuer.name}}" name="issuer">
-                    <input type="hidden" value="{{issuer.id}}" name="initialPublicOfferId">
-                    <span class="error">Please select Issuer</span>
-                </div>
-            </div>
-            
-            <div class="row" style="margin-top:10px">
-            	<div class="large-3 columns" style="padding-top:10px">
-                	<span class="required" style="color:red">*</span>&nbsp;Share Units Subscribe
-                </div>
-                <div class="large-8 columns">
-                	<input type="number" ng-model="sharesSubscribed" name="sharesSubscribed" required min="0"/>
-                    <span class="error">Please enter unit subscribed</span>
-                </div>
-            </div>
-            
-             <div class="row" style="margin-top:10px">
-            	<div class="large-3 columns" style="padding-top:10px">
-                	<span class="required" style="color:red">*</span>&nbsp;Amount Paid
-                </div>
-                <div class="large-8 columns">
-                	<input type="number" ng-model="amount_paid" name="amountPaid" required min="0"/>
-                    <span class="error">Please enter amount paid</span>
+                	<input type="text" name="title" required ng-model="title"/>
+                    
+                    <span class="error">Please caution title</span>
                 </div>
             </div>
             
             <div class="row">
             	<div class="large-3 columns" style="padding-top:10px">
-                	<span class="required" style="color:red">*</span>&nbsp;Issuing House
+                	<span class="required" style="color:red">*</span>&nbsp;Caution Type
                 </div>
                 <div class="large-8 columns">
-                	<select name = "issuer" ng-model="issuing_house" ng-options="issuing_house.name for issuing_house in issuingHouses" ng-init="issuing_house=issuingHouses[0]" required>
+                	<select name="type"  required ng-model="type" ng-init="type=0" class="cautionType">
+                    	<option value="0">Select Type</option>
+                    	<option value="Normal">Normal</option>
+                        <option value="Special">Special</option>
                     </select>
-                    <input type="hidden" value="{{issuing_house.name}}" name="issuingHouse">
-                    <span class="error">Please select Issuing House</span>
+                    
+                    <span class="error">Please select caution type</span>
                 </div>
             </div>
+            
+            <div class="row cautionReason" style="margin-top:10px;display:none">
+            	<div class="large-3 columns" style="padding-top:10px">
+                	<span class="required" style="color:red">*</span>&nbsp;Reason
+                </div>
+                <div class="large-8 columns">
+                	<textarea name="description" ng-model="reason" class="reason"></textarea>
+                    <span class="error">Please enter reason for caution</span>
+                </div>
+            </div>
+            
             
             <div class="row" style="margin-top:20px">
             	<div class="large-12 columns text-right">
                 	<input type="button" class="button resetForm" value="Reset Form">&nbsp;&nbsp;
-                	<input type="button" class="button applyForIPOButton" value="Apply For IPO">
+                	<input type="button" class="button cautionAccountButton" value="Caution Account">
                 </div>
             </div>
             
             
         </div>
         
-     <div class="row confirmIPOSetup" style="margin-top:20px;display:none">
+     <div class="row confirmCautionSetup" style="margin-top:20px;display:none">
 		<div class="large-12 columns">
         	
             <div class="row">
             	<div class="large-3 columns" id="confirm-details">
-                	Issuer
+                	Caution Title
                 </div>
                 
                 <div class="large-9 columns" id="confirm-entries">
-                	{{ issuer.name }}
-                </div>                
-            </div>
-            
-             <div class="row">
-            	<div class="large-3 columns" id="confirm-details">
-                	Share Units Subscribe
-                </div>
-                
-                <div class="large-9 columns" id="confirm-entries">
-                	{{ sharesSubscribed }}
+                	{{ title }}
                 </div>                
             </div>
             
             <div class="row">
             	<div class="large-3 columns" id="confirm-details">
-                	Amount Paid
+                	Caution Type
                 </div>
                 
                 <div class="large-9 columns" id="confirm-entries">
-                	{{ amount_paid }}
+                	{{ type }}
                 </div>                
             </div>
             
-            <div class="row">
+             <div class="row cautionReason">
             	<div class="large-3 columns" id="confirm-details">
-                	Issuing House
+                	Reason for Caution
                 </div>
                 
                 <div class="large-9 columns" id="confirm-entries">
-                	{{issuing_house.name}}
+                	{{ reason }}
                 </div>                
             </div>
+            
+            
             
             <div class="row" style="margin-top:20px">
             	<div class="large-12 columns text-right">
-                	<input type="button" class="button applyForIPOBack" value="&laquo; Back"/>&nbsp;&nbsp;
-                    <input type="button" class="button applyForIPOSaveAndContinue" value="Save &amp; Countinue">
+                	<input type="button" class="button cautionAccountBack" value="&laquo; Back"/>&nbsp;&nbsp;
+                    <input type="button" class="button cautionAccountSaveAndContinue" value="Save &amp; Countinue">
                 </div>
             </div>
             
@@ -202,14 +186,13 @@
 </form>
 </div>
 
-
 <script th:src="@{/scripts/vendor/jquery.js}"></script>
 <script th:src="@{/scripts/vendor/foundation.min.js}"></script>
 <script th:src="@{/scripts/vendor/foundation.abide.js}"></script>
 <script th:src="@{/scripts/vendor/angular.min.js}"></script>
 <script  th:src="@{/scripts/vendor/jquery.form.min.js}"></script>
 <script th:src="@{/scripts/utility.js}"></script>
-<script th:src="@{/scripts/Holder/applyForIPO.js}"></script>
+<script th:src="@{/scripts/Holder/cautionAccount.js}"></script>
 <script>
 $(document).foundation();
 </script>         

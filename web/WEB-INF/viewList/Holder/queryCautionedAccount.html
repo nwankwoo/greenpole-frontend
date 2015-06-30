@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html ng-app="queryCautionedAccount">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Africa Prudential Registrars Plc :: Demerge Shareholder Accounts</title>
+<link rel="icon" th:href="@{/images/lg.png}"/>
+<link rel="stylesheet" th:href="@{/styles/vendor/pace-dataurl.css}"/> 
+<link rel="stylesheet" th:href="@{/styles/mainstyle.css}"/> 
+<link rel="stylesheet" th:href="@{/styles/vendor/foundation-datepicker.css}"/> 
+
+<script th:src="@{/scripts/vendor/modernizr.js}"></script>
+</head>
+
+<body ng-controller="queryCautionedAccountCtrl">
+<div class="row full-width">
+    	<div class="large-12 small-12 columns text-center title">
+        	<span id="title">Query Cautioned Shareholder / Bondholder Account</span>
+        </div>
+<div>
+
+<div class="row" style="font-size:13px;margin:20px;padding-top:5%">
+	<div class="large-8 columns">
+     <input th:value="${formAction} + '&' + ${_csrf.parameterName}  + '='+ ${_csrf.token}" class="action" type="hidden"/>
+    	<form class="queryCautionedAccountForm"  ng-submit="queryCautionedAccount()">
+        <input type="hidden" name="descriptor" class="descriptor"/>
+        <div class="row" style="padding-bottom:20px">
+        	<div class="large-4 columns" style="padding-top:10px">
+            	<small class="required" style="color:red">*</small>&nbsp;Date Criteria
+            </div>
+            <div class="large-8 columns">
+            	<select class="dateSelector">
+                	<option value="0">Select Date Criteria</option>
+                    <option value="all_account_caution_on_date">All Account Cautioned on Date</option>
+                    <option value="all_account_caution_between_date">All Account Cautioned Between Date</option>
+                    <option value="all_account_caution_before_date">All Account Cautioned Before Date</option>
+                    <option value="all_account_caution_after_date">All Account Cautioned After Date</option>
+                    <option value="all_shareholder_account_caution_on_date">All Shareholder Account Cautioned on Date</option>
+                    <option value="all_shareholder_account_caution_between_date">All Shareholder Account Cautioned Between Date</option>
+                    <option value="all_shareholder_account_caution_before_date">All Shareholder Account Cautioned Before Date</option>
+                    <option value="all_shareholder_account_caution_after_date">All Shareholder Account Cautioned After Date</option>
+                     <option value="all_bondholder_account_caution_on_date">All Bondholder Account Cautioned on Date</option>
+                    <option value="all_bondholder_account_caution_between_date">All Bondholder Account Cautioned Between Date</option>
+                    <option value="all_bondholder_account_caution_before_date">All Bondholder Account Cautioned Before Date</option>
+                    <option value="all_bondholder_account_caution_after_date">All Bondholder Account Cautioned After Date</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="row">
+        	<div class="large-4 columns" style="padding-top:10px">
+            	<small class="required" style="color:red">*</small>&nbsp;Select Date
+            </div>
+            <div class="large-8 columns date_container">
+            	<div class="row fixed_">
+                	<div class="large-12 columns">
+                	<input type="text" name="startDate" class="date" data-date-format="dd/mm/yyyy"/>
+                    </div>
+                </div>
+            	
+                
+                <div class="row between" style="display:none">
+                	<div class="large-12 columns">
+                		<div class="large-6 columns" style="padding:0;padding-right:10px">
+                            <input type="text" class="dateFrom" data-date-format="dd/mm/yyyy" name="startDate"/>
+                        </div>
+                        <div class="large-6 columns" style="padding:0;padding-left:10px">
+                            <input type="text" class="dateTo" data-date-format="dd/mm/yyyy" name="endDate"/>
+                        </div>
+                      </div>
+                </div>
+                
+            </div>
+        </div>
+        
+        <div class="row">
+        	<div class="large-12 columns text-right">
+            	<!--<input type="button" class="button resetForm" value="Reset Form"/>&nbsp;&nbsp;-->
+                <input type="submit" class="button viewReport" value="View Report"/>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+
+<div class="row full-width">
+	<div class="large-12 colums">
+    	<div class="large-12 small-12 columns text-left title" style="height:30px;font-size:15px;font-weight:bold;padding-top:7px">
+        	<span id="title" style="padding-left:10px">:: Cautioned Account Query Result</span>
+        </div>
+    </div>
+</div>
+
+<div >
+ <div class="row full-width" style="padding-bottom:10px"  >
+        	
+        	<div class="large-1 columns large-offset-8" style="padding:0;margin:0;padding-top:10px;width:100px" >
+            	<a href="#" class="printReportOnConsolidationofAccount" style="font-size:11px;font-weight:bold;color:#000"> <img th:src="@{/images/print.png}"/> &nbsp;Print Report</a>
+            </div>
+            <div class="large-1 columns" style="margin:0;padding:0;float:left;margin-left:15px;width:250px;padding-top:10px">
+            	<a data-dropdown="drop1" aria-controls="drop1" aria-expanded="false" style="font-size:11px;font-weight:bold;color:#000"> 
+                	<img th:src="@{/images/export.png}"/> &nbsp;Export Report
+                </a>
+                    <ul id="drop1" class="f-dropdown" data-dropdown-content aria-hidden="true" tabindex="-1">
+                      <li><a href="#" style="font-weight:bolder;font-size:11px" class="exportToPdf">Export to pdf</a></li>
+                      <li><a href="#" style="font-weight:bolder;font-size:11px" class="exportToExcel">Export to MS Excel</a></li>
+                      <li><a href="#" style="font-weight:bolder;font-size:11px" class="exportToCSV">Export to CSV (Comma Separated List)</a></li>
+                    </ul>
+            </div>
+        </div>
+        <div class="row full-width" style="background:#fff;">
+        <div class="large-1 columns" style="font-size:11px;padding:0;margin:0;padding-left:25px;font-weight:bold;padding-top:23px;width:130px">
+        Number of records:  
+        </div>
+        <div class="large-1 columns" style="padding-top:10px">
+        	<input type="text" style="width:53%" class="pageSize" ng-init="pageSize" ng-model="pageSize" ng-keyup="key($event)" ng-keypress="filter($event)"/>
+        </div>
+        <div class="large-1 columns text-right" style="font-size:11px;padding:0;margin:0;padding-left:25px;font-weight:bold;padding-top:23px;width:130px;">
+        Filter Results: 
+        </div>
+        <div class="large-3 columns" style="margin:0;padding-top:10px;">
+            	<input type="text" placeholder="Search" ng-model="searchText"/>
+        </div>
+         
+        	<div class="large-5 columns" style="float:left;background:#fff;padding-top:12px;padding-bottom:10px;" align="center">
+            <div class="row full-width">
+            	<div class="large-1" style="font-size:11px;font-weight:bold;float:left;width:80px;padding-top:10px">
+                	Result Pages:
+                </div>
+                
+                <div class="large-7" style="float:left;width:200px">
+                     <ul class="pagination">
+                        <li style="padding-top:3px" ng-class="previousPage <= 0 ? 'arrow unavailable' : 'arrow'">
+                        	
+                            <span ng-if="previousPage > 0">
+                            	<a ng-click="getPage(previousPage)" >&laquo;</a>
+                            </span>
+                            <span ng-if="previousPage <= 0">
+                            	
+                            </span>
+                        </li>
+                        
+                        <li ng-repeat="page in numberOfPages | limitTo:5" ng-class="page == currentPage ? 'current' : ''">
+                            <a style="padding:5px" ng-click="getPage(page)">{{ page }}</a>
+                        </li>
+                        
+                        <li  style="padding-top:3px"  ng-class="currentPage < totalPages ? 'arrow' : 'arrow unavailable'">
+                        	<span ng-if="nextPage > totalPages">
+                            </span>
+                            <span ng-if="nextPage <= totalPages">
+                            	<a ng-click="getPage(nextPage)">&raquo;</a>
+                            </span>
+                            
+                        </li>
+                    </ul>
+                </div>
+                <div class="large-4 text-left" style="font-size:11px;font-weight:bold;float:left;width:180px;padding-top:10px">
+                	Total Records Found : {{ totalRecord }}
+                </div>
+            </div>
+          
+                
+               
+            </div>
+        </div>
+        <div class="row full-width">
+            <div class="large-12 columns" style="padding-top:10px;padding-left:25px;padding-right:25px">
+                <table cellpadding="0" cellspacing="0" border="1" class="full-width" width="100%" style="border-spacing:0px" >
+                    <tr style="line-height:1em">
+                        <td width="2%" align="center" style="font-weight:bold;font-size:11px">SN</td>
+                        <td width="20%" align="center" style="font-weight:bold;font-size:11px">Holder Name</td>
+                        <td width="20%" align="center" style="font-weight:bold;font-size:11px">Caution Status</td>
+                        <td width="15%" align="center" style="font-weight:bold;font-size:11px">Reason</td>                        
+                        <td width="15%" align="center" style="font-weight:bold;font-size:11px">Caution Date</td>                   
+                    </tr>
+                   <tr ng-repeat="cautionedaccount in cautionedaccounts | filter:searchText | orderBy : ''"><!--"-->
+                       
+                   		<td  width="3%" align="center" style="font-weight:bold;font-size:11px">{{$index+1}}</td>
+                        <td width="20%" align="center" style="font-weight:bold;font-size:11px">
+                        {{cautionedaccount.holderName}}
+                        </td>
+                        <td width="15%" align="center" style="font-weight:bold;font-size:11px" class="chn">{{cautionedaccount.status}}</td>
+                       <td align="center" style="font-weight:bold;font-size:11px">{{cautionedaccount.reason}}</td>
+                       <td align="center" style="font-weight:bold;font-size:11px">{{cautionedaccount.date}}</td>
+                          </tr>
+                </table>
+            </div>
+            <div class="large-12 columns">
+            	
+            </div>
+        </div>
+</div>
+<script th:src="@{/scripts/vendor/jquery.js}"></script>
+<script th:src="@{/scripts/vendor/foundation.min.js}"></script>
+<script th:src="@{/scripts/vendor/foundation-datepicker.js}"></script>
+<script th:src="@{/scripts/vendor/angular.min.js}"></script>
+<script th:src="@{/scripts/utility.js}"></script>
+<script th:src="@{/scripts/Holder/queryCautionedAccount.js}"></script>
+<script>
+$(document).foundation();
+</script>         
+</body>
+</html>

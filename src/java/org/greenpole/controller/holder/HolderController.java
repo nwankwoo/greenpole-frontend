@@ -8,7 +8,9 @@ package org.greenpole.controller.holder;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -24,6 +26,12 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.greenpole.entirycode.jeph.model.IpoApplication;
+import org.greenpole.entirycode.jeph.model.PrivatePlacementApplication;
 import org.greenpole.entity.model.clientcompany.UnitTransfer;
 import org.greenpole.entity.model.holder.Administrator;
 import org.greenpole.entity.model.holder.Holder;
@@ -35,6 +43,8 @@ import org.greenpole.entity.model.holder.QueryHolderConsolidation;
 import org.greenpole.entity.model.holder.merge.AccountConsolidation;
 import org.greenpole.entity.model.taguser.TagUser;
 import org.greenpole.entity.response.Response;
+import org.greenpole.entrycode.emmanuel.model.Caution;
+import org.greenpole.entrycode.emmanuel.model.RightsIssueApplication;
 import org.greenpole.model.profiler.RelatedTask;
 import org.greenpole.util.DataStore;
 import org.greenpole.util.FileConverter;
@@ -673,8 +683,6 @@ public class HolderController {
          
          Holder currentHolder = null;
          for(Holder holder : holderList){
-             System.out.println("holderId="+holder.getHolderId());
-             System.out.println("company="+holder.getCompanyAccounts());
              if((holder.getHolderId()+"").equals(id)){            
                  currentHolder = holder;
                  break;
@@ -796,5 +804,292 @@ public class HolderController {
      @RequestMapping(value={"/printReportOnConsolidationofAccount"},method=RequestMethod.GET)
      public String printReportOnConsolidationofAccount(){
          return "Holder/printReportOnConsolidationofAccount";
+     }
+     
+     //Phase Two
+     
+     @RequestMapping(value = {"applyForIPO"}, method=RequestMethod.POST)
+     public @ResponseBody Map applyForIPO(@ModelAttribute IpoApplication ipoApplication,DataStore dataStore,
+             Utility util,HttpSession httpSession){
+         Map serverResponse = new HashMap();
+         
+         try{
+             Holder holder = (Holder) dataStore.getObject("holder", httpSession);
+             ipoApplication.setHolderId(holder.getHolderId());
+             serverResponse.put("responseCode", 0);
+             serverResponse.put("description", "Application successful");
+         }catch(Exception ex){
+             ex.printStackTrace();
+         }
+         
+         
+         return serverResponse;
+     }
+     
+       @RequestMapping(value = {"applyForRightIssue"}, method=RequestMethod.POST)
+     public @ResponseBody Map applyForRightsIssue(@ModelAttribute RightsIssueApplication rightsIssueApplication,DataStore dataStore,
+             Utility util,HttpSession httpSession){
+         Map serverResponse = new HashMap();
+         
+         try{
+             Holder holder = (Holder) dataStore.getObject("holder", httpSession);
+             rightsIssueApplication.setHolder(holder);
+             System.out.println(util.convertObjectToJSONString(rightsIssueApplication));
+             serverResponse.put("responseCode", 0);
+             serverResponse.put("description", "Application successful");
+         }catch(Exception ex){
+             ex.printStackTrace();
+         }
+         
+         
+         return serverResponse;
+     }
+     
+     @RequestMapping(value = {"applyForPrivatePlacement"}, method=RequestMethod.POST)
+     public @ResponseBody Map applyForPrivatePlacement(@ModelAttribute PrivatePlacementApplication privatePlacementApplication,DataStore dataStore,
+             Utility util,HttpSession httpSession){
+         Map serverResponse = new HashMap();
+         
+         try{
+             Holder holder = (Holder) dataStore.getObject("holder", httpSession);
+             privatePlacementApplication.setHolderId(holder.getHolderId());
+             serverResponse.put("responseCode", 0);
+             serverResponse.put("description", "Application successful");
+         }catch(Exception ex){
+             ex.printStackTrace();
+         }
+         
+         
+         return serverResponse;
+     }
+     
+     @RequestMapping(value = {"relatedtask/CancelIPO/{id}"}, method = RequestMethod.GET)
+     public @ResponseBody Map cancelIPO(@PathVariable ("id") int id ){
+         Map serverResponse = new HashMap();
+         IpoApplication ipo = new IpoApplication();
+         ipo.setId(id);
+         ipo.setCancelled(true);
+         serverResponse.put("responseCode", 0);
+         serverResponse.put("description", "Application successful");
+         return serverResponse;
+     }
+     
+     @RequestMapping(value = {"relatedtask/CancelPrivatePlacement/{id}"}, method = RequestMethod.GET)
+     public @ResponseBody Map CancelPrivatePlacement(@PathVariable ("id") int id ){
+         Map serverResponse = new HashMap();
+         PrivatePlacementApplication pp = new PrivatePlacementApplication();
+         pp.setId(id);
+         pp.setCanceled(true);
+         serverResponse.put("responseCode", 0);
+         serverResponse.put("description", "Application successful");
+         return serverResponse;
+     }
+     
+     @RequestMapping(value = {"relatedtask/CancelRightIssue/{id}"}, method = RequestMethod.GET)
+     public @ResponseBody Map CancelRightIssue(@PathVariable ("id") int id ){
+         Map serverResponse = new HashMap();
+         RightsIssueApplication right = new RightsIssueApplication();
+         right.setId(id);
+         right.setCancelled(true);
+         serverResponse.put("responseCode", 0);
+         serverResponse.put("description", "Application successful");
+         return serverResponse;
+     }
+     
+     @RequestMapping(value={"uploadHolderDetailsEnmass"},method=RequestMethod.POST)
+     public @ResponseBody List uploadHolderDetailsEnmass(@RequestParam (value="key",required=true ) String key,
+            @RequestParam (value="hole",required=true ) String hole,Utility util, HttpSession session,
+            @RequestParam("offer_file") MultipartFile offerFile,HolderSignature signature,
+            ServiceEngine serviceEngine,DataStore dataStore,HttpServletRequest request,
+            @RequestParam (value="applicationType",required=true ) String applicationType,
+            @RequestParam (value="offer_id",required=true ) int offer_id){
+         
+         Map serverResponse = new HashMap();
+         String holderName = "";
+         String aprAccNumber = "";
+         String holderCHN = "";
+         String issuer = "";
+         int sharesToSubscribe = 0;
+         double amountPaid = 0.0;
+         String issuingHouse = "";
+          String holderNameArray[];
+          String firstName = "";
+         String middleName = "";
+         String lastName = "";
+         List applicationList = new ArrayList();
+          if(util.validateViewMapping(key, hole, "uploadHolderDetailsEnmass", session))  {
+              Object obj = null;
+              switch(applicationType){
+                  case "INITIAL_PUBLIC_OFFER":
+                      obj = new IpoApplication();
+                      break;
+                  case "PRIVATE_PLACEMENT":
+                      obj = new PrivatePlacementApplication();
+                      break;
+                  case "RIGHT_ISSUE":
+                      obj = new RightsIssueApplication();
+                      break;
+                  case "BOND_OFFER":
+                      //obj = new 
+                      break;
+                  default:
+                      break;
+              }
+              
+             try {
+                 byte [] offer_fileByte = offerFile.getBytes();
+                 InputStream inputStream = new ByteArrayInputStream(offer_fileByte);
+                 XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
+                 XSSFSheet sheet = workbook.getSheetAt(0);
+                 Iterator <Row> rowIterator = sheet.iterator();
+                 
+                 int rowNumber = 0;
+                 rowIterator.next();
+                 while(rowIterator.hasNext()){
+                     /*if (rowNumber==0){
+                         continue;
+                     }*/
+                     rowNumber++;
+                     Row row = rowIterator.next();
+                     Iterator<Cell> cellIterator = row.cellIterator();
+                     int cellNumber = 0;
+                     while(cellIterator.hasNext()){
+                         Cell cell = cellIterator.next();
+                         //System.out.println(cell.getStringCellValue());
+                        switch (cellNumber) {
+                            case 0:
+                                aprAccNumber = cell.getStringCellValue();
+                                break;
+                            case 1:
+                                holderName = cell.getStringCellValue();
+                                break;
+                            case 2:
+                                holderCHN = cell.getStringCellValue();
+                                break;
+                            case 3:
+                                issuer = cell.getStringCellValue();
+                                break;
+                            case 4:
+                                sharesToSubscribe = (int)(cell.getNumericCellValue());
+                                break;
+                            case 5:
+                                amountPaid = cell.getNumericCellValue();
+                                break;
+                            case 6:
+                                issuingHouse = cell.getStringCellValue();
+                                break;
+                            default:
+                                break;
+                        }
+                        cellNumber++;
+                     }
+                     
+                     switch(applicationType){
+                        case "INITIAL_PUBLIC_OFFER":
+                            IpoApplication ipo = new IpoApplication();
+                            ipo.setAmountPaid(amountPaid);
+                            ipo.setIssuer(issuer);
+                            ipo.setInitialPublicOfferId(offer_id);
+                            ipo.setIssuingHouse(issuingHouse);
+                            ipo.setSharesSubscribed(sharesToSubscribe);
+                            holderNameArray = holderName.split(" ");
+                            firstName = "";
+                            middleName = "";
+                            lastName = "";
+                            Holder holder = new Holder();
+                            if(holderNameArray.length>0){
+                                if(holderNameArray.length>=3){
+                                    firstName = holderNameArray[0];
+                                    middleName = holderNameArray[1];
+                                    lastName = holderNameArray[2];
+                                    
+                                    holder.setFirstName(holderName);
+                                }
+                                
+                                if(holderNameArray.length==2){
+                                    firstName = holderNameArray[0];
+                                    lastName = holderNameArray[1];
+                                }
+                                if(holderNameArray.length==1){
+                                    firstName = holderNameArray[0];
+                                }
+                            }
+                            holder.setFirstName(firstName);
+                            holder.setMiddleName(middleName);
+                            holder.setLastName(lastName);
+                            ipo.setHolder(holder);
+                            applicationList.add(ipo);
+                            util.convertObjectToJSONString(applicationList);
+                            break;
+                        case "PRIVATE_PLACEMENT":
+                            PrivatePlacementApplication pp = new PrivatePlacementApplication();
+                            pp.setAmountPaid(amountPaid);
+                            pp.setIssuer(issuer);
+                            pp.setPrivatePlacementId(offer_id);
+                            pp.setIssuingHouse(issuingHouse);
+                            pp.setSharesSubscribed(sharesToSubscribe);
+                            holderNameArray = holderName.split(" ");
+                            firstName = "";
+                            middleName = "";
+                            lastName = "";
+                            holder = new Holder();
+                            if(holderNameArray.length>0){
+                                if(holderNameArray.length>=3){
+                                    firstName = holderNameArray[0];
+                                    middleName = holderNameArray[1];
+                                    lastName = holderNameArray[2];
+                                    
+                                    holder.setFirstName(holderName);
+                                }
+                                
+                                if(holderNameArray.length==2){
+                                    firstName = holderNameArray[0];
+                                    lastName = holderNameArray[1];
+                                }
+                                if(holderNameArray.length==1){
+                                    firstName = holderNameArray[0];
+                                }
+                            }
+                            holder.setFirstName(firstName);
+                            holder.setMiddleName(middleName);
+                            holder.setLastName(lastName);
+                            pp.setHolder(holder);
+                            applicationList.add(pp);
+                            break;
+                        case "RIGHT_ISSUE":
+                            obj = new RightsIssueApplication();
+                            break;
+                        case "BOND_OFFER":
+                            //obj = new 
+                            break;
+                        default:
+                            break;
+                    }
+                     
+                     
+                 }
+             } catch (Exception ex) {
+                 ex.printStackTrace();
+             }
+          }
+         return applicationList;
+         
+     }
+     
+     @RequestMapping( value = {"cautionAccount"}, method = RequestMethod.POST)
+     public @ResponseBody Map cautionAccount(@ModelAttribute Caution caution,
+             HttpSession httpSession,Utility util,DataStore dataStore){
+         Map serverResponse = new HashMap();
+         try{
+             Holder inSessionHolder = (Holder) dataStore.getObject("holder", httpSession);
+             caution.setHolderId(inSessionHolder.getHolderId());
+             System.out.println(util.convertObjectToJSONString(caution));
+             serverResponse.put("responseCode", 0);
+             serverResponse.put("description", "succesful");
+         }catch(Exception ex){
+             ex.printStackTrace();
+         }
+         
+         return serverResponse;
      }
 }

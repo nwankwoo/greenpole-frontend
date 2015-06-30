@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="applyForIPO">
+<html ng-app="applyForPrivatePlacement">
 <head>
 <meta name="_csrf" th:content="${_csrf.token}"/>
 <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
@@ -13,10 +13,10 @@
 
 </head>
 
-<body ng-controller="applyForIPOController">
+<body ng-controller="applyForPrivatePlacementController">
 <div class="row full-width">
     	<div class="large-12 small-12 columns text-center title">
-        	<span id="title">Apply for Initial Public Offer</span>
+        	<span id="title">Apply for Private Placement</span>
         </div>
 </div>
 <div class="formRow">
@@ -28,7 +28,7 @@
     </div>
 </div>
 
-<form th:action= "'../'+${formAction} + '&' + ${_csrf.parameterName}  + '='+ ${_csrf.token}" data-abide method="post" class="applyForIPOForm full-width"  style="padding-left:10px;padding-right:10px" data-abide>
+<form th:action= "'../'+${formAction} + '&' + ${_csrf.parameterName}  + '='+ ${_csrf.token}" data-abide method="post" class="applyForPrivatePlacementForm full-width"  style="padding-left:10px;padding-right:10px" data-abide>
 
 <div class="row full-width upload-signature" style="font-size:13px;padding-top:10px;margin-left:10px;margin-right:20px">
 	<!--large-8-->
@@ -132,7 +132,7 @@
             <div class="row" style="margin-top:20px">
             	<div class="large-12 columns text-right">
                 	<input type="button" class="button resetForm" value="Reset Form">&nbsp;&nbsp;
-                	<input type="button" class="button applyForIPOButton" value="Apply For IPO">
+                	<input type="button" class="button applyForPrivatePlacementButton" value="Apply For Private Placement">
                 </div>
             </div>
             
@@ -184,8 +184,8 @@
             
             <div class="row" style="margin-top:20px">
             	<div class="large-12 columns text-right">
-                	<input type="button" class="button applyForIPOBack" value="&laquo; Back"/>&nbsp;&nbsp;
-                    <input type="button" class="button applyForIPOSaveAndContinue" value="Save &amp; Countinue">
+                	<input type="button" class="button applyForPrivatePlacementBack" value="&laquo; Back"/>&nbsp;&nbsp;
+                    <input type="button" class="button applyForPrivatePlacementSaveAndContinue" value="Save &amp; Countinue">
                 </div>
             </div>
             
@@ -209,7 +209,7 @@
 <script th:src="@{/scripts/vendor/angular.min.js}"></script>
 <script  th:src="@{/scripts/vendor/jquery.form.min.js}"></script>
 <script th:src="@{/scripts/utility.js}"></script>
-<script th:src="@{/scripts/Holder/applyForIPO.js}"></script>
+<script th:src="@{/scripts/Holder/applyForPrivatePlacement.js}"></script>
 <script>
 $(document).foundation();
 </script>         

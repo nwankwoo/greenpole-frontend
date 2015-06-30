@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html ng-app = "QueryShareholderAccountApp">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Africa Prudential Registrars Plc :: Upload Holders Details Enmass</title>
+<link rel="icon" th:href="@{/images/lg.png}"/>
+<link rel="stylesheet" th:href="@{/styles/vendor/pace-dataurl.css}"/> 
+<link rel="stylesheet" th:href="@{/styles/mainstyle.css}"/> 
+<link rel="stylesheet" th:href="@{/styles/vendor/foundation-datepicker.css}"/> 
+
+<script th:src="@{/scripts/vendor/modernizr.js}"></script>
+
+</head>
+
+<body ng-controller="queryShareholderAccountCtrl">
+<div class="row full-width">
+    	<div class="large-12 small-12 columns text-center title">
+        	<span id="title">Upload Holders Details Enmass</span>
+        </div>
+</div>        
+
+<div class="row" style="margin-top:20px;font-size:13px">
+<form method="post" enctype="multipart/form-data" class="uploadHolderEnmassDetailsForm" th:action="${formAction}+ '&' + ${_csrf.parameterName}  + '='+ ${_csrf.token}">
+	<div class="large-8 columns">
+    
+    	<div class="row">
+        	<div class="large-3 columns" style="padding-top:10px">
+            	<span style="color:red">*</span>&nbsp;Application Type
+            </div>
+            <div class="large-8 columns">
+            	<select name="applicationType">
+                	<option value="INITIAL_PUBLIC_OFFER">Initial Public Offer (IPO)</option>
+                    <option value="PRIVATE_PLACEMENT">Private Placement</option>
+                    <option value="RIGHT_ISSUE">Right Issue</option>
+                    <option value="BOND_OFFER">Bond Offer</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="row" style="margin-top:10px">
+        	<div class="large-3 columns" style="padding-top:10px">
+            	<span style="color:red">*</span>&nbsp;Offer
+            </div>
+            <div class="large-8 columns">
+            	<select name="offer_id">
+                	<option value="1">Africa Prudential Registrars IPO</option>
+                    <option value="2">Lacasera Bond Offer</option>
+                    <option value="3">Champions Brewerry Right Issue</option>
+                    <option value="4">Braite Waith Private Placement</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="row" style="margin-top:10px">
+        	<div class="large-3 columns" style="padding-top:10px">
+            	<span style="color:red">*</span>&nbsp;Select Offer File
+            </div>
+            <div class="large-8 columns">
+            	<input type="file" name="offer_file"/>
+            </div>
+        </div>
+        
+        <div class="row" style="margin-top:10px">
+        	
+            <div class="large-8 large-offset-3 columns text-right">
+            	<input type="button" class="button resetUploadFormButton" value="Reset Form"/> &nbsp;&nbsp;
+            	<input type="submit" class="button uploadDetails" value="Upload Details"/>
+            </div>
+        </div>
+        
+    </div>
+    </form>
+</div>
+</body>
+</html>

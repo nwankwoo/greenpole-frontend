@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html ng-app="addShareUnit">
+<head>
+<meta name="_csrf" th:content="${_csrf.token}"/>
+<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Afica Prudential Registrars Plc :: Add Share Unit</title>
+<link rel="icon" th:href="@{/images/lg.png}"/>
+<link rel="stylesheet" th:href="@{/styles/vendor/pace-dataurl.css}"/> 
+<link rel="stylesheet" th:href="@{/styles/mainstyle.css}"/> 
+
+<script th:src="@{/scripts/vendor/modernizr.js}"></script>
+
+</head>
+
+<body ng-controller="addShareUnitCtrl">
+<div class="row full-width">
+    	<div class="large-12 small-12 columns text-center title">
+        	<span id="title">Add Share Unit</span>
+        </div>
+</div>
+
+<div class="row notification" style="margin-left:10px;margin-top:10px;padding:0px;display:none">
+	<div class="large-8 columns" style="float:left">
+    	<div data-alert class="alert-box alert">
+            Please complete all fields marked * to continue
+        </div>
+    </div>
+</div>
+<form th:action= "'../'+${formAction} + '&' + ${_csrf.parameterName}  + '='+ ${_csrf.token}" data-abide method="post" class="addShareUnitForm full-width"  style="padding-left:10px;padding-right:10px" data-abide ng-submit="addShareUnit()">
+
+	<div class="large-8 columns" style="font-size:13px;margin-top:10px">
+    
+    	<div class="row">
+        	<div class="large-4 columns">
+            	<span style="color:red">*</span>&nbsp;Client Company
+            </div>
+        	<div class="large-8 columns">
+            	<select name="clientCompany">
+                	<option value="0">Select Client Company</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="row" style="margin-top:10px">
+        	<div class="large-4 columns">
+            	<span style="color:red">*</span>&nbsp;Corporate Action
+            </div>
+        	<div class="large-8 columns">
+            	<select name="clientCompany">
+                	<option value="0">Select Corporate Action</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="row" style="margin-top:10px">
+        	<div class="large-8 columns large-offset-4 text-right">
+            <input type="button" class="button resetForm" value="Reset Form"> &nbsp;&nbsp;&nbsp;
+            	<input type="button" class="button getShareholdersList" value="Get Shareholders">
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<div class="row full-width">
+	<div class="large-12 colums">
+    	<div class="large-12 small-12 columns text-left title" style="height:30px;font-size:15px;font-weight:bold;padding-top:7px">
+        	<span id="title" style="padding-left:10px">:: Shareholder Account Query Result</span>
+        </div>
+    </div>
+</div>
+
+<div >
+
+       
+        <div class="row full-width">
+        <div class="large-12 columns text-right" style="margin-top:10px">
+        	<input type="button" class="button addShareUnitButton" value="Add Share Unit"/>
+        </div>
+            <div class="large-12 columns" style="padding-top:10px;">
+                <table cellpadding="0" cellspacing="0" border="1" class="full-width" width="100%" style="border-spacing:0px" >
+                    <tr style="line-height:1em">
+                        <td width="2%" align="center" style="font-weight:bold;font-size:11px">SN</td>
+                        <td width="20%" align="center" style="font-weight:bold;font-size:11px">Shareholder Name</td>
+                        <td width="15%" align="center" style="font-weight:bold;font-size:11px">Client Company Name</td>                        
+                        <td align="center" style="font-weight:bold;font-size:11px">Client Company Account</td>
+                        <td align="center" style="font-weight:bold;font-size:11px">Share Unit</td>
+                        <td align="center" style="font-weight:bold;font-size:11px">Address</td>                     
+                    </tr>
+                   <tr ng-repeat="shareholder in shareholders | filter:searchText | orderBy : ''">
+                   		<td  width="3%" align="center" style="font-weight:bold;font-size:11px">{{$index+1}}</td>
+                        <td width="20%" align="center" style="font-weight:bold;font-size:11px">
+                        <a href="getHolderDetails/shareholder/{{shareholder.holderId}}" style="color:#000;font-size:1em">{{shareholder.firstName}} {{shareholder.middleName}} {{shareholder.lastName}}</a>
+                        </td>
+                        <td width="15%" align="center" style="font-weight:bold;font-size:11px" class="chn">{{shareholder.chn}}</td>
+                        <td align="center" style="font-weight:bold;font-size:11px">{{shareholder.unit}} </td>
+                        <td>
+                        	{{shareholder.addressPrimary.addressLine1}}
+                            {{shareholder.addressPrimary.addressLine2}}
+                            {{shareholder.addressPrimary.addressLine3}}
+                            {{shareholder.addressPrimary.addressLine4}}.
+                            {{shareholder.addressPrimary.postCode}}, &nbsp; .
+                            {{shareholder.addressPrimary.city}}, &nbsp; .
+                            {{shareholder.addressPrimary.state}}, &nbsp; .
+                            {{shareholder.addressPrimary.country}}&nbsp; .
+                        </td>
+                        
+                        <td align="center" style="font-weight:bold;font-size:11px">{{holder.holdings(shareholder) | number}}</td>
+                          </tr>
+                </table>
+            </div>
+            <div class="large-12 columns">
+            	
+            </div>
+        </div>
+</div>
+<script th:src="@{/scripts/vendor/jquery.js}"></script>
+<script th:src="@{/scripts/vendor/foundation.min.js}"></script>
+<script th:src="@{/scripts/vendor/foundation.abide.js}"></script>
+<script th:src="@{/scripts/vendor/angular.min.js}"></script>
+<script  th:src="@{/scripts/vendor/jquery.form.min.js}"></script>
+<script th:src="@{/scripts/utility.js}"></script>
+<script th:src="@{/scripts/Holder/addShareUnit.js}"></script>
+<script>
+$(document).foundation();
+</script>         
+</body>
+</html>
